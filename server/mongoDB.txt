@@ -1,0 +1,1 @@
+mongodb+srv://tarangpadia:honey&bread@cluster0.ql3ig.mongodb.net/myFirstDatabase?retryWrites=true&w=majority

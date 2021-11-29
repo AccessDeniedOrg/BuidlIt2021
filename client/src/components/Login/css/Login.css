@@ -1,0 +1,13 @@
+.close-btn{
+    outline: none;
+    background-color: #fff;
+    border: none;
+    font-weight: 550;
+}
+.close-btn:hover {
+    color: #0275db
+}
+.error-msg{
+    color: red;
+    margin-left: 5px;
+}
