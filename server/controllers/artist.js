@@ -1,13 +1,12 @@
-const User = require("../models/user");
+const Artist = require("../models/artist");
 const crypto = require("crypto");
 const { sendMail } = require("./sendEmail");
 
-// Register User
+// Register Artist
 const sendOtp = async (req, res) => {
 	const { email, name, password } = req.body;
 
-	User.findOne({ email: email }, async function (err, data) {
-		//send mail
+	Artist.findOne({ email: email }, async function (err, data) {
 		if (!data) {
 			//generate otp
 			const otp = Math.floor(100000 + Math.random() * 900000);
@@ -20,15 +19,17 @@ const sendOtp = async (req, res) => {
 				.update(data)
 				.digest("hex");
 			const fullHash = `${hash}.${expires}`;
+
 			const emailBody = `
-		    <div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
-		        <p style="font-weight: bold;" >Hello ${name},</p>
-		        <p>Your OTP to verify email is ${otp}</p>
-		        <p>If you have not registered on the website, kindly ignore the email</p>
-		        <br/>
-		        <p>Have a Nice Day!</p>
-		    </div>
-		    `;
+        <div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
+            <p style="font-weight: bold;" >Hello ${name},</p>
+            <p>Your OTP to verify email is ${otp}</p>
+            <p>If you have not registered on the website, kindly ignore the email</p>
+            <br/>
+            <p>Have a Nice Day!</p>            
+        </div>
+        `;
+
 			await sendMail(email, name, emailBody);
 			res.status(200).send({
 				msg: "Registered",
@@ -40,18 +41,14 @@ const sendOtp = async (req, res) => {
 				otp,
 			});
 		} else {
-			res.send({ msg: "User already exists. Try a different email." });
+			res.send({ msg: "Artist already exists. Try a different email." });
 		}
 	});
 };
 
 // verify and register
-const registerUser = async (req, res) => {
-	const name = req.body.name;
-	const email = req.body.email;
-	const password = req.body.password;
-	const hash = req.body.hash;
-	const otp = req.body.otp;
+const registerArtist = async (req, res) => {
+	const { name, email, password, hash, otp } = req.body;
 
 	let [hashValue, expires] = hash.split(".");
 
@@ -68,7 +65,7 @@ const registerUser = async (req, res) => {
 		.digest("hex");
 
 	if (newCalculatedHash === hashValue) {
-		var newPerson = new User({
+		var newPerson = new Artist({
 			email: email,
 			name: name,
 			password: password,
@@ -86,8 +83,8 @@ const registerUser = async (req, res) => {
 };
 
 // Login
-const loginUser = async (req, res) => {
-	User.findOne({ email: req.body.email }, async function (err, data) {
+const loginArtist = async (req, res) => {
+	Artist.findOne({ email: req.body.email }, async function (err, data) {
 		if (data) {
 			if (data.password === req.body.password) {
 				res.status(200).send({
@@ -106,6 +103,6 @@ const loginUser = async (req, res) => {
 
 module.exports = {
 	sendOtp,
-	registerUser,
-	loginUser,
+	registerArtist,
+	loginArtist,
 };

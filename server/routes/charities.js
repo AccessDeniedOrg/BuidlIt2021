@@ -1,17 +1,26 @@
 const express = require("express");
 const {
-    getAllCharities,
-    updateAfterNFTTransfer,
+	getAllCharities,
+	addCharity,
+	updateCharity,
+	deleteCharity,
+	updateAfterNFTTransfer,
 } = require("../controllers/charities");
 
 const router = express.Router();
 
-//Get All products For sender and receiver
+//Get All charities
 router.get("/all-charities", getAllCharities);
 
-//Update Product
+//Update charity NFT
 router.post("/update-charity", updateAfterNFTTransfer);
 
+router.post("/addCharity", addCharity);
+
+router.post("/updateCharity", updateCharity);
+
+router.post("/deleteCharity", deleteCharity);
+
 module.exports = {
-    route: router,
+	route: router,
 };

@@ -1,1 +1,1 @@
-mongodb+srv://tarangpadia:honey&bread@cluster0.ql3ig.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+mongodb+srv://user:Hack123@accessdeniedcluster.if9n6.mongodb.net/database?retryWrites=true&w=majority
