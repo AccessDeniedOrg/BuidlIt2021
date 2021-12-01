@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "@openzeppelin/contracts": "^4.4.0",
     "@sendgrid/mail": "^7.4.6",
     "axios": "^0.21.4",
     "body-parser": "^1.19.0",
@@ -16,6 +17,7 @@
     "mongoose": "^6.0.5",
     "nodemon": "^2.0.12",
     "razorpay": "^2.0.7",
+    "truffle": "^5.4.22",
     "uuid": "^8.3.2"
   },
   "devDependencies": {},
