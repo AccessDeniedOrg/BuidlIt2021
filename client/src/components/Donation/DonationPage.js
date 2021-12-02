@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { ProgressBar, Spinner } from "react-bootstrap";
+import "./css/DonationPage.css"
 
 const DonationPage = (props) => {
 
@@ -55,7 +56,7 @@ const DonationPage = (props) => {
                         style={{
                             marginTop: "340px",
                             marginBottom: "10px",
-                            color: "blue",
+                            color: "#ffded1",
                         }}
                         animation="border"
                     />
@@ -66,7 +67,7 @@ const DonationPage = (props) => {
             )
         } else {
             return (
-                <div>
+                <div style={{ marginTop: "140px" }}>
                     {charities.map((ele, index) => {
                         let days_left
                         let percentCompleted = ((parseFloat(ele.target_collected) / parseFloat(ele.target)) * 100).toFixed(2)
@@ -86,11 +87,11 @@ const DonationPage = (props) => {
                             }}>
                                 <div className="row">
                                     <div className="col-4">
-                                        <img src={ele.logo} style={{ width: "100%", margin: "20px", marginTop: "70px", borderRadius: "15px" }} key={index} alt={`${ele.name} logo`}></img>
+                                        <img width="300px" height="200px" src={ele.logo} style={{ margin: "90px", borderRadius: "15px", objectFit: "contain" }} key={index} alt={`${ele.name} logo`}></img>
                                     </div>
                                     <div className="col-8">
-                                        <h4 style={{ margin: "30px" }}><strong>{ele.title}</strong></h4>
-                                        <div style={{ margin: "20px" }} className="row">
+                                        <h4 style={{ margin: "30px", fontSize: "22px" }}><strong>{(ele.title).toUpperCase()}</strong></h4>
+                                        <div style={{ margin: "20px", marginBottom: "0px" }} className="row">
                                             <div className="col-6">
                                                 <p><b>Charity Name:</b> {ele.name}</p>
                                             </div>
@@ -101,20 +102,21 @@ const DonationPage = (props) => {
                                                 <p><b>Number of Donors:</b> {ele.num_of_donors}</p>
                                             </div>
                                         </div>
-                                        <div style={{ margin: "20px" }} className="row">
+                                        <div style={{ margin: "20px", marginTop: "0px" }} className="row">
                                             <div className="col-12">
                                                 <p><b>Campaign Description:</b> {ele.description}</p>
                                             </div>
                                         </div>
                                         <div style={{ margin: "20px", height: "150px" }} className="row">
-                                            <p style={{ fontSize: "20px", color: "green" }}><b>GOAL: ₹{ele.target}</b></p>
-                                            <h5><b>CAMPAIGN PROGRESS: </b></h5>
+                                            <p style={{ fontSize: "20px", color: "#d45f2f" }}><b>GOAL: ₹{ele.target}</b></p>
+                                            <h5 style={{ fontSize: "16px" }}><b>CAMPAIGN PROGRESS: </b></h5>
                                             <div className="col-6">
-                                                <strong style={{ color: "green" }}>₹{ele.target_collected}/₹{ele.target}</strong>
-                                                <ProgressBar animated variant="success" now={percentCompleted} />
+                                                <strong style={{ color: "#d45f2f" }}>₹{ele.target_collected}/₹{ele.target}</strong>
+                                                <ProgressBar variant="success" now={percentCompleted} />
                                             </div>
-                                            <div className="col-6 text-center">
-                                                <button className="me-btn" onClick={() => { handleDonation(index) }}>Donate Now</button>
+                                            <div className="col-3"></div>
+                                            <div className="col-3">
+                                                <button style={{ width: "170px", backgroundColor: "#d45f2f", color: "white" }} className="me-btn" onClick={() => { handleDonation(index) }}><strong>Donate Now</strong></button>
                                             </div>
                                         </div>
                                     </div>
@@ -129,7 +131,9 @@ const DonationPage = (props) => {
 
     return (
         <>
+            {/* <div className="donation-page-wrapper"> */}
             {renderCharities()}
+            {/* </div> */}
         </>
     );
 }

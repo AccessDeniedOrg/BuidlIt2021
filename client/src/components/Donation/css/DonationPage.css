@@ -1,0 +1,15 @@
+.donation-page-wrapper{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 0;
+    background-color: rgba(255, 222, 209, 0.2);
+}
+.card{
+    box-shadow: 10px 10px 10px rgba(180, 180, 178, 0.2) !important;
+}
+.bg-success{
+    background-color: #d45f2f !important;
+}
+.progress {
+    background-color: #faf0ec !important;
+}

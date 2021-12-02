@@ -1,1 +1,32 @@
-/*Navigation Component styles go here*/
+
+.nav-item-color {
+	color: #ffffff !important;
+	font-size: 18px;
+}
+
+.nav-item-color:hover {
+	color: #ffded1 !important;
+}
+
+.navbar-sticky {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 99;
+}
+.dropdown-toggle::after{
+    color: #ffffff;
+}
+.navbar-light .navbar-toggler-icon {
+	margin-left: 0px;
+}
+.navbar-collapse{
+	background-color: black;
+}
+a.dropdown-item:active {
+	background-color: #ffded1;
+}
+a.dropdown-item:hover {
+	background-color: #ffded1;
+	color: black;
+}

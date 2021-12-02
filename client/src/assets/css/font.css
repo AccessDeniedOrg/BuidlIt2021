@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "Gistesy";
+  src: local("Gistesy"),
+  url("../fonts/Gistesy.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Recursive-Light";
+  src: local("Recursive-Light"),
+  url("../fonts/Recursive-Light.ttf") format("truetype");
+}

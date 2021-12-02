@@ -4,7 +4,7 @@ import './css/Login.css'
 
 const Login = (props) => {
 
-    const renderModalContent = () => {
+    const renderFormContent = () => {
         if (props.openRegister) {
             if (props.openSuccess) {
                 return (
@@ -174,22 +174,7 @@ const Login = (props) => {
 
     return (
         <>
-            <Modal
-                show={props.loginModalOpen}
-                onHide={props.handleLoginModalClose}
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <Modal.Header style={{ backgroundColor: "#000000" }}>
-                    <Modal.Title className="login-title" style={{ color: "#ffded1" }} >{props.openRegister ? "REGISTER" : "Login"}</Modal.Title>
-
-                    <button style={{ backgroundColor: "#000000", color: "#ffded1", float: "right" }} className="float-right close-btn" onClick={props.handleLoginModalClose}>X</button>
-                </Modal.Header>
-                <Modal.Body>
-                    {renderModalContent()}
-                </Modal.Body>
-            </Modal>
-
+            {renderFormContent()}
         </>
     )
 

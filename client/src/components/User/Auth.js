@@ -8,7 +8,7 @@ import "./Navigation.css"
 import logo from "../assets/images/logo_nobg_peach.png"
 
 
-const Navigation = (props) => {
+const Auth = (props) => {
 
     const errorObj = {
         'nameError': 'Name should be atleast 5 characters long',//Below Name in Register
@@ -18,6 +18,7 @@ const Navigation = (props) => {
         'otpError': "Your OTP should be a 6-digit number", //Below OTP
     }
 
+    const [role, setRole] = useState(props.role)
     const [openRegister, setOpenRegister] = useState(false)
     const [openVerify, setOpenVerify] = useState(false);
     const [openSuccess, setOpenSuccess] = useState(false);
@@ -298,90 +299,4 @@ const Navigation = (props) => {
         handlerObj[selectedInput] = e.target.value
         setRegisterValues({ ...handlerObj })
     }
-
-    //Change Login/Register to My Account
-    const renderNavContent = () => {
-        if (hasLoggedIn) {
-            return (
-                <NavDropdown
-                    // eventKey="3"
-                    title={<span className="nav-item-color">My Account</span>}
-                    id="basic-nav-dropdown"
-                    className="nav-item-color"
-                    style={{ color: "white" }}
-                >
-                    <NavDropdown.Item
-                        href="/profile"
-                        className="nav-dropdown-item"
-                    >
-                        Profile
-                    </NavDropdown.Item>
-                    <NavDropdown.Item
-                        onClick={handleLogout}
-                        className="nav-dropdown-item"
-                    >
-                        Logout
-                    </NavDropdown.Item>
-                </NavDropdown>
-            )
-        } else {
-            return (
-                <Nav.Link
-                    onClick={props.handleLoginModalOpen}
-                    className="nav-item-color"
-                >
-                    Login
-                </Nav.Link>
-            )
-        }
-    }
-
-    return (
-        <>
-            <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: "#000000" }} className="navbar-sticky">
-                <Container>
-                    <Navbar.Brand href="/">
-                        <img src={logo} alt="logo" width="50%" />
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: "white" }} />
-                    <Navbar.Collapse
-                        id="basic-navbar-nav"
-                        className="justify-content-end"
-                    >
-                        <Nav className="justify-content-end">
-                            <Nav.Link href="/" className="nav-item-color">
-                                Home
-                            </Nav.Link>
-                            <Nav.Link href="/donate" className="nav-item-color">
-                                Donate
-                            </Nav.Link>
-                            {renderNavContent()}
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-            <Login
-                handleLoginModalOpen={props.handleLoginModalOpen}
-                handleLoginModalClose={handleLoginModalClose}
-                handleOpenRegister={handleOpenRegister}
-                handleBackToLogin={handleBackToLogin}
-                handleLoginChange={handleLoginChange}
-                handleVerifyChange={handleVerifyChange}
-                openRegister={openRegister}
-                errors={errors}
-                loginValues={loginValues}
-                openSuccess={openSuccess}
-                verifyValues={verifyValues}
-                handleRegisterChange={handleRegisterChange}
-                registerValues={registerValues}
-                handleRegistration={handleRegistration}
-                handleLogin={handleLogin}
-                loginModalOpen={props.loginModalOpen}
-                handleVerify={handleVerify}
-                openVerify={openVerify}
-            />
-        </>
-    )
 }
-
-export default Navigation;

@@ -5,9 +5,16 @@
     font-weight: 550;
 }
 .close-btn:hover {
-    color: #0275db
+    color: #000000
+}
+.login-title{
+    font-family: Recursive-Light;
+    font-size: 30px;
 }
 .error-msg{
     color: red;
     margin-left: 5px;
+}
+.modal-content, .modal-header {
+    border: none;
 }

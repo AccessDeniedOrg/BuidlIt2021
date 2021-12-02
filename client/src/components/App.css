@@ -1,5 +1,6 @@
 body{
   font-family: 'PT Sans', sans-serif;
+  font-family: Recursive-Light;
   color: #606060;
   font-size: 14px;
   line-height: 22px;
@@ -8,7 +9,7 @@ body{
   padding: 0;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Ibarra Real Nova', serif;
+  font-family: Recursive-Light;
   color: #111111;
 }
 li{
@@ -22,7 +23,7 @@ a{
   transition: 0.3s;
 }
 a:hover{
-  color: #4273ff;
+  color: #413f3f;
   text-decoration: none;
 }
 input,input:focus,textarea{
@@ -43,8 +44,8 @@ input,textarea {
 	height: 40px;
 	line-height: 40px;
 	border: none;
-	background: #4273ff;
-	color: #ffffff;
+	background: #ffded1;
+	color: #000000;
 	outline: none;
 	text-align: center;
 	border-radius: 30px;

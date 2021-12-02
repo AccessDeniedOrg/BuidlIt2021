@@ -60,15 +60,16 @@ const MyTransactions = () => {
                 <>
 
                     {currentTranscations.length === 0 ? (
-                        <div className="text-center">
-                            <h3 style={{ marginTop: "30px" }}>YOUR TRANSACTIONS</h3>
-                            <hr />
+                        <div style={{ backgroundColor: "#ffded1", paddingTop: "25px", paddingBottom: "20px", borderRadius: "15px 15px 0 0" }} className="text-center">
+                            <h3><strong>Your Transactions</strong></h3>
+                            {/* <hr /> */}
                             <h3
                                 style={{
                                     position: "absolute",
-                                    left: "22%",
+                                    left: "20%",
                                     top: "50%",
                                     color: "gray",
+                                    fontSize: "22px"
                                 }}
                             >
                                 You do not have any transactions
@@ -121,7 +122,7 @@ const MyTransactions = () => {
     return (
         <>
             <div className="col-lg-6">
-                <div className="me-transaction me-padder-top-less me-padder-bottom">
+                <div className="me-transaction">
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">

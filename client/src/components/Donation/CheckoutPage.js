@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { Card } from "react-bootstrap";
 import './css/CheckoutPage.css'
-import logo from '../../assets/images/thefundingnetworklogo.png'
 
-let orderid;
+//let orderid;
 
 const CheckoutPage = (props) => {
 
@@ -37,56 +36,57 @@ const CheckoutPage = (props) => {
         }
         if (errorHandlerObj['amountError'] === "") {
             e.preventDefault()
-            await axios.post(`${process.env.REACT_APP_BACKEND_API}/transactions/create-order`, {
-                amount: amount * 100
-            }).then((res) => {
-                orderid = res.data.order.id
-                console.log(orderid)
-                console.log(res)
-                var options = {
-                    "key": process.env.REACT_APP_RAZORPAY_KEY_ID,
-                    "amount": amount * 100,
-                    "currency": "INR",
-                    "name": "The Funding Network",
-                    "description": "Donation",
-                    "image": logo,
-                    "order_id": orderid,
-                    "handler": async (response) => {
-                        console.log(response.razorpay_order_id)
-                        await axios.post(`${process.env.REACT_APP_BACKEND_API}/transactions/get-order`, {
-                            orderid: response.razorpay_order_id
-                        }).then(async (res) => {
-                            await axios.post(`${process.env.REACT_APP_BACKEND_API}/transactions/store-transaction`, {
-                                order_id: response.razorpay_order_id,
-                                recepient: props.charity.name,
-                                email: window.localStorage.getItem("email"),
-                                amount: res.data.amount
-                            }).then(async (res) => {
-                                console.log(res)
-                                await axios.post(`${process.env.REACT_APP_BACKEND_API}/donation/update-charity`, {
-                                    id: props.charity._id,
-                                    funds: res.data.amount
-                                }).then((res) => {
-                                    console.log(res)
-                                })
-                                window.location.href = '/donate'
-                            })
-                        })
-                    },
-                    "prefill": {
-                        "name": window.localStorage.getItem("username"),
-                        "email": window.localStorage.getItem("email"),
-                    },
-                    "theme": {
-                        "color": "#3399cc"
-                    }
-                };
-                var rzp1 = new window.Razorpay(options);
-                rzp1.on('payment.failed', function (response) {
-                    console.log("Payment Failed")
-                });
-                rzp1.open();
-            })
+            console.log("Setting up stripe payment...")
+            // await axios.post(`${process.env.REACT_APP_BACKEND_API}/transactions/create-order`, {
+            //     amount: amount * 100
+            // }).then((res) => {
+            //     orderid = res.data.order.id
+            //     console.log(orderid)
+            //     console.log(res)
+            //     var options = {
+            //         "key": process.env.REACT_APP_RAZORPAY_KEY_ID,
+            //         "amount": amount * 100,
+            //         "currency": "INR",
+            //         "name": "The Funding Network",
+            //         "description": "Donation",
+            //         "image": logo,
+            //         "order_id": orderid,
+            //         "handler": async (response) => {
+            //             console.log(response.razorpay_order_id)
+            //             await axios.post(`${process.env.REACT_APP_BACKEND_API}/transactions/get-order`, {
+            //                 orderid: response.razorpay_order_id
+            //             }).then(async (res) => {
+            //                 await axios.post(`${process.env.REACT_APP_BACKEND_API}/transactions/store-transaction`, {
+            //                     order_id: response.razorpay_order_id,
+            //                     recepient: props.charity.name,
+            //                     email: window.localStorage.getItem("email"),
+            //                     amount: res.data.amount
+            //                 }).then(async (res) => {
+            //                     console.log(res)
+            //                     await axios.post(`${process.env.REACT_APP_BACKEND_API}/donation/update-charity`, {
+            //                         id: props.charity._id,
+            //                         funds: res.data.amount
+            //                     }).then((res) => {
+            //                         console.log(res)
+            //                     })
+            //                     window.location.href = '/donate'
+            //                 })
+            //             })
+            //         },
+            //         "prefill": {
+            //             "name": window.localStorage.getItem("username"),
+            //             "email": window.localStorage.getItem("email"),
+            //         },
+            //         "theme": {
+            //             "color": "#3399cc"
+            //         }
+            //     };
+            //     var rzp1 = new window.Razorpay(options);
+            //     rzp1.on('payment.failed', function (response) {
+            //         console.log("Payment Failed")
+            //     });
+            //     rzp1.open();
+            // })
         } else {
             setError({ ...errorHandlerObj })
         }

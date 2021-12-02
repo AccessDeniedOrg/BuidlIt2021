@@ -9,7 +9,7 @@ const UserInfo = () => {
                 <div className="me-my-account-profile">
                     <div className="me-my-profile-head">
                         <div className="me-profile-name">
-                            <h4>Account Details</h4>
+                            <h4><strong>Account Details</strong></h4>
                         </div>
                     </div>
                     <div className="me-my-profile-body">
@@ -49,15 +49,15 @@ const UserInfo = () => {
                         </ul>
                     </div>
                     <div className="text-center">
-                        <button className="me-btn text-center">
-                            View Your NFT Collection
+                        <button style={{ width: "250px" }} className="me-btn text-center">
+                            <strong>View Your NFT Collection</strong>
                         </button>
                     </div>
                 </div>
                 <div className="me-my-wallet-profile">
                     <div className="me-my-wallet-head">
-                        <div className="me-wallet-name">
-                            <h4>Guidelines</h4>
+                        <div className="me-profile-name">
+                            <h4 style={{ fontWeight: "600" }}>Guidelines</h4>
                         </div>
                     </div>
                     <div className="me-my-wallet-body">

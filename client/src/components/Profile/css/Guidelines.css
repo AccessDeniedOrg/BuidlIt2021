@@ -16,14 +16,15 @@
     margin-top: 20px;
     margin-bottom: 20px;
     background: #fff;
+    box-shadow: 10px 10px 10px rgba(180, 180, 178, 0.1) !important;
     /* box-shadow: 1.5px 3.99px 27px 0px rgba( 0, 0, 0, 0.1); */
     border-style: solid;
     border-color: rgba( 0, 0, 0, 0.05);
     border-width: 0.5px;
-    border-radius: 5px;
+    border-radius: 15px;
 } 
 .me-my-wallet-body{
-    padding: 0px 25px 30px 25px;
+    padding: 40px 25px 30px 25px;
 }
 .me-my-wallet-body p {
     margin-bottom: 40px;
@@ -43,4 +44,7 @@
 }
 .me-back-btn .me-btn{
     line-height: 39px;
+}
+.guide-list-items{
+    margin-top: -30px;
 }
