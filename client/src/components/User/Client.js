@@ -1,48 +1,38 @@
 import './Client.css';
-import React, { useState } from "react";
+import React from "react";
 import "../../assets/css/font.css"
 import Navigation from './Navigation';
 import Shop from './Shop/Shop';
 import Home from './Home/Home';
 import Profile from './Profile/Profile';
 import Donation from './Donation/Donation';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useRouteMatch } from "react-router-dom";
 
-const App = () => {
+const Client = (props) => {
 
-    const [loginModalOpen, setLoginModalOpen] = useState(false)
-
-    const handleLoginModalOpen = () => {
-        setLoginModalOpen(true)
-    }
-
-    const handleLoginModalClose = () => {
-        setLoginModalOpen(false)
-    }
+    let { path } = useRouteMatch();
 
     return (
         <>
             <div className="App">
                 <Navigation
-                    loginModalOpen={loginModalOpen}
-                    handleLoginModalOpen={handleLoginModalOpen}
-                    handleLoginModalClose={handleLoginModalClose}
+                    handleLogin={props.handleLogin}
                 />
             </div>
             <Router>
                 <Switch>
-                    <Route exact path="/">
+                    <Route exact path={path}>
                         <Home />
                     </Route>
-                    <Route exact path="/shop">
+                    <Route exact path={`${path}/shop`}>
                         <Shop />
                     </Route>
-                    <Route exact path="/donate">
+                    <Route exact path={`${path}/donate`}>
                         <Donation
-                            handleLoginModalOpen={handleLoginModalOpen}
+                            handleLoginModalOpen={props.handleLoginModalOpen}
                         />
                     </Route>
-                    <Route exact path="/profile">
+                    <Route exact path={`${path}/profile`}>
                         <Profile />
                     </Route>
                 </Switch>
@@ -51,4 +41,4 @@ const App = () => {
     );
 }
 
-export default App;
+export default Client;

@@ -1,11 +1,11 @@
 import './App.css';
 import React, { useState } from "react";
+import Client from './User/Client';
+import Admin from './Admin/Admin';
+import Artist from './Artist/Artist';
+import Login from './Login/Login';
+import ArtistLogin from './Login/ArtistLogin';
 import "../assets/css/font.css"
-import Navigation from './Navigation';
-import Shop from './Shop/Shop';
-import Home from './Home/Home';
-import Profile from './Profile/Profile';
-import Donation from './Donation/Donation';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
@@ -20,33 +20,40 @@ const App = () => {
     setLoginModalOpen(false)
   }
 
+  const handleLogin = (role) => {
+    console.log("in")
+    if (role === "user") {
+      handleLoginModalOpen()
+    } else {
+      window.location.href = "/auth-artist"
+    }
+  }
+
   return (
     <>
-      <div className="App">
-        <Navigation
-          loginModalOpen={loginModalOpen}
-          handleLoginModalOpen={handleLoginModalOpen}
-          handleLoginModalClose={handleLoginModalClose}
-        />
-      </div>
       <Router>
         <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/shop">
-            <Shop />
-          </Route>
-          <Route exact path="/donate">
-            <Donation
-              handleLoginModalOpen={handleLoginModalOpen}
+          <Route path="/client" exact>
+            <Client
+              handleLogin={handleLogin}
             />
           </Route>
-          <Route exact path="/profile">
-            <Profile />
+          <Route path="/admin" exact>
+            <Admin />
+          </Route>
+          <Route path="/artist" >
+            <Artist />
+          </Route>
+          <Route path="/auth-artist" >
+            <ArtistLogin />
           </Route>
         </Switch>
       </Router>
+      <Login
+        loginModalOpen={loginModalOpen}
+        handleLoginModalOpen={handleLoginModalOpen}
+        handleLoginModalClose={handleLoginModalClose}
+      />
     </>
   );
 }
