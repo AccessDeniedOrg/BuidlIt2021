@@ -23,14 +23,14 @@ const Home = () => {
 	const handleEmail = (e) => {
 		e.preventDefault();
 		const regexEmail =
-			/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/;
+			/^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+.)+[^<>()[\].,;:\s@"]{2,})$/;
 
 		let err = "";
 		if (!regexEmail.test(email) && email.length < 12) {
 			err = "Email is invalid";
 			setError(err);
 		} else if (query.length < 50) {
-			err = err + " " + "Your message must be more than 50 characters";
+			err = "Your message must be more than 50 characters";
 			setError(err);
 		} else {
 			axios
@@ -79,8 +79,10 @@ const Home = () => {
 							</Row>
 						</Col>
 						<Col xs={12} md={6} lg={6}>
+
 							<img
 								src={banner}
+                alt="banner"
 								style={{ height: "auto", width: "100%", paddingTop: "5%" }}
 							/>
 						</Col>
@@ -185,7 +187,7 @@ const Home = () => {
 							</div>
 						</Col>
 						<Col xs={12} md={5} lg={5}>
-							<img src={coins} style={{ height: "auto", width: "80%" }} />
+							<img src={coins} style={{ height: "auto", width: "80%" }} alt="coins" />
 						</Col>
 					</Row>
 				</Container>
