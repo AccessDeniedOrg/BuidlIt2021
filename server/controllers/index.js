@@ -93,13 +93,13 @@ const register = async (req, res) => {
 				else res.status(200).send({ msg: "Verified Success" });
 			});
 		} else if (role === "artist") {
-			const accountId = await accountCreation();
-			console.log(accountId);
+			const { account } = await accountCreation();
+			console.log(account);
 			var newArtist = new Artist({
 				email: email,
 				name: name,
 				password: password,
-				accountId: accountId,
+				accountId: account,
 			});
 
 			newArtist.save(function (err, Person) {

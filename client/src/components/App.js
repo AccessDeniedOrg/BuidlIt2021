@@ -1,5 +1,7 @@
 import './App.css';
 import React, { useState } from "react";
+import Error404 from './Error/Error404';
+import OnboardingError from './Error/OnboardingError';
 import Client from './User/Client';
 import Admin from './Admin/Admin';
 import Artist from './Artist/Artist';
@@ -46,6 +48,12 @@ const App = () => {
           </Route>
           <Route path="/auth-artist" >
             <ArtistLogin />
+          </Route>
+          <Route path="/onboardingerror" >
+            <OnboardingError />
+          </Route>
+          <Route path="/error-404" >
+            <Error404 />
           </Route>
         </Switch>
       </Router>

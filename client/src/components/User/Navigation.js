@@ -33,6 +33,7 @@ const Navigation = (props) => {
     const handleLogout = () => {
         window.localStorage.removeItem("email")
         window.localStorage.removeItem("username")
+        window.localStorage.removeItem("role")
         window.location.href = '/client';
         setArtistLoggedIn(false)
         setUserLoggedIn(false)

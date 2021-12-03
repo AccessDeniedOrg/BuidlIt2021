@@ -6,10 +6,7 @@ var Schema = mongoose.Schema;
 	email: String,
 	name: String,
 	password: String,
-	accountId: {
-		type: String,
-		default: "",
-	},
+	accountId: String,
 })),
 	(Artist = mongoose.model("Artist", artistSchema));
 
