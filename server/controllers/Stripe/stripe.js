@@ -9,8 +9,8 @@ const accountCreation = async (req, res) => {
 const onBoarding = async (req, res) => {
 	const accountLink = await stripe.accountLinks.create({
 		account: "acct_1K2c2YSEeu1mz3mY",
-		refresh_url: "https://stripe.com/",
-		return_url: "https://www.google.com/",
+		refresh_url: `${process.env.FRONTEND_API}/onboardingerror`,
+		return_url: `${process.env.FRONTEND_API}/artist`,
 		type: "account_onboarding",
 	});
 	res.send(accountLink);
