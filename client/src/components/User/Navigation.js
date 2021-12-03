@@ -86,7 +86,7 @@ const Navigation = (props) => {
                         onClick={handleUserLogin}
                         className="nav-item-color"
                     >
-                        Login
+                        Login For Donation
                     </Nav.Link>
                     <Nav.Link
                         onClick={handleArtistLogin}
