@@ -7,8 +7,8 @@ const mongoose = require("mongoose");
 
 const router = require("./routes/index");
 const donationRouter = require("./routes/charities");
-const transactionRouter = require("./routes/donation");
 const artistRouter = require("./routes/artist");
+const stripeRouter = require("./routes/Stripe/stripe");
 
 const app = express();
 
@@ -30,7 +30,7 @@ mongoose.connect(
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
-db.once("open", function () { });
+db.once("open", function () {});
 
 // Middlewares
 app.use(cors());
@@ -46,8 +46,9 @@ app.get("/", (req, res) => {
 // Base Routes
 app.use("/api/auth", router.route);
 app.use("/api/donation", donationRouter.route);
-app.use("/api/transactions", transactionRouter.route);
+// app.use("/api/transactions", transactionRouter.route);
 app.use("/api/artist", artistRouter.route);
+app.use("/api/stripe", stripeRouter.route);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, function () {
