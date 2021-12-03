@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 	artName: String,
 	email: String,
 	price: Number,
+	baseUrl: String,
 })),
 	(uploadArt = mongoose.model("uploadArt", uploadArtSchema));
 

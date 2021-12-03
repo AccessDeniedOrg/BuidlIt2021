@@ -2,6 +2,7 @@ const User = require("../models/user");
 const Artist = require("../models/artist");
 const crypto = require("crypto");
 const { sendMail } = require("./sendEmail");
+const { accountCreation } = require("../controllers/Stripe/stripe");
 
 // Register User
 const sendOtp = async (req, res) => {
@@ -92,10 +93,13 @@ const register = async (req, res) => {
 				else res.status(200).send({ msg: "Verified Success" });
 			});
 		} else if (role === "artist") {
+			const accountId = await accountCreation();
+			console.log(accountId);
 			var newArtist = new Artist({
 				email: email,
 				name: name,
 				password: password,
+				accountId: accountId,
 			});
 
 			newArtist.save(function (err, Person) {
