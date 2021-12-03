@@ -79,7 +79,12 @@ const Home = () => {
 							</Row>
 						</Col>
 						<Col xs={12} md={6} lg={6}>
-							<img src={banner} style={{ height: "auto", width: "100%" }} alt="banner" />
+
+							<img
+								src={banner}
+                alt="banner"
+								style={{ height: "auto", width: "100%", paddingTop: "5%" }}
+							/>
 						</Col>
 					</Row>
 				</Container>
