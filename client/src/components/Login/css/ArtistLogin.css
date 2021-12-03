@@ -1,0 +1,12 @@
+.back-to-main-icon{
+    font-size: 18px;
+    cursor: pointer;
+}
+.back-div:hover {
+    color:#f7ad8f;
+}
+.back-to-main-text{
+    font-size: 15px;
+    margin-left: 10px;
+    cursor: pointer;
+}
