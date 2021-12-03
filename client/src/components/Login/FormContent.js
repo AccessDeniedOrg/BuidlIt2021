@@ -81,6 +81,13 @@ const FormContent = (props) => {
 
     const handleOpenRegister = () => {
         setErrors({});
+        let title
+        if (props.role === "user") {
+            title = "Register"
+        } else {
+            title = "Register For Your Own Granté Studio"
+        }
+        props.handleTitleChange(title)
         setOpenRegister(true);
     }
 
@@ -88,6 +95,13 @@ const FormContent = (props) => {
         e.preventDefault();
         setErrors({});
         clearInputs();
+        let title
+        if (props.role === "user") {
+            title = "Login"
+        } else {
+            title = "Login To Your Granté Studio"
+        }
+        props.handleTitleChange(title)
         setOpenRegister(false);
         setOpenVerify(false);
         setOpenSuccess(false);
@@ -204,12 +218,12 @@ const FormContent = (props) => {
 
     const handleLogin = (e) => {
         e.preventDefault()
-        setErrors()
+        setErrors({})
         const validEmail = /^(([^<>()[\].,;:\s@"]+(.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+.)+[^<>()[\].,;:\s@"]{2,})$/
         errorHandlerObj = {
-            'emailError': "",
-            'passwordError': "",
-            'authError': "",
+            "emailError": "",
+            "passwordError": "",
+            "authError": "",
         }
 
         if (!validEmail.test(loginValues['email'])) {
@@ -237,15 +251,19 @@ const FormContent = (props) => {
                         setErrors({});
                         window.localStorage.setItem("email", res.data.email);
                         window.localStorage.setItem("username", res.data.name);
+                        //window.localStorage.setItem("role", "artist");
+                        window.localStorage.setItem("role", "user");
+                        //Add Role related stuff
                         handleLoginModalClose();
-                        window.location.href = '/profile';
+                        //window.location.href = '/artist';
+                        window.location.href = '/client/profile';
                     } else {
                         errorHandlerObj["authError"] = `${res.data.msg}`;
                         setErrors({ ...errorHandlerObj });
                     }
                 })
                 .catch((error) => {
-                    console.log(error.response.data);
+                    console.log(error);
                 });
 
 
@@ -385,15 +403,13 @@ const FormContent = (props) => {
                             >
                                 Back
                             </button>
-                            {
-                                errors['serverError'] === ""
-                                    ? (
-                                        errors['existingError'] === ""
-                                            ? <></>
-                                            : <div className='error-msg'>{errors['existingError']}</div>
-                                    )
-                                    : <div className='error-msg'>{errors['serverError']}</div>
-                            }
+                            {errors["existingError"] === "" ? (
+                                <></>
+                            ) : (
+                                <div className="error-msg add-error-style">
+                                    {errors["existingError"]}
+                                </div>
+                            )}
                         </Form>
                     </>
                 )
@@ -420,21 +436,13 @@ const FormContent = (props) => {
                             >
                                 Login
                             </button>
-                            {
-                                errors['serverError'] === ""
-                                    ? (
-                                        errors['authEmailError'] === ""
-                                            ? (
-                                                errors['authPasswordError'] === ""
-                                                    ? <></>
-                                                    : <span className='error-msg'>{errors['authPasswordError']}</span>
-                                            )
-                                            : <span className='error-msg'>{errors['authEmailError']}</span>
-                                    )
-                                    : <span className='error-msg'>{errors['serverError']}</span>
-                            }
+                            {errors["authError"] === "" ? (
+                                <></>
+                            ) : (
+                                <span className="error-msg">{errors["authError"]}</span>
+                            )}
                             <Form.Text className="text-muted" style={{ display: 'block' }}>
-                                Not a member? <a style={{ cursor: "pointer" }} onClick={handleOpenRegister} href >Register Here</a>
+                                Not a member? <a style={{ cursor: "pointer" }} onClick={handleOpenRegister} href="#register" >Register Here</a>
                             </Form.Text>
                         </div>
                     </Form>

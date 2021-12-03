@@ -6,7 +6,8 @@ import logo from "../../assets/images/logo_nobg_peach.png"
 
 const Navigation = (props) => {
 
-    const [hasLoggedIn, setHasLoggedIn] = useState(false)
+    const [artistLoggedIn, setArtistLoggedIn] = useState(false)
+    const [userLoggedIn, setUserLoggedIn] = useState(false)
     const [authenticated, setAuthenticated] = useState(false)
 
     useEffect(() => {
@@ -17,9 +18,14 @@ const Navigation = (props) => {
         }
 
         if (authenticated) {
-            setHasLoggedIn(true);
+            if (window.localStorage.getItem("role") === "user") {
+                setUserLoggedIn(true)
+            } else {
+                setArtistLoggedIn(true)
+            }
         } else {
-            setHasLoggedIn(false);
+            setArtistLoggedIn(false)
+            setUserLoggedIn(false)
         }
     }, [authenticated]);
 
@@ -27,8 +33,9 @@ const Navigation = (props) => {
     const handleLogout = () => {
         window.localStorage.removeItem("email")
         window.localStorage.removeItem("username")
-        window.location.href = '/';
-        setHasLoggedIn(false)
+        window.location.href = '/client';
+        setArtistLoggedIn(false)
+        setUserLoggedIn(false)
     }
 
     const handleUserLogin = () => {
@@ -41,7 +48,7 @@ const Navigation = (props) => {
 
     //Change Login/Register to My Account
     const renderNavContent = () => {
-        if (hasLoggedIn) {
+        if (userLoggedIn) {
             return (
                 <NavDropdown
                     title={<span className="nav-item-color">My Account</span>}
@@ -50,7 +57,7 @@ const Navigation = (props) => {
                     style={{ color: "white" }}
                 >
                     <NavDropdown.Item
-                        href="/profile"
+                        href={`${props.url}/profile`}
                         className="nav-dropdown-item"
                     >
                         Profile
@@ -63,7 +70,16 @@ const Navigation = (props) => {
                     </NavDropdown.Item>
                 </NavDropdown>
             )
-        } else {
+        }
+        else if (artistLoggedIn) {
+            return (<Nav.Link
+                href="/artist"
+                className="nav-item-color artist-studio-btn"
+            >
+                Go To Studio
+            </Nav.Link>)
+        }
+        else {
             return (
                 <>
                     <Nav.Link
@@ -74,7 +90,7 @@ const Navigation = (props) => {
                     </Nav.Link>
                     <Nav.Link
                         onClick={handleArtistLogin}
-                        className="nav-item-color"
+                        className="nav-item-color artist-login-btn"
                     >
                         Add Your Art
                     </Nav.Link>
@@ -96,10 +112,10 @@ const Navigation = (props) => {
                         className="justify-content-end"
                     >
                         <Nav className="justify-content-end">
-                            <Nav.Link href="/" className="nav-item-color">
+                            <Nav.Link href={props.url} className="nav-item-color">
                                 Home
                             </Nav.Link>
-                            <Nav.Link href="/donate" className="nav-item-color">
+                            <Nav.Link href={`${props.url}/donate`} className="nav-item-color">
                                 Donate
                             </Nav.Link>
                             {renderNavContent()}
@@ -107,26 +123,6 @@ const Navigation = (props) => {
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-            {/* <Login
-                handleLoginModalOpen={props.handleLoginModalOpen}
-                handleLoginModalClose={handleLoginModalClose}
-                handleOpenRegister={handleOpenRegister}
-                handleBackToLogin={handleBackToLogin}
-                handleLoginChange={handleLoginChange}
-                handleVerifyChange={handleVerifyChange}
-                openRegister={openRegister}
-                errors={errors}
-                loginValues={loginValues}
-                openSuccess={openSuccess}
-                verifyValues={verifyValues}
-                handleRegisterChange={handleRegisterChange}
-                registerValues={registerValues}
-                handleRegistration={handleRegistration}
-                handleLogin={handleLogin}
-                loginModalOpen={props.loginModalOpen}
-                handleVerify={handleVerify}
-                openVerify={openVerify}
-            /> */}
         </>
     )
 }

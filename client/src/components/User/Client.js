@@ -2,7 +2,6 @@ import './Client.css';
 import React from "react";
 import "../../assets/css/font.css"
 import Navigation from './Navigation';
-import Shop from './Shop/Shop';
 import Home from './Home/Home';
 import Profile from './Profile/Profile';
 import Donation from './Donation/Donation';
@@ -10,29 +9,27 @@ import { BrowserRouter as Router, Switch, Route, useRouteMatch } from "react-rou
 
 const Client = (props) => {
 
-    let { path } = useRouteMatch();
+    let { path, url } = useRouteMatch();
+
+    console.log(url)
 
     return (
         <>
-            <div className="App">
+            <Router>
                 <Navigation
+                    url={url}
                     handleLogin={props.handleLogin}
                 />
-            </div>
-            <Router>
                 <Switch>
                     <Route exact path={path}>
                         <Home />
                     </Route>
-                    <Route exact path={`${path}/shop`}>
-                        <Shop />
-                    </Route>
-                    <Route exact path={`${path}/donate`}>
+                    <Route path={`${path}/donate`} exact>
                         <Donation
                             handleLoginModalOpen={props.handleLoginModalOpen}
                         />
                     </Route>
-                    <Route exact path={`${path}/profile`}>
+                    <Route path={`${path}/profile`} exact>
                         <Profile />
                     </Route>
                 </Switch>

@@ -4,6 +4,10 @@
     border: none;
     font-weight: 550;
 }
+.artist-login-title {
+    margin-bottom: 40px;
+    font-weight: 600;
+}
 .close-btn:hover {
     color: #000000
 }

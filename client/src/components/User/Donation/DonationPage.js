@@ -115,9 +115,20 @@ const DonationPage = (props) => {
                                                 <ProgressBar variant="success" now={percentCompleted} />
                                             </div>
                                             <div className="col-3"></div>
-                                            <div className="col-3">
-                                                <button style={{ width: "170px", backgroundColor: "#d45f2f", color: "white" }} className="me-btn" onClick={() => { handleDonation(index) }}><strong>Donate Now</strong></button>
-                                            </div>
+                                            {window.localStorage.getItem('email')
+                                                ? (
+                                                    window.localStorage.getItem("role") === "user"
+                                                        ? (
+                                                            <div className="col-3">
+                                                                <button style={{ width: "170px", backgroundColor: "#d45f2f", color: "white" }} className="me-btn" onClick={() => { handleDonation(index) }}><strong>Donate Now</strong></button>
+                                                            </div>
+                                                        )
+                                                        :
+                                                        <></>
+                                                )
+                                                : <></>
+                                            }
+
                                         </div>
                                     </div>
                                 </div>

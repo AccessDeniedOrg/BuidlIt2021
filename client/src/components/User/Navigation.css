@@ -8,6 +8,20 @@
 	color: #ffded1 !important;
 }
 
+.artist-login-btn {
+	border: solid 2px;
+	border-radius: 5px;
+	margin-left: 10px;
+	font-weight: 600;
+}
+
+.artist-studio-btn {
+	border: solid 2px;
+	border-radius: 5px;
+	margin-left: 10px;
+	font-weight: 600;
+}
+
 .navbar-sticky {
 	position: fixed;
 	top: 0;

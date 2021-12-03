@@ -33,12 +33,12 @@ const App = () => {
     <>
       <Router>
         <Switch>
-          <Route path="/client" exact>
+          <Route path="/client">
             <Client
               handleLogin={handleLogin}
             />
           </Route>
-          <Route path="/admin" exact>
+          <Route path="/admin">
             <Admin />
           </Route>
           <Route path="/artist" >
