@@ -5,6 +5,7 @@ const {
 	updateCharity,
 	deleteCharity,
 	updateAfterNFTTransfer,
+	getTotalFundRaised,
 } = require("../controllers/charities");
 
 const router = express.Router();
@@ -20,6 +21,8 @@ router.post("/addCharity", addCharity);
 router.post("/updateCharity", updateCharity);
 
 router.post("/deleteCharity", deleteCharity);
+
+router.get("/getTotalFundRaised", getTotalFundRaised);
 
 module.exports = {
 	route: router,

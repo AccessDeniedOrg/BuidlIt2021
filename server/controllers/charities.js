@@ -153,10 +153,24 @@ const updateAfterNFTTransfer = async (req, res) => {
 	});
 };
 
+const getTotalFundRaised = async (req, res) => {
+	Charities.find((err, docs) => {
+		if (err) {
+			res.send("Error");
+		} else {
+			let total = 0;
+			docs.map((target) => {
+				total = total + target.target_collected;
+			});
+			res.send({ total: total });
+		}
+	});
+};
 module.exports = {
 	getAllCharities,
 	addCharity,
 	updateCharity,
 	deleteCharity,
 	updateAfterNFTTransfer,
+	getTotalFundRaised,
 };

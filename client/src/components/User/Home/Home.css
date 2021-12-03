@@ -1,0 +1,55 @@
+/* Section */
+.banner {
+	padding: 100px 10% 50px 10%;
+	background-color: #fff6f2;
+	width: 100%;
+}
+
+.banner-text {
+	padding-top: 10%;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.banner-btn {
+	margin: 10px;
+	font-weight: 600;
+}
+
+/* Section 2 */
+
+.icon {
+	color: #fca885;
+	font-size: 44px;
+}
+
+.card {
+	border: solid #fff6f2;
+	box-shadow: black;
+}
+
+.card-title {
+	font-weight: 700;
+	color: #000000;
+}
+
+/* Fund Raised */
+
+.fund-raised {
+	padding: 40px 10% 50px 10%;
+	margin-top: 80px;
+	background-color: #fff6f2;
+	width: 100%;
+}
+
+.count-up {
+	font-weight: 900;
+	font-size: 60px;
+}
+
+/* ReachOut */
+.reach-out {
+	margin-top: 80px;
+	margin-bottom: 80px;
+	padding: 0px 10% 50px 10%;
+}

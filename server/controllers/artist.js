@@ -30,7 +30,12 @@ const sendOtp = async (req, res) => {
         </div>
         `;
 
-			await sendMail(email, name, emailBody);
+			await sendMail(
+				email,
+				"GrantéStudio",
+				emailBody,
+				"GrantéStudio-Email Verification"
+			);
 			res.status(200).send({
 				msg: "Registered",
 				expires,
