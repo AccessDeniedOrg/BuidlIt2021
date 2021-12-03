@@ -52,7 +52,7 @@ const Home = () => {
 				<Container>
 					<Row>
 						<Col xs={12} md={6} lg={6} className="banner-text">
-							<h1 className="text-center">
+							<h1>
 								<strong>GrantéStudios</strong>
 							</h1>
 							<br />
@@ -82,7 +82,7 @@ const Home = () => {
 
 							<img
 								src={banner}
-                alt="banner"
+								alt="banner"
 								style={{ height: "auto", width: "100%", paddingTop: "5%" }}
 							/>
 						</Col>
