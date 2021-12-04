@@ -60,7 +60,7 @@ const MyTransactions = () => {
                 <>
 
                     {currentTranscations.length === 0 ? (
-                        <div style={{ backgroundColor: "#ffded1", paddingTop: "25px", paddingBottom: "20px", borderRadius: "15px 15px 0 0" }} className="text-center">
+                        <div style={{ backgroundColor: "#91465a", paddingTop: "25px", paddingBottom: "20px", borderRadius: "15px 15px 0 0" }} className="text-center">
                             <h3><strong>Your Transactions</strong></h3>
                             {/* <hr /> */}
                             <h3

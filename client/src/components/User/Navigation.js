@@ -104,7 +104,7 @@ const Navigation = (props) => {
         <>
             <Navbar collapseOnSelect expand="lg" style={{ backgroundColor: "#000000" }} className="navbar-sticky">
                 <Container>
-                    <Navbar.Brand href="/">
+                    <Navbar.Brand href={props.url}>
                         <img src={logo} alt="logo" width="50%" />
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" style={{ backgroundColor: "white" }} />

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import ArtistProfile from './ArtistProfile';
-import NFTMinting from './NFTMinting'
+import ArtistProfile from './ArtistProfile/ArtistProfile';
+import NFTMinting from './NFTMinting/NFTMinting'
 import Sidebar from './Sidebar';
 import { Container, Row, Col } from "react-bootstrap";
 import { BrowserRouter as Router, Switch, Route, useRouteMatch } from "react-router-dom";
