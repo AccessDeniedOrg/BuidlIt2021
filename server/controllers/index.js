@@ -93,7 +93,7 @@ const register = async (req, res) => {
 				else res.status(200).send({ msg: "Verified Success" });
 			});
 		} else if (role === "artist") {
-			const { account } = await accountCreation();
+			const { account } = await accountCreation(email);
 			console.log(account);
 			var newArtist = new Artist({
 				email: email,

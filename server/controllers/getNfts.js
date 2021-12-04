@@ -1,6 +1,20 @@
 const UploadArt = require("../models/uploadArt");
 const UserNft = require("../models/userNft");
 
+
+const getFilteredNFTs = async (req, res) => {
+	const { price } = req.body
+	UploadArt.find({ price: { $lt: price } }, async function (err, data) {
+		if (!data) {
+			res.send("No NFTS")
+		}
+		else {
+			res.send(data);
+		}
+	});
+}
+
+
 const getNft = async (req, res) => {
 	const { email, role } = req.body;
 
@@ -9,7 +23,7 @@ const getNft = async (req, res) => {
 			if (err) {
 				res.send("Error in retrieving docs ");
 			} else {
-				res.send({ status: "success", data: docs });
+				res.send({ status: "success", data: docs.IPFShash });
 			}
 		});
 	} else if (role === "artist") {
@@ -17,7 +31,7 @@ const getNft = async (req, res) => {
 			if (err) {
 				res.send("Error in retrieving docs ");
 			} else {
-				res.send({ status: "success", data: docs });
+				res.send({ status: "success", data: docs.IPFShash });
 			}
 		});
 	} else {
@@ -27,4 +41,5 @@ const getNft = async (req, res) => {
 
 module.exports = {
 	getNft,
+	getFilteredNFTs
 };

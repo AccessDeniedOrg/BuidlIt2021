@@ -38,7 +38,7 @@ const NFTCollection = () => {
 											}}
 											className="me-btn"
 										>
-											Start Minting Art NFT
+											Mint Your First NFT
 										</button>
 										<br />
 									</b>

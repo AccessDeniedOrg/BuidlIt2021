@@ -366,6 +366,7 @@ const FormContent = (props) => {
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Name</Form.Label>
                                 <Form.Control
+                                    name="name"
                                     value={registerValues["name"]}
                                     onChange={handleRegisterChange("name")}
                                     placeholder="Enter your name"
@@ -379,6 +380,7 @@ const FormContent = (props) => {
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email address</Form.Label>
                                 <Form.Control
+                                    name="email"
                                     value={registerValues["email"]}
                                     onChange={handleRegisterChange("email")}
                                     type="email"

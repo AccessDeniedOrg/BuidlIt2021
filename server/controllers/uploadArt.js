@@ -13,27 +13,20 @@ const getAllArt = async (req, res) => {
 
 // Add Art to db
 const addArt = async (req, res) => {
-	const { artName, email, price } = req.body;
-	var newArt = new UploadArt({
-		artName: artName,
+	const { artName, artistName, price, IPFShash, email } = req.body;
+	let newNFT = new UploadArt({
 		email: email,
+		artName: artName,
+		artistName: artistName,
 		price: price,
+		IPFShash: IPFShash
 	});
 
-	newArt.save(function (err, Art) {
-		if (err) {
-			res.send({
-				status: "error",
-				msg: "There was an error in adding the Art",
-			});
-		} else {
-			res.send({
-				status: "success",
-				msg: "Art Added Successfully ",
-			});
-		}
+	newNFT.save(function (err, NFT) {
+		if (err) res.send(err);
+		else res.status(200).send({ msg: "success" });
 	});
-};
+}
 
 const getArtToEdit = async (req, res) => {
 	const id = req.params.id;

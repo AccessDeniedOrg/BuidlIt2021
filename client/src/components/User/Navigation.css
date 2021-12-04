@@ -5,6 +5,10 @@
 	margin-right: 25px;
 }
 
+.nav-item-color:last-child{
+	margin-right: 0;
+}
+
 .nav-item-color:hover {
 	color: #ffded1 !important;
 }

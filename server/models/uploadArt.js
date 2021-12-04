@@ -4,9 +4,10 @@ var Schema = mongoose.Schema;
 // art Model
 (uploadArtSchema = new Schema({
 	artName: String,
+	artistName: String,
 	email: String,
 	price: Number,
-	baseUrl: String,
+	IPFShash: String,
 })),
 	(uploadArt = mongoose.model("uploadArt", uploadArtSchema));
 
