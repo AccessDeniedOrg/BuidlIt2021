@@ -10,6 +10,7 @@ var Schema = mongoose.Schema;
 		type: String,
 		default: "",
 	},
+	tokenId: String,
 })),
 	(User = mongoose.model("User", userSchema));
 

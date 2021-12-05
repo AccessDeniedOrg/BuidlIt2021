@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const Artist = require("../models/artist");
 const crypto = require("crypto");
+const sha3_256 = require("js-sha3").sha3_256;
 const { sendMail } = require("./sendEmail");
 const { accountCreation } = require("../controllers/Stripe/onBoarding");
 
@@ -62,6 +63,12 @@ const sendOtp = async (req, res) => {
 	}
 };
 
+const walletGenerator = async (email) => {
+	const hexHash = sha3_256(email);
+	const ethereumAddress = "0x" + hexHash.slice(hexHash.length - 40);
+	return ethereumAddress;
+};
+
 // verify and register
 const register = async (req, res) => {
 	const { name, email, password, hash, otp, role } = req.body;
@@ -81,11 +88,13 @@ const register = async (req, res) => {
 		.digest("hex");
 
 	if (newCalculatedHash === hashValue) {
+		const { tokenId } = await walletGenerator(email);
 		if (role === "user") {
 			var newPerson = new User({
 				email: email,
 				name: name,
 				password: password,
+				tokenId: tokenId,
 			});
 
 			newPerson.save(function (err, Person) {
@@ -100,6 +109,7 @@ const register = async (req, res) => {
 				name: name,
 				password: password,
 				accountId: account,
+				tokenId: tokenId,
 			});
 
 			newArtist.save(function (err, Person) {
@@ -126,6 +136,7 @@ const login = async (req, res) => {
 						name: data.name,
 						email: email,
 						role: role,
+						tokenId: data.tokenId,
 					});
 				} else {
 					res.send({ msg: "Email or Password is incorrect" });
@@ -142,6 +153,7 @@ const login = async (req, res) => {
 						name: data.name,
 						email: email,
 						role: role,
+						tokenId: data.tokenId,
 					});
 				} else {
 					res.send({ msg: "Invalid Email" });
