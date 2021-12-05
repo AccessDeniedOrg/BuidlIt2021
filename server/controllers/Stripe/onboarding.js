@@ -3,8 +3,8 @@ const Artist = require("../../models/artist");
 
 const accountCreation = async (email) => {
 	const account = await stripe.accounts.create({
-		type: 'custom',
-		country: 'US',
+		type: "custom",
+		country: "US",
 		email: email,
 		capabilities: {
 			card_payments: { requested: true },
@@ -20,7 +20,7 @@ const onBoarding = async (req, res) => {
 
 	Artist.findOne({ email: email }, async (err, data) => {
 		if (!data) {
-			res.send("Not registered")
+			res.send("Not registered");
 		} else {
 			// console.log(data);
 			const accountLink = await stripe.accountLinks.create({
@@ -31,28 +31,24 @@ const onBoarding = async (req, res) => {
 			});
 			res.send(accountLink.url);
 		}
-	})
-
-
+	});
 };
 
 const chargesEnabled = async (req, res) => {
-	console.log(req.body)
+	console.log(req.body);
 	const { email } = req.body;
 	console.log(email);
-	let accountId = "";
 
 	Artist.findOne({ email: email }, async function (err, data) {
 		console.log(data);
 		if (!data) {
-			res.send("Not registered")
+			res.send("Not registered");
 		} else {
 			const chargeEnabled = await stripe.accounts.retrieve(data.accountId);
 			console.log(chargesEnabled);
 			res.send(chargeEnabled.charges_enabled);
 		}
-	})
-
+	});
 };
 
 module.exports = {

@@ -2,7 +2,7 @@ const User = require("../models/user");
 const Artist = require("../models/artist");
 const crypto = require("crypto");
 const { sendMail } = require("./sendEmail");
-const { accountCreation } = require("../controllers/Stripe/stripe");
+const { accountCreation } = require("../controllers/Stripe/onBoarding");
 
 // Register User
 const sendOtp = async (req, res) => {

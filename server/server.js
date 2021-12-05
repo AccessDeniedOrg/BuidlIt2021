@@ -8,7 +8,8 @@ const mongoose = require("mongoose");
 const router = require("./routes/index");
 const donationRouter = require("./routes/charities");
 const artistRouter = require("./routes/artist");
-const stripeRouter = require("./routes/Stripe/stripe");
+const onboardingRouter = require("./routes/Stripe/onboarding");
+const paymentRouter = require("./routes/Stripe/payment");
 
 const app = express();
 
@@ -48,7 +49,8 @@ app.use("/api/auth", router.route);
 app.use("/api/donation", donationRouter.route);
 // app.use("/api/transactions", transactionRouter.route);
 app.use("/api/artist", artistRouter.route);
-app.use("/api/stripe", stripeRouter.route);
+app.use("/api/stripe-onBoarding", onboardingRouter.route);
+app.use("/api/stripe-payment", paymentRouter.route);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, function () {

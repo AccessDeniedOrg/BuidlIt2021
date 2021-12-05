@@ -4,13 +4,13 @@ const {
 	onBoarding,
 	accountCreation,
 	chargesEnabled,
-} = require("../../controllers/Stripe/stripe");
+} = require("../../controllers/Stripe/onboarding");
 
 const router = express.Router();
 
-// Get All Art
 router.post("/onBoarding", onBoarding);
-router.post("/accountCreation", accountCreation);
+
+//router.post("/accountCreation", accountCreation);
 router.post("/chargesEnabled", chargesEnabled);
 
 module.exports = {
