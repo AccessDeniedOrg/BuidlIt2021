@@ -16,7 +16,7 @@
 .menu-list-item:last-child{
     border-bottom: solid 1px rgba(237, 163, 133,0.4);
 }
-.navbar-sticky {
+.sidebar-sticky {
 	position: fixed;
     max-width: 20%;
 	z-index: 99;

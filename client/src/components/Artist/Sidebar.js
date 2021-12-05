@@ -10,7 +10,7 @@ const Sidebar = (props) => {
 
     return (
         <>
-            <div className="navbar-sticky">
+            <div className="sidebar-sticky">
                 <div className="text-center" style={{ background: "#000", height: "100vh" }}>
                     <img onClick={handleLogoClick} width="80%" style={{ marginTop: "40px", cursor: "pointer" }} src={logo} alt="logo" />
                     <ul className="menu-list">
