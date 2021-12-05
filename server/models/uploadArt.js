@@ -8,6 +8,7 @@ var Schema = mongoose.Schema;
 	email: String,
 	price: Number,
 	IPFShash: String,
+	tokenId: String,
 })),
 	(uploadArt = mongoose.model("uploadArt", uploadArtSchema));
 

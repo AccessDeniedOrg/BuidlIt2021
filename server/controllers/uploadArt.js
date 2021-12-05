@@ -19,14 +19,15 @@ const addArt = async (req, res) => {
 		artName: artName,
 		artistName: artistName,
 		price: price,
-		IPFShash: IPFShash
+		IPFShash: IPFShash,
+		tokenId: tokenId,
 	});
 
 	newNFT.save(function (err, NFT) {
 		if (err) res.send(err);
 		else res.status(200).send({ msg: "success" });
 	});
-}
+};
 
 const getArtToEdit = async (req, res) => {
 	const id = req.params.id;

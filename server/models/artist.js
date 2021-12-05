@@ -7,6 +7,7 @@ var Schema = mongoose.Schema;
 	name: String,
 	password: String,
 	accountId: String,
+	walletAddress: String,
 })),
 	(Artist = mongoose.model("Artist", artistSchema));
 
