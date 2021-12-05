@@ -23,7 +23,7 @@ const getNft = async (req, res) => {
 			if (err) {
 				res.send("Error in retrieving docs ");
 			} else {
-				res.send({ status: "success", data: docs.IPFShash });
+				res.send({ status: "success", data: docs });
 			}
 		});
 	} else if (role === "artist") {
@@ -31,7 +31,7 @@ const getNft = async (req, res) => {
 			if (err) {
 				res.send("Error in retrieving docs ");
 			} else {
-				res.send({ status: "success", data: docs.IPFShash });
+				res.send({ status: "success", data: docs });
 			}
 		});
 	} else {

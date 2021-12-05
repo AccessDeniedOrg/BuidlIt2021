@@ -13,20 +13,28 @@ const getAllArt = async (req, res) => {
 
 // Add Art to db
 const addArt = async (req, res) => {
-	const { artName, artistName, price, IPFShash, email } = req.body;
-	let newNFT = new UploadArt({
-		email: email,
-		artName: artName,
-		artistName: artistName,
-		price: price,
-		IPFShash: IPFShash,
-		tokenId: tokenId,
-	});
+	const { artName, artistName, price, IPFShash, email, tokenId } = req.body;
+	UploadArt.findOne({ IPFShash: IPFShash }, async function (err, data) {
+		if (!data) {
+			let newNFT = new UploadArt({
+				email: email,
+				artName: artName,
+				artistName: artistName,
+				price: price,
+				IPFShash: IPFShash,
+				tokenId: tokenId,
+			});
 
-	newNFT.save(function (err, NFT) {
-		if (err) res.send(err);
-		else res.status(200).send({ msg: "success" });
-	});
+			newNFT.save(function (err, NFT) {
+				if (err) res.send(err);
+				else res.status(200).send({ msg: "success" });
+			});
+		}
+		else {
+			res.send({ msg: "NFT for this file has already been minted" })
+		}
+	})
+
 };
 
 const getArtToEdit = async (req, res) => {

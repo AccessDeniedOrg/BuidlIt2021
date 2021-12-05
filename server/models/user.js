@@ -6,11 +6,7 @@ var Schema = mongoose.Schema;
 	email: String,
 	name: String,
 	password: String,
-	accountId: {
-		type: String,
-		default: "",
-	},
-	tokenId: String,
+	walletAddress: String,
 })),
 	(User = mongoose.model("User", userSchema));
 

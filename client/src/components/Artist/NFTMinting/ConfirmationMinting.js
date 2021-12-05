@@ -5,6 +5,7 @@ import { Modal, Spinner } from 'react-bootstrap';
 const ConfirmationMinting = (props) => {
 
     const [modalStage, setModalStage] = useState("confirm")
+    const [errorMessage, setErrorMessage] = useState("")
 
     const executeMintng = async () => {
         setModalStage("pinning")
@@ -29,12 +30,13 @@ const ConfirmationMinting = (props) => {
                 email: window.localStorage.getItem("email"),
                 price: props.price,
                 IPFShash: hash,
-                artistName: window.localStorage.getItem("username")
+                artistName: window.localStorage.getItem("username"),
+                tokenId: ""
             }).then((res) => {
-                console.log(res.data.msg)
                 if (res.data.msg === "success") {
                     setModalStage("mintingSuccess")
                 } else {
+                    setErrorMessage(res.data.msg)
                     setModalStage("mintingFailed")
                 }
             }).catch((err) => {
@@ -54,8 +56,8 @@ const ConfirmationMinting = (props) => {
     }
 
     const handleGoToNFTCollection = (e) => {
-        setModalStage('confirm')
-        window.location.href = "/nftcollection"
+        handleCloseMintingConfirmation()
+        window.location.href = `/artist/nftcollection`
     }
 
     const renderModalContent = () => {
@@ -108,16 +110,28 @@ const ConfirmationMinting = (props) => {
                     <>
                         <div className="container text-center">
                             {modalStage === "mintingFailed"
-                                ? (<div style={{ color: "red" }}>
-                                    <p>{message}</p>
-                                </div>)
-                                : (<div style={{ color: "green" }}>
-                                    <p>{message}</p>
-                                    <br />
-                                </div>)}
-                            <button onClick={handleGoToNFTCollection} className="me-btn">
-                                Go To Your NFT Collection
-                            </button>
+                                ? (
+                                    <>
+                                        <div style={{ color: "red" }}>
+                                            <p>{message}<br />{errorMessage}</p>
+                                        </div>
+                                        <button onClick={handleCloseMintingConfirmation} className="me-btn">
+                                            Go Back To Minting
+                                        </button>
+                                    </>
+                                )
+                                : (
+                                    <>
+                                        <div style={{ color: "green" }}>
+                                            <p>{message}</p>
+                                            <br />
+                                        </div>
+                                        <button onClick={handleGoToNFTCollection} className="me-btn">
+                                            Go To Your NFT Collection
+                                        </button>
+                                    </>
+                                )}
+
                         </div>
                     </>
                 )

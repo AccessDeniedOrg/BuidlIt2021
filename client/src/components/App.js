@@ -12,6 +12,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
 
+  console.log(window.screen.height)
+  console.log(window.screen.width)
   const [loginModalOpen, setLoginModalOpen] = useState(false)
 
   const handleLoginModalOpen = () => {
@@ -30,6 +32,10 @@ const App = () => {
       window.location.href = "/auth-artist"
     }
   }
+
+  // const renderWebsite = () => {
+  //   if(window.screen.height)
+  // }
 
   return (
     <>

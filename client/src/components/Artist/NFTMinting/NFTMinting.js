@@ -5,7 +5,7 @@ import { Spinner, Container, Col, Row, Form } from "react-bootstrap";
 import axios from "axios";
 import "./css/NFTMinting.css"
 
-const NFTMinting = () => {
+const NFTMinting = (props) => {
 
     const [hasOnboarded, setHasOnboarded] = useState(false)
     const [openMintingConfirmation, setOpenMintingConfirmation] = useState(false)
@@ -27,7 +27,7 @@ const NFTMinting = () => {
     };
 
     useEffect(() => {
-
+        console.log(props.url)
         const didOnboard = async () => {
             await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-onBoarding/chargesEnabled`, {
                 email: window.localStorage.getItem("email")
@@ -140,7 +140,7 @@ const NFTMinting = () => {
                                                     />
                                                 </Form.Group>
                                                 <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                    <Form.Label>Price (INR):</Form.Label>
+                                                    <Form.Label>Price (USD):</Form.Label>
                                                     <Form.Control
                                                         name="price"
                                                         value={nftData["price"]}

@@ -2,13 +2,13 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 // Shop Model
-(donationSchema = new Schema({
+(transactionSchema = new Schema({
     order_id: String,
     recepient: String,
     email: String,
     amount: Number,
     timestamp: Number,
 })),
-    (Donation = mongoose.model("Donation", donationSchema));
+    (Transactions = mongoose.model("Transactions", transactionSchema));
 
-module.exports = Donation;
+module.exports = Transactions;
