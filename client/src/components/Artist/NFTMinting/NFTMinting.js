@@ -29,7 +29,7 @@ const NFTMinting = () => {
     useEffect(() => {
 
         const didOnboard = async () => {
-            await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe/chargesEnabled`, {
+            await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-onBoarding/chargesEnabled`, {
                 email: window.localStorage.getItem("email")
             }).then((res) => {
                 console.log(res.data)
@@ -45,7 +45,7 @@ const NFTMinting = () => {
     }, [])
 
     const handleOnboard = async () => {
-        await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe/onBoarding`, {
+        await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-onBoarding/onBoarding`, {
             email: window.localStorage.getItem("email")
         }).then((res) => {
             console.log(res.data)

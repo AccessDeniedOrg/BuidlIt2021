@@ -5,7 +5,6 @@ import { Modal, Spinner } from 'react-bootstrap';
 const ConfirmationMinting = (props) => {
 
     const [modalStage, setModalStage] = useState("confirm")
-    const [ipfsHash, setIpfsHash] = useState("")
 
     const executeMintng = async () => {
         setModalStage("pinning")

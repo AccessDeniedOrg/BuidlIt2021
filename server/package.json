@@ -6,6 +6,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.4.0",
     "@sendgrid/mail": "^7.4.6",
+    "@truffle/hdwallet-provider": "^2.0.0",
     "axios": "^0.21.4",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
@@ -18,9 +19,12 @@
     "nodemon": "^2.0.12",
     "stripe": "^8.191.0",
     "truffle": "^5.4.22",
+    "truffle-flattener": "^1.5.0",
     "uuid": "^8.3.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "truffle-plugin-verify": "^0.5.18"
+  },
   "scripts": {
     "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
