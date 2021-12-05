@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Form, Container, Row, Col } from "react-bootstrap";
-//import createWallet from '../assets/js/createWallet';
 import { sha256 } from "js-sha256";
 
 const FormContent = (props) => {
@@ -236,9 +235,6 @@ const FormContent = (props) => {
             errorHandlerObj["emailError"] === "" &&
             errorHandlerObj["passwordError"] === ""
         ) {
-            //Hits '/login' endpoint of Backend API
-            //Check for non-existing email, wrong password and server error --> Registration Failed
-
             const hashedPassword = sha256(loginValues["password"]);
             axios
                 .post(`${process.env.REACT_APP_BACKEND_API}/auth/login`, {
@@ -250,6 +246,7 @@ const FormContent = (props) => {
                     console.log(res.data)
                     if (res.data.msg === "Logged In") {
                         setErrors({});
+                        window.localStorage.setItem("walletaddress", "")
                         window.localStorage.setItem("email", res.data.email);
                         window.localStorage.setItem("username", res.data.name);
                         window.localStorage.setItem("role", res.data.role);

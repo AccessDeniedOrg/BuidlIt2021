@@ -12,7 +12,7 @@ const UserInfo = () => {
                             <h4><strong>Account Details</strong></h4>
                         </div>
                     </div>
-                    <div className="me-my-profile-body">
+                    <div style={{ marginTop: "-40px" }} className="me-my-profile-body">
                         <ul>
                             <li>
                                 <div className="me-profile-data">
@@ -43,7 +43,7 @@ const UserInfo = () => {
                                     <p><b>NFT Wallet Address:</b></p>
                                 </div>
                                 <div className="me-profile-data-right">
-                                    <p> TVyXtKiMoG2PZpSsAnMaLZW747PSvRAQmT</p>
+                                    <p>{window.localStorage.getItem("walletaddress")}</p>
                                 </div>
                             </li>
                         </ul>
@@ -60,7 +60,7 @@ const UserInfo = () => {
                             <h4 style={{ fontWeight: "600" }}>Guidelines</h4>
                         </div>
                     </div>
-                    <div className="me-my-wallet-body">
+                    <div style={{ marginLeft: "-30px", marginTop: "-10px" }} className="me-my-wallet-body">
                         <ul>
                             <li className="guide-list-items">
                                 <p>• <em>The wallet address is auto generated for every login.</em></p>

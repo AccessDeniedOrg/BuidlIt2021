@@ -51,8 +51,8 @@ const ArtistProfile = () => {
                                         <div className="me-profile-data">
                                             <p><b>NFT Wallet Address:</b></p>
                                         </div>
-                                        <div>
-                                            <p className="me-profile-data-right"> TVyXtKiMoG2PZpSsAnMaLZW747PSvRAQmT</p>
+                                        <div style={{ marginRight: "0" }} className="me-profile-data-right">
+                                            <p className="me-profile-data-right">{window.localStorage.getItem('walletaddress')}</p>
                                         </div>
                                     </li>
                                 </ul>

@@ -34,6 +34,7 @@ const Navigation = (props) => {
         window.localStorage.removeItem("email")
         window.localStorage.removeItem("username")
         window.localStorage.removeItem("role")
+        window.localStorage.removeItem("walletaddress")
         window.location.href = '/client';
         setArtistLoggedIn(false)
         setUserLoggedIn(false)
