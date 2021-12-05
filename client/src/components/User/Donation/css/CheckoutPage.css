@@ -4,7 +4,12 @@
 .checkout-header{
     height: 75px;
     font-size: 30px;
+    font-weight: 600;
+    background-color: #ffded1;
 }
 .checkout-heading{
     margin-top: 20px;
+}
+.charity-data-right{
+    margin-left: 10px;
 }
