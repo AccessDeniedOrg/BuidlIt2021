@@ -1,4 +1,5 @@
 const UploadArt = require("../models/uploadArt");
+const UserNft = require("../models/userNft");
 
 // Get All Arts
 const getAllArt = async (req, res) => {
@@ -13,7 +14,14 @@ const getAllArt = async (req, res) => {
 
 // Add Art to db
 const addArt = async (req, res) => {
+
 	const { artName, artistName, price, IPFShash, email, tokenId } = req.body;
+
+	UserNft.findOne({ IPFShash: IPFShash }, async function (err, data) {
+		if (data) {
+			res.send({ msg: "NFT for this file has already been minted" })
+		}
+	})
 	UploadArt.findOne({ IPFShash: IPFShash }, async function (err, data) {
 		if (!data) {
 			let newNFT = new UploadArt({
