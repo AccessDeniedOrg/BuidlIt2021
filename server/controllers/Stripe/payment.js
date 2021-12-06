@@ -2,10 +2,11 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const CryptoJS = require("crypto-js");
 const { uuidv4 } = require("uuidv4");
 const UploadArt = require("../../models/uploadArt");
+const Transactions = require("../../models/transactions");
 
 // Create a PaymentIntent:
-const paymentIntent = async (req, res) => {
-	const { totalAmt, charityAmt, NFTPrice, userEmail, IPFShash } = req.body;
+const checkoutSession = async (req, res) => {
+	const { totalAmt, charityAmt, NFTPrice, userEmail, IPFShash, charityName, type } = req.body;
 	const paymentIntent = await stripe.paymentIntents.create({
 		amount: 10000,
 		currency: "usd",
@@ -21,6 +22,28 @@ const paymentIntent = async (req, res) => {
 			process.env.ENCRYPTION_SECRET
 		)
 	);
+
+	const artist = UploadArt.findOne({ IPFShash: IPFShash });
+	console.log(artist);
+
+	// save transaction in DB
+	var newTransaction = new User({
+		transactionId: transactionID,
+		totalAmt: totalAmt,
+		charityAmt: charityAmt,
+		walletAddressUser: walletAddressUser, //using email 
+		walletAddressArtist: "", //using IpfsHash
+		NFTPrice: NFTPrice,
+		IPFShash: IPFShash,
+		charityName: charityName,
+		type: type,
+		timestamp: Date.now
+	});
+
+	newTransaction.save(function (err, Transaction) {
+		// if (err) res.send(err);
+
+	})
 
 	const session = await stripe.checkout.sessions.create({
 		payment_method_types: ["card"],
@@ -44,7 +67,7 @@ const paymentIntent = async (req, res) => {
 };
 
 module.exports = {
-	paymentIntent,
+	checkoutSession,
 };
 
 // Create a Transfer to the connected account (later):

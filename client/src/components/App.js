@@ -14,6 +14,9 @@ const App = () => {
 
   console.log(window.screen.height)
   console.log(window.screen.width)
+  // const myString = '0xee100d22d5b35250adf7e6d8320dc4978688cc11';
+  // let myTruncatedString = myString.substring(0, 9) + "..." + myString.substring(31, 41);
+  // console.log(myTruncatedString)
   const [loginModalOpen, setLoginModalOpen] = useState(false)
 
   const handleLoginModalOpen = () => {

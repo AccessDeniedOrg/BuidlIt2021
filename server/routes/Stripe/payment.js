@@ -1,10 +1,10 @@
 const express = require("express");
 
-const { paymentIntent } = require("../../controllers/Stripe/payment");
+const { checkoutSession } = require("../../controllers/Stripe/payment");
 
 const router = express.Router();
 
-router.post("/paymentIntent", paymentIntent);
+router.post("/checkoutSession", checkoutSession);
 
 module.exports = {
 	route: router,
