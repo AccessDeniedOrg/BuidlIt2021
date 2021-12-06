@@ -1,7 +1,9 @@
 import './App.css';
 import React, { useState } from "react";
-import Error404 from './Error/Error404';
-import OnboardingError from './Error/OnboardingError';
+import Error404 from './Extras/Error404';
+import CheckoutError from './Extras/CheckoutError';
+import Success from './Extras/Success';
+import OnboardingError from './Extras/OnboardingError';
 import Client from './User/Client';
 import Admin from './Admin/Admin';
 import Artist from './Artist/Artist';
@@ -63,6 +65,12 @@ const App = () => {
           </Route>
           <Route path="/error-404" >
             <Error404 />
+          </Route>
+          <Route path="/checkout-error" >
+            <CheckoutError />
+          </Route>
+          <Route path="/success/:transactionId" >
+            <Success />
           </Route>
         </Switch>
       </Router>

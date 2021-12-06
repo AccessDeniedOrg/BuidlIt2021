@@ -16,7 +16,7 @@ const Artist = () => {
 	let { path, url } = useRouteMatch();
 
 	useEffect(() => {
-		if (!window.localStorage.getItem("email")) {
+		if (!window.localStorage.getItem("email") || window.localStorage.getItem("role") === "user") {
 			window.location.href = "/error-404";
 		}
 	}, []);

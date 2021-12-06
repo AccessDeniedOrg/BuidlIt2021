@@ -3,8 +3,7 @@ const UserNft = require("../models/userNft");
 
 const getFilteredNFTs = async (req, res) => {
 	const { price } = req.body;
-	console.log(price);
-	UploadArt.find({ price: { $lt: price } }, async function (err, data) {
+	UploadArt.find({ price: { $lte: price } }, async function (err, data) {
 		if (!data) {
 			res.send("No NFTS");
 		} else {
