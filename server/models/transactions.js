@@ -2,13 +2,21 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 // Shop Model
-(transactionSchema = new Schema({
-    order_id: String,
-    recepient: String,
-    email: String,
-    amount: Number,
-    timestamp: Number,
+(donationTransactionSchema = new Schema({
+	transactionId: String,
+	type: String,
+	charityName: String,
+	IPFShash: String,
+	walletAddressUser: String,
+	walletAddressArtist: String,
+	totalAmt: Number,
+	charityAmt: Number,
+	NFTPrice: Number,
+	timestamp: Number,
 })),
-    (Transactions = mongoose.model("Transactions", transactionSchema));
+	(donationTransaction = mongoose.model(
+		"donationTransaction",
+		donationTransactionSchema
+	));
 
-module.exports = Transactions;
+module.exports = donationTransaction;

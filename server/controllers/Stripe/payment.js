@@ -1,13 +1,26 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const CryptoJS = require("crypto-js");
+const { uuidv4 } = require("uuidv4");
+const UploadArt = require("../../models/uploadArt");
 
 // Create a PaymentIntent:
 const paymentIntent = async (req, res) => {
+	const { totalAmt, charityAmt, NFTPrice, userEmail, IPFShash } = req.body;
 	const paymentIntent = await stripe.paymentIntents.create({
 		amount: 10000,
 		currency: "usd",
 		payment_method_types: ["card"],
 		transfer_group: "GranteStudio-Segregation",
 	});
+
+	const transactionID = uuidv4();
+	// Encrypting Transaction ID
+	const encrypedTransactionId = encodeURIComponent(
+		CryptoJS.AES.encrypt(
+			JSON.stringify({ transactionID }),
+			process.env.ENCRYPTION_SECRET
+		)
+	);
 
 	const session = await stripe.checkout.sessions.create({
 		payment_method_types: ["card"],
@@ -23,7 +36,7 @@ const paymentIntent = async (req, res) => {
 			transfer_group: paymentIntent.transfer_group,
 		},
 		mode: "payment",
-		success_url: "https://www.google.com",
+		success_url: `https://www.google.com/${encrypedTransactionId}`,
 		cancel_url: "https://in.search.yahoo.com/?fr2=inr",
 	});
 
