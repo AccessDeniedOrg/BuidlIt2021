@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 (donationTransactionSchema = new Schema({
 	transactionId: String,
 	type: String,
-	charityName: String,
+	charityEmail: String,
 	IPFShash: String,
 	walletAddressUser: String,
 	walletAddressArtist: String,

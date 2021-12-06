@@ -18,6 +18,7 @@ const addCharity = async (req, res) => {
 		logo,
 		description,
 		name,
+		email,
 		num_of_donors,
 		target,
 		target_collected,
