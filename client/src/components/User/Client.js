@@ -3,6 +3,7 @@ import React from "react";
 import "../../assets/css/font.css"
 import Navigation from './Navigation';
 import Home from './Home/Home';
+import Footer from './Footer';
 import Profile from './Profile/Profile';
 import Donation from './Donation/Donation';
 import { BrowserRouter as Router, Switch, Route, useRouteMatch } from "react-router-dom";
@@ -33,6 +34,9 @@ const Client = (props) => {
                         <Profile />
                     </Route>
                 </Switch>
+
+                <hr style={{ marginTop: "0px" }} />
+                <Footer />
             </Router>
         </>
     );

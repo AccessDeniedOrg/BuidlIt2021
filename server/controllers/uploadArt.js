@@ -46,10 +46,10 @@ const addArt = async (req, res) => {
 };
 
 const getArtToEdit = async (req, res) => {
-	const id = req.params.id;
+	const { IPFShash } = req.body
 	UploadArt.findOne(
 		{
-			_id: id,
+			IPFShash: IPFShash,
 		},
 		(err, docs) => {
 			if (err === null) {
@@ -66,15 +66,13 @@ const getArtToEdit = async (req, res) => {
 
 // Edit Art Info
 const editArtPrice = async (req, res) => {
-	const data = req.body;
-	const id = data._id;
-	const price = data.price;
-
+	const { IPFShash, price, artName } = req.body
 	UploadArt.findOneAndUpdate(
-		{ _id: id },
+		{ IPFShash: IPFShash, },
 		{
 			$set: {
 				price: price,
+				artName: artName
 			},
 		},
 		(error, doc) => {

@@ -20,36 +20,42 @@ const Success = () => {
             await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-payment/getTransaction`, {
                 transactionId: plainText
             }).then(async (res) => {
-                setStage("transfers")
-                setMsg("Performing Additional Transfers...")
-                console.log(res.data)
-                await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-payment/dualTransfer`, {
-                    charityAmt: res.data.charityAmt,
-                    NFTPrice: res.data.NFTPrice,
-                    walletAddressArtist: res.data.walletAddressArtist,
-                    charityEmail: res.data.charityEmail,
-                    transactionId: res.data.transactionId,
-                }).then(async (dualResp) => {
-                    console.log(dualResp)
-                    if (res.data.NFTPrice === 0) {
-                        setStage("completed")
-                    } else {
-                        //Perform Blockchain Transfer
-                        setStage("storing")
-                        setMsg("Storing NFT to collection...")
-                        await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-payment/tranferNFtOwnership`, {
-                            userWalletAddress: res.data.walletAddressUser,
-                            IPFShash: res.data.IPFShash
-                        }).then((storeResp) => {
+                console.log(res)
+                if (res.data.completed === "true") {
+                    window.location.href = "/expired"
+                } else {
+                    setStage("transfers")
+                    setMsg("Performing Additional Transfers...")
+                    console.log(res.data)
+                    await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-payment/dualTransfer`, {
+                        charityAmt: res.data.charityAmt,
+                        NFTPrice: res.data.NFTPrice,
+                        walletAddressArtist: res.data.walletAddressArtist,
+                        charityEmail: res.data.charityEmail,
+                        transactionId: res.data.transactionId,
+                    }).then(async (dualResp) => {
+                        console.log(dualResp)
+                        if (res.data.NFTPrice === 0) {
                             setStage("completed")
-                        }).catch((err) => {
-                            console.log(err)
-                        })
-                    }
+                        } else {
+                            //Perform Blockchain Transfer
+                            setStage("storing")
+                            setMsg("Storing NFT to collection...")
+                            await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-payment/tranferNFtOwnership`, {
+                                userWalletAddress: res.data.walletAddressUser,
+                                IPFShash: res.data.IPFShash,
+                                transactionId: plainText
+                            }).then((storeResp) => {
+                                setStage("completed")
+                            }).catch((err) => {
+                                console.log(err)
+                            })
+                        }
 
-                }).catch((err) => {
-                    console.log(err)
-                })
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                }
             }).catch((err) => {
                 console.log(err)
             })

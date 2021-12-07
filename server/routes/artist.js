@@ -7,7 +7,7 @@ const {
 	editArtPrice,
 } = require("../controllers/uploadArt");
 
-const { getNft, getFilteredNFTs } = require("../controllers/getNfts");
+const { getNft, getFilteredNFTs, getArtistEarnings } = require("../controllers/getNfts");
 
 const router = express.Router();
 
@@ -28,6 +28,9 @@ router.post("/getNfts", getNft);
 
 // filtered Nfts
 router.post("/getFilteredNFTs", getFilteredNFTs);
+
+// filtered Nfts
+router.post("/getArtistEarnings", getArtistEarnings);
 
 module.exports = {
 	route: router,
