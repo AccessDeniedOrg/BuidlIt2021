@@ -12,6 +12,7 @@ var Schema = mongoose.Schema;
 	totalAmt: Number,
 	charityAmt: Number,
 	NFTPrice: Number,
+	completed: String,
 	timestamp: Number,
 })),
 	(donationTransaction = mongoose.model(

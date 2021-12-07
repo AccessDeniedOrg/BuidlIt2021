@@ -13,10 +13,13 @@ const NFTMinting = (props) => {
     const [file, setFile] = useState("")
     const [ipfsFile, setIpfsFile] = useState({})
     const [imgPreview, setImgPreview] = useState("")
+    const [errors, setErrors] = useState({})
     const [nftData, setNftData] = useState({
         artName: "",
         price: ""
     })
+
+    let errorHandlerObj = {}
 
     let handlerObj;
     const nftDataHandler = (selectedInput) => (e) => {
@@ -56,6 +59,7 @@ const NFTMinting = (props) => {
     }
 
     const handleFileUpload = (e) => {
+        e.preventDefault()
         var fileExtension = (e.target.files[0].name).split('.').pop();
         if (
             fileExtension === "png" ||
@@ -74,7 +78,36 @@ const NFTMinting = (props) => {
 
     const handleMintNFT = (e) => {
         e.preventDefault()
-        setOpenMintingConfirmation(true)
+        setErrors({})
+        const validAmount = /^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/
+        errorHandlerObj = {
+            amountError: "",
+            nameError: ""
+        }
+        if (!validAmount.test(nftData.price)) {
+            errorHandlerObj['amountError'] = "Invalid Amount"
+        } else {
+            if (parseFloat(nftData.price) <= 20.00) {
+                errorHandlerObj['amountError'] = "Amount should be more than $20.00"
+            }
+            else if (parseFloat(nftData.price) >= 400.00) {
+                errorHandlerObj['amountError'] = "Amount should be less than $400.00"
+            }
+        }
+        if (nftData.artName === "") {
+            errorHandlerObj['nameError'] = "This field should not be empty."
+        }
+        if (
+            errorHandlerObj['nameError'] === "" &&
+            errorHandlerObj['amountError'] === ""
+        ) {
+            setOpenMintingConfirmation(true)
+        } else {
+            setErrors({ ...errorHandlerObj });
+            console.log("Minting Failed");
+            console.log(errorHandlerObj);
+        }
+
     }
 
     const getBase64 = (file) => {
@@ -138,6 +171,9 @@ const NFTMinting = (props) => {
                                                         onChange={nftDataHandler("artName")}
                                                         placeholder="Enter Art Piece Name"
                                                     />
+                                                    {
+                                                        errors['nameError'] === "" ? <></> : <div style={{ color: "red" }}>{errors['nameError']}</div>
+                                                    }
                                                 </Form.Group>
                                                 <Form.Group className="mb-3" controlId="formBasicEmail">
                                                     <Form.Label>Price (USD):</Form.Label>
@@ -148,6 +184,9 @@ const NFTMinting = (props) => {
                                                         type="number"
                                                         placeholder="Enter Price"
                                                     />
+                                                    {
+                                                        errors['amountError'] === "" ? <></> : <div style={{ color: "red" }}>{errors['amountError']}</div>
+                                                    }
                                                 </Form.Group>
                                                 <Form.Group className="mb-3" controlId="formBasicPassword">
                                                     <Form.Label>Upload File</Form.Label>

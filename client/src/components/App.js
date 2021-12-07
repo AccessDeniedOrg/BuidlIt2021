@@ -4,6 +4,7 @@ import Error404 from './Extras/Error404';
 import CheckoutError from './Extras/CheckoutError';
 import Success from './Extras/Success';
 import OnboardingError from './Extras/OnboardingError';
+import Expired from './Extras/Expired';
 import Client from './User/Client';
 import Admin from './Admin/Admin';
 import Artist from './Artist/Artist';
@@ -71,6 +72,9 @@ const App = () => {
           </Route>
           <Route path="/success/:transactionId" >
             <Success />
+          </Route>
+          <Route path="/expired" >
+            <Expired />
           </Route>
         </Switch>
       </Router>

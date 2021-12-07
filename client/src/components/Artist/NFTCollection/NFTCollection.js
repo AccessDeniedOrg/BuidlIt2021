@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import noNFTCollection from "../../../assets/images/noNFTCollection.gif";
+import EditNFTModal from "./EditNFTModal";
 import { Card, Spinner } from "react-bootstrap"
 import axios from "axios";
 
 const NFTCollection = () => {
 	const [nfts, setNfts] = useState([]);
 	const [isLoading, setIsLoading] = useState(true)
+	const [openEditConfirmation, setOpenEditConfirmation] = useState(false)
+	const [selectedNft, setSelectedNft] = useState({})
 
 	useEffect(() => {
 
@@ -23,6 +26,15 @@ const NFTCollection = () => {
 
 		getNFTs()
 	}, [nfts]);
+
+	const handleNFTEdit = async (index) => {
+		setSelectedNft(nfts[index])
+		setOpenEditConfirmation(true)
+	}
+
+	const handleCloseEditConfirmation = () => {
+		setOpenEditConfirmation(false)
+	}
 
 	const displayArtistNFTS = () => {
 		if (isLoading) {
@@ -87,6 +99,7 @@ const NFTCollection = () => {
 													Decouple
 												</button>
 												<button
+													onClick={() => handleNFTEdit(index)}
 													className="me-btn"
 													style={{
 														width: "40%",
@@ -146,7 +159,16 @@ const NFTCollection = () => {
 
 	};
 
-	return <>{displayArtistNFTS()}</>;
+	return (
+		<>
+			{displayArtistNFTS()}
+			<EditNFTModal
+				handleCloseEditConfirmation={handleCloseEditConfirmation}
+				openEditConfirmation={openEditConfirmation}
+				selectedNft={selectedNft}
+			/>
+		</>
+	);
 };
 
 export default NFTCollection;
