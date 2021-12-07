@@ -28,7 +28,6 @@ const checkoutSession = async (req, res) => {
 		)
 	);
 
-
 	if (NFTPrice === 0) {
 		var newTransaction = new donationTransaction({
 			transactionId: transactionID,
@@ -47,9 +46,7 @@ const checkoutSession = async (req, res) => {
 			if (err) console.log(err);
 			else console.log(Transaction);
 		});
-
 	} else {
-
 		// Saving transaction to DB
 		UploadArt.findOne({ IPFShash: IPFShash }, async function (err, data) {
 			// console.log("artist", data);
@@ -73,7 +70,6 @@ const checkoutSession = async (req, res) => {
 				});
 			});
 		});
-
 	}
 
 	// Payment Intent
@@ -96,7 +92,7 @@ const checkoutSession = async (req, res) => {
 			},
 		],
 		payment_intent_data: {
-			transfer_group: paymentIntent.transfer_group
+			transfer_group: paymentIntent.transfer_group,
 		},
 		mode: "payment",
 		success_url: `${process.env.FRONTEND_API}/success/${encrypedTransactionId}`,
@@ -164,7 +160,6 @@ const dualTransfer = async (req, res) => {
 			);
 			msg = "Success";
 		}
-
 	} catch (err) {
 		console.log("Transfer Error:", err);
 		msg = "Failure";
@@ -215,18 +210,18 @@ module.exports = {
 	tranferNFtOwnership,
 };
 
-	//DirectTransfer
-		// Charities.findOne({ email: charityEmail }, async function (err, data) {
-		// 	const paymentIntent = await stripe.paymentIntents.create({
-		// 		payment_method_types: ["card"],
-		// 		amount: totalAmt * 100,
-		// 		currency: "usd",
-		// 		transfer_data: {
-		// 			destination: data.accountId,
-		// 		},
-		// 	});
-		// 	paymentIntentObject = {
-		// 		application_fee_amount: totalAmt * 10,
-		// 		transfer_data: paymentIntent.transfer_data,
-		// 	};
-		// });
+//DirectTransfer
+// Charities.findOne({ email: charityEmail }, async function (err, data) {
+// 	const paymentIntent = await stripe.paymentIntents.create({
+// 		payment_method_types: ["card"],
+// 		amount: totalAmt * 100,
+// 		currency: "usd",
+// 		transfer_data: {
+// 			destination: data.accountId,
+// 		},
+// 	});
+// 	paymentIntentObject = {
+// 		application_fee_amount: totalAmt * 10,
+// 		transfer_data: paymentIntent.transfer_data,
+// 	};
+// });
