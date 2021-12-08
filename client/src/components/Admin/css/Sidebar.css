@@ -1,9 +1,8 @@
 .menu-list {
 	margin-top: 40px;
 	padding: 30px;
-	color: black !important;
 }
-.menu-list-item {
+.menu-list-item-admin {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	color: black !important;
@@ -12,10 +11,10 @@
 	cursor: pointer;
 	border-top: solid 1px black !important;
 }
-.menu-list-item:hover {
+.menu-list-item-admin:hover {
 	color: rgba(0, 0, 0, 0.5) !important;
 }
-.menu-list-item:last-child {
+.menu-list-item-admin:last-child {
 	border-bottom: solid 1px black !important;
 }
 .sidebar-sticky {

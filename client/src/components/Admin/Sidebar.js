@@ -6,11 +6,6 @@ const Sidebar = (props) => {
 	const handleLogoClick = () => {
 		window.location.href = "/client";
 	};
-
-	// const handleLogout = () => {
-	// 	window.localStorage.removeItem("sellerAuth");
-	// 	window.location.href = "/admin";
-	// };
 	return (
 		<>
 			<div className="sidebar-sticky">
@@ -30,7 +25,7 @@ const Sidebar = (props) => {
 							onClick={() => {
 								window.location.href = props.url;
 							}}
-							className="menu-list-item"
+							className="menu-list-item-admin"
 						>
 							Profile
 						</li>
@@ -38,7 +33,7 @@ const Sidebar = (props) => {
 							onClick={() => {
 								window.location.href = `${props.url}/addCharity`;
 							}}
-							className="menu-list-item"
+							className="menu-list-item-admin"
 						>
 							Add Charity
 						</li>
@@ -46,11 +41,11 @@ const Sidebar = (props) => {
 							onClick={() => {
 								window.location.href = `${props.url}/editCharity`;
 							}}
-							className="menu-list-item"
+							className="menu-list-item-admin"
 						>
 							Edit Charity
 						</li>
-						<li onClick={props.handleLogout} className="menu-list-item">
+						<li onClick={props.handleLogout} className="menu-list-item-admin">
 							Logout
 						</li>
 					</ul>
