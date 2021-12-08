@@ -28,7 +28,6 @@ const checkoutSession = async (req, res) => {
 		)
 	);
 
-
 	if (NFTPrice === 0) {
 		var newTransaction = new donationTransaction({
 			transactionId: transactionID,
@@ -48,9 +47,7 @@ const checkoutSession = async (req, res) => {
 			if (err) res.send({ msg: "Failure", err });
 			else console.log(Transaction);
 		});
-
 	} else {
-
 		// Saving transaction to DB
 		UploadArt.findOne({ IPFShash: IPFShash }, async function (err, data) {
 			// console.log("artist", data);
@@ -75,7 +72,6 @@ const checkoutSession = async (req, res) => {
 				});
 			});
 		});
-
 	}
 
 	// Payment Intent
@@ -98,7 +94,7 @@ const checkoutSession = async (req, res) => {
 			},
 		],
 		payment_intent_data: {
-			transfer_group: paymentIntent.transfer_group
+			transfer_group: paymentIntent.transfer_group,
 		},
 		mode: "payment",
 		success_url: `${process.env.FRONTEND_API}/success/${encrypedTransactionId}`,
@@ -107,7 +103,6 @@ const checkoutSession = async (req, res) => {
 
 	res.send(session.url);
 };
-
 
 // Get created transaction
 const getTransaction = async (req, res) => {
@@ -144,12 +139,15 @@ const dualTransfer = async (req, res) => {
 				console.log("Charity: ", transfer);
 			});
 
-			donationTransaction.findOneAndUpdate({ transactionId: transactionId },
-				{ $set: { completed: "true" } }, async function (err, data) {
-					console.log(data.completed)
+			donationTransaction.findOneAndUpdate(
+				{ transactionId: transactionId },
+				{ $set: { completed: "true" } },
+				async function (err, data) {
+					console.log(data.completed);
 					if (err) res.send({ msg: "Failure", err });
 					else console.log("successfully updated");
-				});
+				}
+			);
 		} else {
 			Charities.findOne({ email: charityEmail }, async function (err, data) {
 				const transfer = await stripe.transfers.create({
@@ -178,20 +176,21 @@ const dualTransfer = async (req, res) => {
 		Charities.findOne({ email: charityEmail }, async function (err, data) {
 			const new_num_of_donors = data.num_of_donors + 1;
 			const updated_target_collected = data.target_collected + charityAmt;
-			Charities.findOneAndUpdate({ email: charityEmail },
+			Charities.findOneAndUpdate(
+				{ email: charityEmail },
 				{
 					$set: {
 						num_of_donors: new_num_of_donors,
 						target_collected: updated_target_collected,
-					}
-				}, async function (err, data) {
-					console.log(data.completed)
+					},
+				},
+				async function (err, data) {
+					console.log(data.completed);
 					if (err) res.send({ msg: "Failure", err });
 					else console.log(" Charity amount successfully updated");
-				});
-		})
-
-
+				}
+			);
+		});
 	} catch (err) {
 		console.log("Transfer Error:", err);
 		msg = "Failure";
@@ -229,13 +228,15 @@ const tranferNFtOwnership = async (req, res) => {
 				else console.log("successfully deleted");
 			});
 
-			donationTransaction.findOneAndUpdate({ transactionId: transactionId },
-				{ $set: { completed: "true" } }, async function (err, data) {
-					console.log(data.completed)
+			donationTransaction.findOneAndUpdate(
+				{ transactionId: transactionId },
+				{ $set: { completed: "true" } },
+				async function (err, data) {
+					console.log(data.completed);
 					if (err) res.send({ msg: "Failure", err });
 					else console.log("successfully updated");
-				});
-
+				}
+			);
 		});
 
 		res.send({ msg: "Success" });
@@ -250,4 +251,3 @@ module.exports = {
 	getTransaction,
 	tranferNFtOwnership,
 };
-
