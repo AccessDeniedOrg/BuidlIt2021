@@ -30,7 +30,7 @@ const NFTMinting = (props) => {
     };
 
     useEffect(() => {
-        console.log(props.url)
+
         const didOnboard = async () => {
             await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-onBoarding/chargesEnabled`, {
                 email: window.localStorage.getItem("email")

@@ -1,5 +1,6 @@
 const UploadArt = require("../models/uploadArt");
 const UserNft = require("../models/userNft");
+const { mintNFT } = require('./polygon')
 
 // Get All Arts
 const getAllArt = async (req, res) => {
@@ -15,7 +16,7 @@ const getAllArt = async (req, res) => {
 // Add Art to db
 const addArt = async (req, res) => {
 
-	const { artName, artistName, price, IPFShash, email, tokenId } = req.body;
+	const { artName, artistName, price, IPFShash, email, artistWalletAddress } = req.body;
 
 	UserNft.findOne({ IPFShash: IPFShash }, async function (err, data) {
 		if (data) {
@@ -24,13 +25,25 @@ const addArt = async (req, res) => {
 	})
 	UploadArt.findOne({ IPFShash: IPFShash }, async function (err, data) {
 		if (!data) {
+
+			//Blockchain Minting
+			const metadata = JSON.stringify({
+				name: artName,
+				description: `NFT for ${artName}`,
+				image: `https://ipfs.io/ipfs/${IPFShash}`
+			})
+
+			const { tokenIdBlockchain } = await mintNFT(metadata, artistWalletAddress)
+
+			console.log(`Token Id of minted NFT is ${tokenIdBlockchain}`)
+
 			let newNFT = new UploadArt({
 				email: email,
 				artName: artName,
 				artistName: artistName,
 				price: price,
 				IPFShash: IPFShash,
-				tokenId: tokenId,
+				tokenId: tokenIdBlockchain,
 			});
 
 			newNFT.save(function (err, NFT) {
