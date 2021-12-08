@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import profileImg from "../../../assets/images/artistProfile.png";
+import profileImg from "../../../assets/images/admin_profile.png";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
-import "./css/ArtistProfile.css";
+import "./css/Profile.css";
 
-const ArtistProfile = () => {
+const Profile = () => {
 	const [earnings, setEarnings] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -47,16 +47,13 @@ const ArtistProfile = () => {
 			);
 		} else {
 			return (
-				<>
+				<div>
 					<Container
 						className="text-center"
-						style={{ marginLeft: "13%", marginTop: "2%" }}
+						style={{ marginLeft: "13%", marginTop: "50px" }}
 					>
 						<Row>
-							<h3 className="studio-title-greeting">
-								Hi {`${window.localStorage.getItem("username")}`}.
-							</h3>
-							<h4 className="studio-title">Welcome To Your Granté Studio !</h4>
+							<h2 className="studio-title">Welcome To The Admin Dashboard !</h2>
 						</Row>
 					</Container>
 					<Container style={{ marginTop: "70px" }}>
@@ -88,7 +85,7 @@ const ArtistProfile = () => {
 													style={{ marginRight: "95px" }}
 													className="me-profile-data-right"
 												>
-													<p> {window.localStorage.getItem("username")}</p>
+													<p> Admin</p>
 												</div>
 											</li>
 											<li>
@@ -101,13 +98,13 @@ const ArtistProfile = () => {
 													style={{ marginRight: "95px" }}
 													className="me-profile-data-right"
 												>
-													<p> {window.localStorage.getItem("email")}</p>
+													<p>accessdeniedbuidl@gmail.com</p>
 												</div>
 											</li>
 											<li>
 												<div className="me-profile-data">
 													<p>
-														<b>Earnings:</b>
+														<b>Donation:</b>
 													</p>
 												</div>
 												<div
@@ -120,7 +117,7 @@ const ArtistProfile = () => {
 											<li>
 												<div className="me-profile-data">
 													<p>
-														<b>NFT Wallet Address:</b>
+														<b>Ongoing Campaigns:</b>
 													</p>
 												</div>
 												<div
@@ -141,56 +138,24 @@ const ArtistProfile = () => {
 								>
 									<div className="me-my-wallet-head">
 										<div className="me-profile-name">
-											<h4 style={{ fontWeight: "600" }}>Guidelines</h4>
+											<h4 style={{ fontWeight: "600" }}>
+												Generate Charity List
+											</h4>
 										</div>
 									</div>
 									<div
-										style={{ marginTop: "-20px" }}
+										style={{ marginTop: "-55px" }}
 										className="me-my-wallet-body"
 									>
-										<ul>
-											<li
-												style={{ marginTop: "-40px", marginLeft: "-35px" }}
-												className="guide-list-items"
-											>
-												<p>
-													• <em>The wallet address is auto generated.</em>
-												</p>
-											</li>
-											<li
-												style={{
-													marginTop: "-40px",
-													marginLeft: "-35px",
-													paddingTop: "10px",
-												}}
-												className="guide-list-items"
-											>
-												<p>
-													•{" "}
-													<em>
-														The Transactions tab shows latest transactions made
-														by you.
-													</em>
-												</p>
-											</li>
-											<li
-												style={{
-													marginTop: "-40px",
-													marginLeft: "-35px",
-													paddingTop: "10px",
-												}}
-												className="guide-list-items"
-											>
-												<p>
-													•{" "}
-													<em>
-														Do <b>NOT</b> make deposit on the provided wallet
-														address, it is only for holding NFTs. Any deposit
-														will result in loosing the funds.
-													</em>
-												</p>
-											</li>
-										</ul>
+										<p>
+											Click on the "Generate" button to generate the list of
+											charaties ele-gible for Reserve Funds
+										</p>
+										<div className="text-center">
+											<button className="me-btn inner-text" type="submit">
+												Generate
+											</button>
+										</div>
 									</div>
 								</div>
 							</Col>
@@ -203,7 +168,7 @@ const ArtistProfile = () => {
 							</Col>
 						</Row>
 					</Container>
-				</>
+				</div>
 			);
 		}
 	};
@@ -211,4 +176,4 @@ const ArtistProfile = () => {
 	return <>{renderProfile()}</>;
 };
 
-export default ArtistProfile;
+export default Profile;

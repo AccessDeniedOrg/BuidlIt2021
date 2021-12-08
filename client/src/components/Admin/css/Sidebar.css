@@ -1,0 +1,25 @@
+.menu-list {
+	margin-top: 40px;
+	padding: 30px;
+	color: black !important;
+}
+.menu-list-item {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	color: black !important;
+	font-size: 18px;
+	font-weight: 600;
+	cursor: pointer;
+	border-top: solid 1px black !important;
+}
+.menu-list-item:hover {
+	color: rgba(0, 0, 0, 0.5) !important;
+}
+.menu-list-item:last-child {
+	border-bottom: solid 1px black !important;
+}
+.sidebar-sticky {
+	position: fixed;
+	max-width: 20%;
+	z-index: 99;
+}
