@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import forbidden from "../../assets/images/nothingHere.gif";
 import { useParams } from "react-router-dom";
 import Test from "./Test";
-import Sidebar from "./Sidebar";
 import Profile from "./Profile/Profile";
 
 const SelectRoute = (props) => {

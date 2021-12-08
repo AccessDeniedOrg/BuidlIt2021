@@ -9,6 +9,7 @@ var Schema = mongoose.Schema;
 	IPFShash: String,
 	walletAddressUser: String,
 	walletAddressArtist: String,
+	walletAddressExternal: String,
 	totalAmt: Number,
 	charityAmt: Number,
 	NFTPrice: Number,

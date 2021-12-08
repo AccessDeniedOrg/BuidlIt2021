@@ -10,6 +10,7 @@ const donationRouter = require("./routes/charities");
 const artistRouter = require("./routes/artist");
 const onboardingRouter = require("./routes/Stripe/onboarding");
 const paymentRouter = require("./routes/Stripe/payment");
+const decoupleNFTRouter = require("./routes/decouple");
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/auth", router.route);
 app.use("/api/donation", donationRouter.route);
 // app.use("/api/transactions", transactionRouter.route);
 app.use("/api/artist", artistRouter.route);
+app.use("/api/transfer-externally", decoupleNFTRouter.route);
 app.use("/api/stripe-onBoarding", onboardingRouter.route);
 app.use("/api/stripe-payment", paymentRouter.route);
 

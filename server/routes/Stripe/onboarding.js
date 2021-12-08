@@ -2,7 +2,6 @@ const express = require("express");
 
 const {
 	onBoarding,
-	accountCreation,
 	chargesEnabled,
 } = require("../../controllers/Stripe/onboarding");
 
