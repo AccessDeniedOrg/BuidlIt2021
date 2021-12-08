@@ -1,10 +1,10 @@
 const express = require("express");
 const {
 	getAllCharities,
-	addCharity,
+	pendingCharity,
+	addPendingCharity,
 	updateCharity,
 	deleteCharity,
-	updateAfterNFTTransfer,
 	getTotalFundRaised,
 } = require("../controllers/charities");
 
@@ -12,11 +12,9 @@ const router = express.Router();
 
 //Get All charities
 router.get("/all-charities", getAllCharities);
+router.post("/pendingCharity", pendingCharity);
 
-//Update charity NFT
-router.post("/update-charity", updateAfterNFTTransfer);
-
-router.post("/addCharity", addCharity);
+router.post("/addPendingCharity", addPendingCharity);
 
 router.post("/updateCharity", updateCharity);
 

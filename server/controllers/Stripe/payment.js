@@ -5,7 +5,7 @@ const UploadArt = require("../../models/uploadArt");
 const Charities = require("../../models/charities");
 const donationTransaction = require("../../models/transactions");
 const UserNft = require("../../models/userNft");
-const { transferNFT } = require('../polygon')
+const { transferNFT } = require("../polygon");
 const User = require("../../models/user");
 
 // Create a PaymentIntent:
@@ -206,10 +206,16 @@ const tranferNFtOwnership = async (req, res) => {
 			User.findOne(
 				{ walletAddress: userWalletAddress },
 				async function (err, userData) {
-
-					donationTransaction.findOne({ transactionId: transactionId }, async function (err, transactionData) {
-						await transferNFT(transactionData.walletAddressArtist, userWalletAddress, data.tokenId)
-					});
+					donationTransaction.findOne(
+						{ transactionId: transactionId },
+						async function (err, transactionData) {
+							await transferNFT(
+								transactionData.walletAddressArtist,
+								userWalletAddress,
+								data.tokenId
+							);
+						}
+					);
 
 					newNFTOwner = new UserNft({
 						artName: data.artName,
