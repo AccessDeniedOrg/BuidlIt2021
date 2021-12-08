@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import transactions from "../../../assets/images/transactions.gif";
-import axios from "axios";
+//import axios from "axios";
 
 const Transactions = () => {
-	const [nfts, setNfts] = useState({});
+	//const [nfts, setNfts] = useState({});
 
 	// useEffect(() => {
 	// 	axios.post();

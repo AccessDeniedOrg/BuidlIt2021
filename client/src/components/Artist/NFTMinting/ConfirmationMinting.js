@@ -31,7 +31,7 @@ const ConfirmationMinting = (props) => {
                 price: props.price,
                 IPFShash: hash,
                 artistName: window.localStorage.getItem("username"),
-                tokenId: ""
+                artistWalletAddress: window.localStorage.getItem("walletaddress")
             }).then((res) => {
                 if (res.data.msg === "success") {
                     setModalStage("mintingSuccess")

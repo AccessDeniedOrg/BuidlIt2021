@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Modal, Form, Spinner } from "react-bootstrap";
+import { Modal, Form } from "react-bootstrap";
 
 const EditNFTModal = (props) => {
 
