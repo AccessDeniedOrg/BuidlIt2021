@@ -51,7 +51,7 @@ const pendingCharity = async (req, res) => {
 				`;
 
 	await sendMail(
-		"sanchi.shirur4@gmail.com",
+		"accessdeniedbuidl@gmail.com",
 		"GranteStudio",
 		emailBody,
 		"New Charity Request"
@@ -82,7 +82,7 @@ const addPendingCharity = async (req, res) => {
 				msg: "There was an error in adding the Charity",
 			});
 		} else {
-			res.send({
+			console.log({
 				status: "success",
 				msg: "Charity Added Successfully ",
 			});
@@ -90,17 +90,47 @@ const addPendingCharity = async (req, res) => {
 	});
 
 	PendingCharities.deleteOne({ email: email }, async function (err, data) {
-		if (err) console.log("Could not be deleted");
+		if (err) res.send("Could not be deleted");
 		else console.log("successfully deleted");
+	});
+
+	const emailBody = `
+				<div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
+					<p style="font-weight: bold;" >Hello ${name},</p>
+					<p>Congratualtions! your charity had been verified by our team and you are eligible to be listed on GrantéStudio.<br/>
+					Please reply to this email with an affirmative, after which you will be sent an onboarding link that will expire in 2-3 mins. </p>		
+					<br/>
+					<p>Regards, <br/>GrantéStudio</p>		
+				</div>
+				`;
+
+	await sendMail(email, "GranteStudio", emailBody, "New Charity Request");
+	res.send({
+		status: "success",
+		msg: "Charity Added Successfully ",
 	});
 };
 
 // declinePendingCharity
 const declinePendingCharity = async (req, res) => {
-	const { email } = req.charity;
+	const { email, name } = req.charity;
 	PendingCharities.deleteOne({ email: email }, async function (err, data) {
-		if (err) console.log("Could not be deleted");
+		if (err) res.send("Could not be deleted");
 		else console.log("successfully deleted");
+	});
+	const emailBody = `
+	<div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
+		<p style="font-weight: bold;" >Hello ${name},</p>
+		<p>We are sorry to inform you that your campaign is not eligible to be listed on GrantéStudio. For further details kindly check our Terms & Conditions for listing charities</p>
+		<br/>
+		<p>Regards, <br/>GrantéStudio</p>		
+	</div>
+	`;
+
+	await sendMail(email, "GranteStudio", emailBody, "New Charity Request");
+	res.send({
+		status: "success",
+		msg: "Charity Added Successfully ",
 	});
 };
 
@@ -156,6 +186,7 @@ const deleteCharity = async (req, res) => {
 	);
 };
 
+// Get fund raised
 const getTotalFundRaised = async (req, res) => {
 	Charities.find((err, docs) => {
 		if (err) {
