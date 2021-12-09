@@ -9,6 +9,8 @@ import Expired from "./Extras/Expired";
 import Client from "./User/Client";
 import Admin from "./Admin/Admin";
 import Artist from "./Artist/Artist";
+import Listing from "./Charity/Listing"
+import GranteList from "./Charity/GranteList"
 import Login from "./Login/Login";
 import ArtistLogin from "./Login/ArtistLogin";
 import "../assets/css/font.css";
@@ -79,6 +81,12 @@ const App = () => {
 							</Route>
 							<Route path="/successDecouple/:transactionId">
 								<SuccessDecouple />
+							</Route>
+							<Route path="/listing">
+								<Listing />
+							</Route>
+							<Route path="/viewlist">
+								<GranteList />
 							</Route>
 						</Switch>
 					</Router>

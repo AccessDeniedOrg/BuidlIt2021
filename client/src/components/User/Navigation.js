@@ -88,7 +88,7 @@ const Navigation = (props) => {
                         onClick={handleUserLogin}
                         className="nav-item-color"
                     >
-                        Login For Donation
+                        Login
                     </Nav.Link>
                     <Nav.Link
                         onClick={handleArtistLogin}
@@ -119,6 +119,12 @@ const Navigation = (props) => {
                             </Nav.Link>
                             <Nav.Link href={`${props.url}/donate`} className="nav-item-color">
                                 Donate
+                            </Nav.Link>
+                            <Nav.Link href="/listing" className="nav-item-color">
+                                Listing
+                            </Nav.Link>
+                            <Nav.Link href="/viewlist" className="nav-item-color">
+                                GrantéList
                             </Nav.Link>
                             {renderNavContent()}
                         </Nav>
