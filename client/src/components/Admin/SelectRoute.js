@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import forbidden from "../../assets/images/nothingHere.gif";
 import { useParams } from "react-router-dom";
-import Test from "./Test";
+import AddCharity from "./AddCharity/AddCharity";
+import EditCharity from "./EditCharity/EditCharity";
 import Profile from "./Profile/Profile";
 
 const SelectRoute = (props) => {
@@ -22,11 +23,11 @@ const SelectRoute = (props) => {
 		if (authenticated) {
 			switch (selectedRoute) {
 				case "addCharity": {
-					page = <Test />;
+					page = <AddCharity />;
 					break;
 				}
 				case "editCharity": {
-					page = <Test />;
+					page = <EditCharity />;
 					break;
 				}
 				case "profile": {

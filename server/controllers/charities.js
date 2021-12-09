@@ -1,11 +1,21 @@
-const mongoose = require("mongoose");
 const Charities = require("../models/charities");
 const PendingCharities = require("../models/pendingCharities");
 const { sendMail } = require("./sendEmail");
 
-// Get All charaties
+// Get Accepted charaties
 const getAllCharities = async (req, res) => {
 	Charities.find((err, docs) => {
+		if (err) {
+			res.send({ msg: "fail" });
+		} else {
+			res.send({ status: "success", data: docs });
+		}
+	});
+};
+
+// Get Pending charaties
+const getPendingCharities = async (req, res) => {
+	PendingCharities.find((err, docs) => {
 		if (err) {
 			res.send("Error in retrieving docs ");
 		} else {
@@ -16,7 +26,8 @@ const getAllCharities = async (req, res) => {
 
 // Add charity
 const pendingCharity = async (req, res) => {
-	const { logo, description, name, email, target, title, proofLink } = req.body;
+	const { logo, description, name, email, target, title, end_date, proofLink } =
+		req.body;
 
 	var newCharity = new PendingCharities({
 		logo: logo,
@@ -25,6 +36,9 @@ const pendingCharity = async (req, res) => {
 		email: email,
 		target: target,
 		title: title,
+		num_of_donors: 0,
+		target_collected: 0,
+		end_date: end_date,
 		proofLink: proofLink,
 	});
 
@@ -50,12 +64,12 @@ const pendingCharity = async (req, res) => {
 				</div>
 				`;
 
-	await sendMail(
-		"accessdeniedbuidl@gmail.com",
-		"GranteStudio",
-		emailBody,
-		"New Charity Request"
-	);
+	// await sendMail(
+	// 	"accessdeniedbuidl@gmail.com",
+	// 	"GranteStudio",
+	// 	emailBody,
+	// 	"New Charity Request"
+	// );
 	res.send({
 		status: "success",
 		msg: "Charity Added Successfully ",
@@ -64,56 +78,66 @@ const pendingCharity = async (req, res) => {
 
 // Add charity to db
 const addPendingCharity = async (req, res) => {
-	const { logo, description, name, email, target, title } = req.body;
+	const { logo, description, name, email, target, title, end_date } = req.body;
+	console.log(req.body);
 
-	var newCharity = new Charities({
-		logo: logo,
-		description: description,
-		name: name,
-		email: email,
-		target: target,
-		title: title,
-	});
-
-	newCharity.save(function (err, Charity) {
-		if (err) {
-			res.send({
-				status: "error",
-				msg: "There was an error in adding the Charity",
+	Charities.findOne({ email: email }, async (err, data) => {
+		if (!data) {
+			var newCharity = new Charities({
+				logo: logo,
+				description: description,
+				name: name,
+				email: email,
+				target: target,
+				title: title,
+				target_collected: 0,
+				num_of_donors: 0,
+				end_date: end_date,
 			});
-		} else {
-			console.log({
+
+			newCharity.save(function (err, Charity) {
+				if (err) {
+					res.send({
+						status: "error",
+						msg: "There was an error in adding the Charity",
+					});
+				} else {
+					console.log({
+						status: "success",
+						msg: "Charity Added Successfully ",
+					});
+				}
+			});
+
+			PendingCharities.deleteOne({ email: email }, async function (err, data) {
+				if (err) res.send("Could not be deleted");
+				else console.log("successfully deleted");
+			});
+
+			const emailBody = `
+						<div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
+							<p style="font-weight: bold;" >Hello ${name},</p>
+							<p>Congratualtions! your charity had been verified by our team and you are eligible to be listed on GrantéStudio.<br/>
+							Please reply to this email with an affirmative, after which you will be sent an onboarding link that will expire in 2-3 mins. </p>		
+							<br/>
+							<p>Regards, <br/>GrantéStudio</p>		
+						</div>
+						`;
+
+			//await sendMail(email, "GranteStudio", emailBody, "New Charity Request");
+			res.send({
 				status: "success",
 				msg: "Charity Added Successfully ",
 			});
+		} else {
+			res.send({ msg: "Charity already exists" });
 		}
-	});
-
-	PendingCharities.deleteOne({ email: email }, async function (err, data) {
-		if (err) res.send("Could not be deleted");
-		else console.log("successfully deleted");
-	});
-
-	const emailBody = `
-				<div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
-					<p style="font-weight: bold;" >Hello ${name},</p>
-					<p>Congratualtions! your charity had been verified by our team and you are eligible to be listed on GrantéStudio.<br/>
-					Please reply to this email with an affirmative, after which you will be sent an onboarding link that will expire in 2-3 mins. </p>		
-					<br/>
-					<p>Regards, <br/>GrantéStudio</p>		
-				</div>
-				`;
-
-	await sendMail(email, "GranteStudio", emailBody, "New Charity Request");
-	res.send({
-		status: "success",
-		msg: "Charity Added Successfully ",
 	});
 };
 
 // declinePendingCharity
 const declinePendingCharity = async (req, res) => {
-	const { email, name } = req.charity;
+	const { email, name } = req.body;
 	PendingCharities.deleteOne({ email: email }, async function (err, data) {
 		if (err) res.send("Could not be deleted");
 		else console.log("successfully deleted");
@@ -127,7 +151,7 @@ const declinePendingCharity = async (req, res) => {
 	</div>
 	`;
 
-	await sendMail(email, "GranteStudio", emailBody, "New Charity Request");
+	//await sendMail(email, "GranteStudio", emailBody, "New Charity Request");
 	res.send({
 		status: "success",
 		msg: "Charity Added Successfully ",
@@ -168,7 +192,7 @@ const updateCharity = async (req, res) => {
 
 // Delete charity from database
 const deleteCharity = async (req, res) => {
-	const id = req.body._id;
+	const { email } = req.body;
 	Charities.deleteOne(
 		{
 			email: email,
@@ -203,6 +227,7 @@ const getTotalFundRaised = async (req, res) => {
 
 module.exports = {
 	getAllCharities,
+	getPendingCharities,
 	pendingCharity,
 	addPendingCharity,
 	declinePendingCharity,

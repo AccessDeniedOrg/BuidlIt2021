@@ -10,6 +10,7 @@ var Schema = mongoose.Schema;
 	num_of_donors: Number,
 	target: Number,
 	target_collected: Number,
+	end_date: Number,
 	title: String,
 	accountId: String,
 })),

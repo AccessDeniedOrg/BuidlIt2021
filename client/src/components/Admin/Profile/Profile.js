@@ -6,27 +6,25 @@ import { Spinner } from "react-bootstrap";
 import "./css/Profile.css";
 
 const Profile = () => {
-	const [earnings, setEarnings] = useState(0);
+	const [collected, setCollected] = useState(0);
+	const [ongoing, setOngoing] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		const getEarnings = async () => {
-			axios
-				.post(`${process.env.REACT_APP_BACKEND_API}/artist/getArtistEarnings`, {
-					walletAddressArtist: window.localStorage.getItem("walletaddress"),
-				})
-				.then((res) => {
-					console.log(res.data.sum);
-					setEarnings(res.data.sum);
-					setIsLoading(false);
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		};
-
-		getEarnings();
-	}, []);
+		axios
+			.get(`${process.env.REACT_APP_BACKEND_API}/donation/getTotalFundRaised`)
+			.then((res) => {
+				setCollected(res.data.total);
+				axios
+					.get(`${process.env.REACT_APP_BACKEND_API}/donation/all-charities`)
+					.then((response) => {
+						const arr = response.data.data;
+						console.log(arr.length);
+						setOngoing(arr.length);
+					});
+			});
+		setIsLoading(false);
+	}, [collected]);
 
 	const renderProfile = () => {
 		if (isLoading) {
@@ -111,7 +109,7 @@ const Profile = () => {
 													style={{ marginRight: "95px" }}
 													className="me-profile-data-right"
 												>
-													<p>${earnings}</p>
+													<p>${collected}</p>
 												</div>
 											</li>
 											<li>
@@ -124,9 +122,7 @@ const Profile = () => {
 													style={{ marginRight: "0" }}
 													className="me-profile-data-right"
 												>
-													<p className="me-profile-data-right">
-														{window.localStorage.getItem("walletaddress")}
-													</p>
+													<p className="me-profile-data-right">{ongoing}</p>
 												</div>
 											</li>
 										</ul>
