@@ -6,9 +6,10 @@ import { Spinner } from "react-bootstrap";
 
 const MyTransactions = () => {
     const [isLoading, setIsLoading] = useState(true)
-    const [donations, setDonations] = useState([]);
+    const [fiatTransactions, setFiatTransactions] = useState([])
+    const [nftTransactions, setNftTransactions] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(8);
+    const [postsPerPage] = useState(6);
     const [toggleState, setToggleState] = useState(1);
 
 
@@ -16,13 +17,32 @@ const MyTransactions = () => {
 
         const getTransactions = async () => {
             console.log(window.localStorage.getItem("email"))
-            await axios.post(`${process.env.REACT_APP_BACKEND_API}/transactions/get-donations`, {
-                email: window.localStorage.getItem("email")
+            await axios.post(`${process.env.REACT_APP_BACKEND_API}/transactions/getTransactions`, {
+                role: "user",
+                walletAddress: window.localStorage.getItem("walletaddress")
             }
             )
                 .then((res) => {
-                    console.log(res.data)
-                    setDonations(res.data.data);
+                    console.log(res.data.data)
+                    const allTransactions = res.data.data.slice(0).reverse()
+                    setNftTransactions(
+                        allTransactions.filter((transaction) => {
+                            if (transaction.type === "Donation") {
+                                if (transaction.NFTPrice === 0) {
+                                    return false
+                                }
+                            }
+                            return true
+                        }))
+                    setFiatTransactions(
+                        allTransactions.filter((transaction) => {
+                            if (transaction.type === "Decoupling") {
+                                return false
+                            }
+                            return true
+                        })
+                    )
+
                 })
                 .catch((error) => {
                     console.log(error.response.data);
@@ -35,10 +55,15 @@ const MyTransactions = () => {
 
     }, []);
 
+    const toggleTab = (index) => {
+        setToggleState(index);
+    };
+
     // Get current posts
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentTranscations = donations.slice(indexOfFirstPost, indexOfLastPost);
+    const currentFiatTransactions = fiatTransactions.slice(indexOfFirstPost, indexOfLastPost)
+    const currentNftTransactions = nftTransactions.slice(indexOfFirstPost, indexOfLastPost)
 
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -59,64 +84,142 @@ const MyTransactions = () => {
         } else {
             return (
                 <>
-
-                    {currentTranscations.length === 0 ? (
-                        <div style={{ backgroundColor: "#ffded1", paddingTop: "25px", paddingBottom: "20px", borderRadius: "15px 15px 0 0" }} className="text-center">
-                            <h3><strong>Your Transactions</strong></h3>
-                            {/* <hr /> */}
-                            <h3
-                                style={{
-                                    position: "absolute",
-                                    left: "20%",
-                                    top: "50%",
-                                    color: "gray",
-                                    fontSize: "22px"
-                                }}
+                    <div style={{ marginTop: "10px" }} className="container">
+                        <div className="bloc-tabs">
+                            <button
+                                className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
+                                onClick={() => toggleTab(1)}
                             >
-                                You do not have any transactions
-                            </h3>
+                                DONATIONS
+                            </button>
+                            <button
+                                className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
+                                onClick={() => toggleTab(2)}
+                            >
+                                NFT TRANSACTIONS
+                            </button>
                         </div>
-                    ) : (
-                        <div className="table table-responsive">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>To/From</th>
-                                        <th>Amount</th>
-                                        <th>Timestamp</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {currentTranscations.map((transaction) => {
-                                        var now = new Date(transaction.timestamp);
-                                        now.setSeconds(0, 0);
-                                        var stamp = now.toLocaleString([], { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                                        return (
-                                            <tr key={transaction.id}>
-                                                <td>
-                                                    {transaction.recepient}
-                                                </td>
-                                                <td>{transaction.amount}</td>
-                                                <td>{stamp}</td>
-                                            </tr>
+
+                        <div className="content-tabs">
+                            <div
+                                className={toggleState === 1 ? "content  active-content" : "content"}
+                            >
+                                {
+                                    fiatTransactions.length === 0
+                                        ? (
+                                            <div style={{ color: "gray", fontSize: "18px", marginTop: "50%" }} className="text-center">
+                                                You have not made any donations.
+                                            </div>
                                         )
-                                    }
-                                    )}
+                                        : (
+                                            <div className="table table-responsive">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>To</th>
+                                                            <th>Amount</th>
+                                                            <th>Timestamp</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {currentFiatTransactions.map((transaction) => {
+                                                            var now = new Date(transaction.timestamp);
+                                                            now.setSeconds(0, 0);
+                                                            var stamp = now.toLocaleString([], { year: 'numeric', month: 'numeric', day: 'numeric' });
+                                                            return (
+                                                                <tr key={transaction._id}>
+                                                                    <td>
+                                                                        {transaction.charityName}
+                                                                    </td>
+                                                                    <td>${transaction.charityAmt}</td>
+                                                                    <td>{stamp}</td>
+                                                                </tr>
+                                                            )
+                                                        }
+                                                        )}
 
-                                </tbody>
-                            </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )
+                                }
+
+                                <div style={{ marginLeft: "45%" }}>
+                                    <Pagination
+                                        postsPerPage={postsPerPage}
+                                        totalPosts={fiatTransactions.length}
+                                        paginate={paginate}
+                                    />
+                                </div>
+                            </div>
+
+                            <div
+                                className={toggleState === 2 ? "content  active-content" : "content"}
+                            >
+                                {
+                                    nftTransactions.length === 0
+                                        ? (
+                                            <div style={{ color: "gray", fontSize: "18px", marginTop: "50%" }} className="text-center">
+                                                You have no NFT transactions.
+                                            </div>
+                                        )
+                                        : (
+                                            <div className="table table-responsive">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>To/From</th>
+                                                            <th>Type</th>
+                                                            <th>Amount</th>
+                                                            <th>Timestamp</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {currentNftTransactions.map((transaction) => {
+                                                            let truncatedAddress, type, price
+                                                            if (transaction.type === "Donation") {
+                                                                const artistAddress = transaction.walletAddressArtist;
+                                                                truncatedAddress = artistAddress.substring(0, 9) + "..." + artistAddress.substring(31, 41);
+                                                                type = "DON"
+                                                                price = "$" + (transaction.NFTPrice).toString()
+                                                            } else {
+                                                                const externalAddress = transaction.walletAddressExternal;
+                                                                truncatedAddress = externalAddress.substring(0, 9) + "..." + externalAddress.substring(31, 41);
+                                                                type = "DCP"
+                                                                price = "---"
+                                                            }
+                                                            var now = new Date(transaction.timestamp);
+                                                            now.setSeconds(0, 0);
+                                                            var stamp = now.toLocaleString([], { year: 'numeric', month: 'numeric', day: 'numeric' });
+                                                            return (
+                                                                <tr key={transaction._id}>
+                                                                    <td>{truncatedAddress}</td>
+                                                                    <td>{type}</td>
+                                                                    <td>{price}</td>
+                                                                    <td>{stamp}</td>
+                                                                </tr>
+                                                            )
+                                                        }
+                                                        )}
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        )
+                                }
+                                <div style={{ marginLeft: "45%" }}>
+                                    <Pagination
+                                        postsPerPage={postsPerPage}
+                                        totalPosts={nftTransactions.length}
+                                        paginate={paginate}
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    )}
-
-                    <div style={{ marginLeft: "45%" }}>
-                        <Pagination
-                            postsPerPage={postsPerPage}
-                            totalPosts={donations.length}
-                            paginate={paginate}
-                        />
                     </div>
                 </>
             )
+
         }
     }
 

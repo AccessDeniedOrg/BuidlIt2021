@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserInfo from './UserInfo'
 import MyTransactions from './MyTransactions';
 import NFTCollection from './NFTCollection';
@@ -7,6 +7,12 @@ import NFTCollection from './NFTCollection';
 const Profile = () => {
 
     const [openCollections, setOpenCollections] = useState(false)
+
+    useEffect(() => {
+        if (!window.localStorage.getItem("email") || window.localStorage.getItem("role") === "artist") {
+            window.location.href = "/error-404";
+        }
+    }, []);
 
     const handleGoToCollection = () => {
         setOpenCollections(true)

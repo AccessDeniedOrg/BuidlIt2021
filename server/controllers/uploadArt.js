@@ -84,13 +84,12 @@ const getArtToEdit = async (req, res) => {
 
 // Edit Art Info
 const editArtPrice = async (req, res) => {
-	const { IPFShash, price, artName } = req.body
+	const { IPFShash, price } = req.body
 	UploadArt.findOneAndUpdate(
 		{ IPFShash: IPFShash, },
 		{
 			$set: {
 				price: price,
-				artName: artName
 			},
 		},
 		(error, doc) => {

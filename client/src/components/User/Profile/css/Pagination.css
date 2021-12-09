@@ -28,18 +28,18 @@
 	margin-left: 20px;
 }
 .pagination ul.pagination li.active a {
-	color: #4273ff;
+	color: #d45f2f;
 }
 .page-numbers {
-	color: #4273ff;
+	color: #d45f2f;
 }
 .page-numbers:hover {
 	color: white;
-	background-color: #4273ff;
+	background-color: #d45f2f;
 }
 .page-numbers:active {
 	color: white;
-	background-color: #4273ff;
+	background-color: #d45f2f;
 }
 .pagination-nav {
 	position: absolute;
@@ -47,7 +47,7 @@
 	left: 140px;
 }
 .pagination .active a{
-	background-color: #4273ff !important;
+	background-color: #d45f2f !important;
 	border: none;
 }
 .pagination .active a:focus{
@@ -64,7 +64,7 @@
 }
 .pagination ul.pagination li a:hover,
 .pagination ul.pagination li a.active {
-	color: #4273ff;
+	color: #d45f2f;
 }
 
 @media (max-width: 992px) {
