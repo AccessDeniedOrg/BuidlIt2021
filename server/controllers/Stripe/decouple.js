@@ -29,6 +29,7 @@ const decouple = async (req, res) => {
                 walletAddressExternal: walletAddressExternal,
                 NFTPrice: 0,
                 IPFShash: IPFShash,
+                charityName: "",
                 charityEmail: "",
                 type: "Decoupling",
                 completed: "false",
@@ -52,7 +53,7 @@ const decouple = async (req, res) => {
                     },
                 ],
                 mode: "payment",
-                success_url: `${process.env.FRONTEND_API}/artist/successDecouple/${encrypedTransactionId}`,
+                success_url: `${process.env.FRONTEND_API}/successDecouple/${encrypedTransactionId}`,
                 cancel_url: `${process.env.FRONTEND_API}/checkout-error`,
             });
 
@@ -74,6 +75,7 @@ const decouple = async (req, res) => {
                 NFTPrice: 0,
                 IPFShash: IPFShash,
                 charityEmail: "",
+                charityName: "",
                 type: "Decoupling",
                 completed: "false",
                 timestamp: Date.now(),
@@ -84,11 +86,11 @@ const decouple = async (req, res) => {
                 else console.log(Transaction);
             });
 
-            //await decoupleNFT(address, externalWalletAddress, data.tokenId)
+            await decoupleNFT(address, walletAddressExternal, data.tokenId)
 
             //Delete from Mongo and Update transaction to completed
             userNFT.deleteOne({ IPFShash: IPFShash }, async function (err, data) {
-                if (err) console.log("Could not be deleted");
+                if (err) res.send("Could not be deleted");
                 else console.log("successfully deleted");
             });
 
@@ -98,7 +100,7 @@ const decouple = async (req, res) => {
                 async function (err, data) {
                     console.log(data.completed);
                     if (err) res.send({ msg: "Failure", err });
-                    else console.log("successfully updated");
+                    res.send({ msg: "Success" });
                 }
             );
 
@@ -108,27 +110,36 @@ const decouple = async (req, res) => {
 
 const decoupleArtistNFT = async (req, res) => {
 
-    const { transactionID, IPFShash, walletAddressExternal, address, tokenId } = req.body;
+    const { transactionID, IPFShash, walletAddressExternal, address } = req.body;
 
-    //await decoupleNFT(address, externalWalletAddress, tokenId)
+    //Get token ID from Upload Art
 
-    //Delete from Mongo and Update transaction to completed
-    userNFT.deleteOne({ IPFShash: IPFShash }, async function (err, data) {
-        if (err) console.log("Could not be deleted");
-        else console.log("successfully deleted");
-    });
-
-    donationTransaction.findOneAndUpdate(
-        { transactionId: transactionID },
-        { $set: { completed: "true" } },
-        async function (err, data) {
-            console.log(data.completed);
-            if (err) res.send({ msg: "Failure", err });
-            else console.log("successfully updated");
+    UploadArt.findOne({ IPFShash: IPFShash }, async (err, data) => {
+        if (err) {
+            res.send({ msg: "Failure", err })
         }
-    );
+        else {
+            await decoupleNFT(address, walletAddressExternal, data.tokenId)
+            //Delete from Mongo and Update transaction to completed
+            UploadArt.deleteOne({ IPFShash: IPFShash }, async function (err, nftData) {
+                if (err) console.log("Could not be deleted");
+                else console.log("successfully deleted");
+            });
+
+            donationTransaction.findOneAndUpdate(
+                { transactionId: transactionID },
+                { $set: { completed: "true" } },
+                async function (err, transactionData) {
+                    console.log(transactionData.completed);
+                    if (err) res.send({ msg: "Failure", err });
+                    else res.send({ msg: "Success", tokenId: data.tokenId });
+                }
+            );
+        }
+    })
 }
 
 module.exports = {
     decouple,
+    decoupleArtistNFT
 };

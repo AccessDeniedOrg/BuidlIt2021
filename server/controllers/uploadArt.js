@@ -22,39 +22,44 @@ const addArt = async (req, res) => {
 		if (data) {
 			res.send({ msg: "NFT for this file has already been minted" })
 		}
-	})
-	UploadArt.findOne({ IPFShash: IPFShash }, async function (err, data) {
-		if (!data) {
+		else {
 
-			//Blockchain Minting
-			const metadata = JSON.stringify({
-				name: artName,
-				description: `NFT for ${artName}`,
-				image: `https://ipfs.io/ipfs/${IPFShash}`
+			UploadArt.findOne({ IPFShash: IPFShash }, async function (err, data) {
+				if (!data) {
+
+					//Blockchain Minting
+					const metadata = JSON.stringify({
+						name: artName,
+						description: `NFT for ${artName}`,
+						image: `https://ipfs.io/ipfs/${IPFShash}`
+					})
+
+					const { tokenIdBlockchain } = await mintNFT(metadata, artistWalletAddress)
+
+					console.log(`Token Id of minted NFT is ${tokenIdBlockchain}`)
+
+					let newNFT = new UploadArt({
+						email: email,
+						artName: artName,
+						artistName: artistName,
+						price: price,
+						IPFShash: IPFShash,
+						tokenId: tokenIdBlockchain,
+					});
+
+					newNFT.save(function (err, NFT) {
+						if (err) res.send(err);
+						else res.status(200).send({ msg: "success" });
+					});
+				}
+				else {
+					res.send({ msg: "NFT for this file has already been minted" })
+				}
 			})
 
-			const { tokenIdBlockchain } = await mintNFT(metadata, artistWalletAddress)
-
-			console.log(`Token Id of minted NFT is ${tokenIdBlockchain}`)
-
-			let newNFT = new UploadArt({
-				email: email,
-				artName: artName,
-				artistName: artistName,
-				price: price,
-				IPFShash: IPFShash,
-				tokenId: tokenIdBlockchain,
-			});
-
-			newNFT.save(function (err, NFT) {
-				if (err) res.send(err);
-				else res.status(200).send({ msg: "success" });
-			});
-		}
-		else {
-			res.send({ msg: "NFT for this file has already been minted" })
 		}
 	})
+
 
 };
 

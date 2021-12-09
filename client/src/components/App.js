@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Error404 from "./Extras/Error404";
 import CheckoutError from "./Extras/CheckoutError";
 import Success from "./Extras/Success";
+import SuccessDecouple from "./Decoupling/SuccessDecouple";
 import OnboardingError from "./Extras/OnboardingError";
 import Expired from "./Extras/Expired";
 import Client from "./User/Client";
@@ -72,6 +73,9 @@ const App = () => {
 					</Route>
 					<Route path="/expired">
 						<Expired />
+					</Route>
+					<Route path="/successDecouple/:transactionId">
+						<SuccessDecouple />
 					</Route>
 				</Switch>
 			</Router>

@@ -85,6 +85,7 @@ const CheckoutPage = (props) => {
             "NFTPrice": NFTPrice,
             "walletAddressUser": window.localStorage.getItem("walletaddress"),
             "IPFShash": IPFShash,
+            "charityName": props.charity.name,
             "charityEmail": props.charity.email,
             "type": "Donation"
         }).then((res) => {

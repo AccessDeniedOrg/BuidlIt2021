@@ -1,64 +1,113 @@
 import React, { useState } from "react";
 import axios from 'axios'
-import { Modal, Spinner } from 'react-bootstrap';
+import { Modal, Spinner, Form } from 'react-bootstrap';
+import { keccak256 } from 'js-sha3';
 
 const DecoupleModelConfirmation = (props) => {
 
     const [modalStage, setModalStage] = useState("confirm")
-    const [errorMessage, setErrorMessage] = useState("")
+    const [externalWalletAddress, setExternalWalletAddress] = useState("")
+    const [error, setError] = useState("")
 
     const executeDecoupling = async () => {
         setModalStage("decoupling")
-        await axios(request).then(async (res) => {
-            setModalStage("storing")
-            let hash = res.data.IpfsHash
-            await axios.post(`${process.env.REACT_APP_BACKEND_API}/artist/addArt`, {
-                artName: props.artName,
-                email: window.localStorage.getItem("email"),
-                price: props.price,
-                IPFShash: hash,
-                artistName: window.localStorage.getItem("username"),
-                artistWalletAddress: window.localStorage.getItem("walletaddress")
-            }).then((res) => {
-                if (res.data.msg === "success") {
-                    setModalStage("mintingSuccess")
+        await axios.post(`${process.env.REACT_APP_BACKEND_API}/transfer-externally/decoupleNFT`, {
+            role: props.role,
+            IPFShash: props.selectedNft.IPFShash,
+            walletAddressExternal: externalWalletAddress,
+            address: window.localStorage.getItem("walletaddress")
+        }).then((res) => {
+            console.log(res)
+            if (props.role === "artist") {
+                window.location.href = res.data
+            } else {
+                if (res.data.msg === "Success") {
+                    setModalStage("decouplingSuccess")
                 } else {
-                    setErrorMessage(res.data.msg)
-                    setModalStage("mintingFailed")
+                    setModalStage("decouplingFailed")
                 }
-            }).catch((err) => {
-                console.log(err.response.data)
-            })
-
+            }
         }).catch((err) => {
             console.log(err.response.data)
+            setModalStage("decouplingFailed")
         })
 
     }
 
 
     const handleCloseDecoupleConfirmation = () => {
-        setModalStage("warning")
+        setExternalWalletAddress("")
+        setError("")
+        setModalStage("confirm")
         props.handleCloseDecoupleConfirmation()
     }
 
+    const isAddress = (address) => {
+        if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+            return false;
+        } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+            return true;
+        } else {
+            return isChecksumAddress(address);
+        }
+    };
+
+    const isChecksumAddress = (address) => {
+        address = address.replace('0x', '');
+        var addressHash = keccak256(address.toLowerCase());
+        for (var i = 0; i < 40; i++) {
+            if ((parseInt(addressHash[i], 16) > 7 && address[i].toUpperCase() !== address[i]) || (parseInt(addressHash[i], 16) <= 7 && address[i].toLowerCase() !== address[i])) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const handleGoToWarning = () => {
+        if (isAddress(externalWalletAddress)) {
+            setModalStage("warning")
+        } else {
+            setError("Invalid Ethereum Address")
+        }
+    }
+
     const handleGoToNFTCollection = (e) => {
-        handleCloseDecoupleConfirmation()
-        window.location.href = `/artist/nftcollection`
+        e.preventDefault()
+        window.location.href = "/client/profile"
+    }
+
+    const handleGoToOpensea = (e) => {
+        e.preventDefault()
+        window.open(`https://testnets.opensea.io/assets/mumbai/0x8ab29cbe00d147d50fe030d9e8fdac8ea7766eb3/${props.selectedNft.tokenId}`, '_blank')
     }
 
     const renderModalContent = () => {
 
         if (modalStage === "confirm") {
+            console.log(props.selectedNft)
             return (
                 <>
-                    <p>Please click on 'Confirm Decouple' to start decoupling your NFT from GrantéStudio.</p>
-                    <button onClick={executeDecoupling} className="me-btn" style={{ float: 'left' }}>
-                        Confirm Minting
-                    </button>
-                    <button onClick={handleCloseDecoupleConfirmation} className="me-btn" style={{ float: 'right' }}>
-                        Cancel
-                    </button>
+                    <div className="container">
+                        <p>This option completely decouples '<em>{`${props.selectedNft.artName}`}</em>' from GrantéStudio.</p>
+                        <Form>
+                            <Form.Group className="mb-3">
+                                <Form.Control
+                                    type="text"
+                                    value={externalWalletAddress}
+                                    onChange={(e) => setExternalWalletAddress(e.target.value)}
+                                    placeholder="Enter External Address"
+                                />
+                                <div className="error-msg">{error}</div>
+                            </Form.Group>
+                        </Form>
+                        <p>Please click on 'Proceed' to start decoupling your NFT from GrantéStudio.</p>
+                        <button onClick={handleGoToWarning} className="me-btn" style={{ float: 'left' }}>
+                            Proceed
+                        </button>
+                        <button onClick={handleCloseDecoupleConfirmation} className="me-btn" style={{ float: 'right' }}>
+                            Cancel
+                        </button>
+                    </div>
                 </>
             )
 
@@ -66,20 +115,22 @@ const DecoupleModelConfirmation = (props) => {
         else if (modalStage === "warning") {
             return (
                 <>
-                    <p>Warning!<br />Once you click "Go Ahead" your NFT will be deleted from GrantéStudio</p>
-                    <button onClick={executeDecoupling} className="me-btn" style={{ float: 'left' }}>
-                        Confirm Minting
-                    </button>
-                    <button onClick={handleCloseDecoupleConfirmation} className="me-btn" style={{ float: 'right' }}>
-                        Cancel
-                    </button>
+                    <div className="container text-center">
+                        <p>Warning!<br />Once you click "Go Ahead" your NFT will be deleted from GrantéStudio. This step cannot be reverted.</p>
+                        <button onClick={handleCloseDecoupleConfirmation} className="me-btn" style={{ float: 'right' }}>
+                            Cancel
+                        </button>
+                        <button onClick={executeDecoupling} className="me-btn" style={{ float: 'left' }}>
+                            Go Ahead
+                        </button>
+                    </div>
                 </>
             )
         }
         else {
             let message;
             if (modalStage === "decoupling") {
-                message = "Pinning to IPFS..."
+                message = "Decoupling Your NFT..."
             }
             else if (modalStage === "decouplingSuccess") {
                 message = "Your NFT has been decoupled successfully!"
@@ -109,7 +160,7 @@ const DecoupleModelConfirmation = (props) => {
                                 ? (
                                     <>
                                         <div style={{ color: "red" }}>
-                                            <p>{message}<br />{errorMessage}</p>
+                                            <p>{message}</p>
                                         </div>
                                         <button onClick={handleCloseDecoupleConfirmation} className="me-btn">
                                             Go Back To NFT Collection
@@ -122,7 +173,10 @@ const DecoupleModelConfirmation = (props) => {
                                             <p>{message}</p>
                                             <br />
                                         </div>
-                                        <button onClick={handleGoToOpensea} className="me-btn">
+                                        <button onClick={handleGoToNFTCollection} style={{ float: "left" }} className="me-btn">
+                                            Go To Profile
+                                        </button>
+                                        <button onClick={handleGoToOpensea} style={{ float: "right" }} className="me-btn">
                                             View Your Decoupled NFT on OpenSea
                                         </button>
                                     </>

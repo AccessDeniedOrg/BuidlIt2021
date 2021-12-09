@@ -67,7 +67,7 @@ const DonationPage = (props) => {
             )
         } else {
             return (
-                <div style={{ marginTop: "140px" }}>
+                <div style={{ marginTop: "140px", marginBottom: "100px" }}>
                     {charities.map((ele, index) => {
                         let days_left
                         let percentCompleted = ((parseFloat(ele.target_collected) / parseFloat(ele.target)) * 100).toFixed(2)

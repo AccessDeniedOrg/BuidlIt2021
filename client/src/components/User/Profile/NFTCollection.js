@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import DecoupleModelConfirmation from '../../Decoupling/DecoupleModelConfirmation';
 import noNFTCollection from "../../../assets/images/noNFTCollection.gif";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 import { Card, Spinner } from "react-bootstrap"
@@ -9,6 +10,8 @@ const NFTCollection = (props) => {
 
     const [nfts, setNfts] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+    const [openDecoupleConfirmation, setOpenDecoupleConfirmation] = useState(false)
+    const [selectedNft, setSelectedNft] = useState({})
 
     useEffect(() => {
         const getNFTs = async () => {
@@ -26,6 +29,16 @@ const NFTCollection = (props) => {
         getNFTs()
 
     }, [])
+
+    const handleNFTDecouple = (index) => {
+        console.log(nfts[index])
+        setSelectedNft(nfts[index])
+        setOpenDecoupleConfirmation(true)
+    }
+
+    const handleCloseDecoupleConfirmation = () => {
+        setOpenDecoupleConfirmation(false)
+    }
 
     const displayUserNFTS = () => {
         if (isLoading) {
@@ -46,8 +59,14 @@ const NFTCollection = (props) => {
             )
         } else {
             if (nfts.length !== 0) {
+                let addedStyle = {}
+                if (nfts.length < 4) {
+                    addedStyle = { marginBottom: "100px" }
+                } else {
+                    addedStyle = { marginBottom: "60px" }
+                }
                 return (
-                    <div className="row" style={{ margin: "0" }}>
+                    <div className="row" style={{ margin: "0", ...addedStyle }}>
                         {nfts.map((nft, index) => {
                             return (
                                 <div
@@ -71,6 +90,7 @@ const NFTCollection = (props) => {
                                         </Card.Body>
                                         <Card.Body className="text-center">
                                             <button
+                                                onClick={() => { handleNFTDecouple(index) }}
                                                 className="me-btn"
                                                 style={{
                                                     width: "70%",
@@ -93,12 +113,12 @@ const NFTCollection = (props) => {
                 return (
                     <>
                         <div
-                            style={{ marginLeft: "8%", marginTop: "10%" }}
                             className="container text-center"
+                            style={{ marginBottom: "50px" }}
                         >
                             <div className="row">
                                 <div className="col-12">
-                                    <img width="50%" src={noNFTCollection} alt="noNFTCollection" />
+                                    <img width="35%" src={noNFTCollection} alt="noNFTCollection" />
                                 </div>
                             </div>
                             <div style={{ marginTop: "10px" }} className="row">
@@ -149,6 +169,12 @@ const NFTCollection = (props) => {
                     {displayUserNFTS()}
                 </div>
             </div>
+            <DecoupleModelConfirmation
+                role="user"
+                selectedNft={selectedNft}
+                openDecoupleConfirmation={openDecoupleConfirmation}
+                handleCloseDecoupleConfirmation={handleCloseDecoupleConfirmation}
+            />
         </>
     );
 }

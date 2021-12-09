@@ -17,6 +17,7 @@ const checkoutSession = async (req, res) => {
 		walletAddressUser,
 		IPFShash,
 		charityEmail,
+		charityName,
 		type,
 	} = req.body;
 
@@ -34,6 +35,7 @@ const checkoutSession = async (req, res) => {
 			transactionId: transactionID,
 			totalAmt: totalAmt,
 			charityAmt: charityAmt,
+			charityName: charityName,
 			walletAddressUser: walletAddressUser, //using email
 			walletAddressArtist: "", //using IpfsHash
 			NFTPrice: 0,
@@ -57,6 +59,7 @@ const checkoutSession = async (req, res) => {
 					transactionId: transactionID,
 					totalAmt: totalAmt,
 					charityAmt: charityAmt,
+					charityName: charityName,
 					walletAddressUser: walletAddressUser, //using email
 					walletAddressArtist: artist.walletAddress, //using IpfsHash
 					NFTPrice: NFTPrice,

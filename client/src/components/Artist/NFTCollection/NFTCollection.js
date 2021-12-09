@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import noNFTCollection from "../../../assets/images/noNFTCollection.gif";
+import DecoupleModelConfirmation from "../../Decoupling/DecoupleModelConfirmation";
 import EditNFTModal from "./EditNFTModal";
 import { Card, Spinner } from "react-bootstrap"
 import axios from "axios";
@@ -8,6 +9,7 @@ const NFTCollection = () => {
 	const [nfts, setNfts] = useState([]);
 	const [isLoading, setIsLoading] = useState(true)
 	const [openEditConfirmation, setOpenEditConfirmation] = useState(false)
+	const [openDecoupleConfirmation, setOpenDecoupleConfirmation] = useState(false)
 	const [selectedNft, setSelectedNft] = useState({})
 
 	useEffect(() => {
@@ -26,6 +28,15 @@ const NFTCollection = () => {
 
 		getNFTs()
 	}, [nfts]);
+
+	const handleNFTDecouple = (index) => {
+		setSelectedNft(nfts[index])
+		setOpenDecoupleConfirmation(true)
+	}
+
+	const handleCloseDecoupleConfirmation = () => {
+		setOpenDecoupleConfirmation(false)
+	}
 
 	const handleNFTEdit = async (index) => {
 		setSelectedNft(nfts[index])
@@ -87,6 +98,7 @@ const NFTCollection = () => {
 										<Card.Body className="text-center">
 											<div className="row">
 												<button
+													onClick={() => handleNFTDecouple(index)}
 													className="me-btn"
 													style={{
 														width: "50%",
@@ -166,6 +178,12 @@ const NFTCollection = () => {
 				handleCloseEditConfirmation={handleCloseEditConfirmation}
 				openEditConfirmation={openEditConfirmation}
 				selectedNft={selectedNft}
+			/>
+			<DecoupleModelConfirmation
+				role="artist"
+				selectedNft={selectedNft}
+				openDecoupleConfirmation={openDecoupleConfirmation}
+				handleCloseDecoupleConfirmation={handleCloseDecoupleConfirmation}
 			/>
 		</>
 	);

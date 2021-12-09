@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import "./css/Dashboard.css";
 
-import auth from "../../assets/images/banner.gif";
+import auth from "../../assets/images/adminImg.png";
 
 const Auth = (props) => {
 	const [passCode, setPassCode] = useState("");
@@ -73,7 +73,7 @@ const Auth = (props) => {
 							src={auth}
 							alt="Logo"
 							className="authImage"
-							style={{ width: "500px", paddingTop: "100px", float: "right" }}
+							style={{ width: "600px", paddingTop: "50px", float: "right" }}
 						/>
 					</Col>
 				</Row>

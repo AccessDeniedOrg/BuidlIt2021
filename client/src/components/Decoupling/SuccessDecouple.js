@@ -5,16 +5,17 @@ import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 var CryptoJS = require("crypto-js");
 
-const Success = () => {
+const SuccessDecouple = () => {
 
     const [stage, setStage] = useState("pending")
     const [msg, setMsg] = useState("")
+    const [tokenId, setTokenId] = useState(0)
 
     useEffect(() => {
 
         const getTransactionDetails = async () => {
             setMsg("Confirming Transactions...")
-            const ciphertext = decodeURIComponent(window.location.pathname.slice(9))
+            const ciphertext = decodeURIComponent(window.location.pathname.slice(17))
             const bytes = CryptoJS.AES.decrypt(ciphertext, process.env.REACT_APP_DECRYPT_SECRET);
             const plainText = JSON.parse(bytes.toString(CryptoJS.enc.Utf8)).transactionID
             await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-payment/getTransaction`, {
@@ -24,35 +25,21 @@ const Success = () => {
                 if (res.data.completed === "true") {
                     window.location.href = "/expired"
                 } else {
-                    setStage("transfers")
-                    setMsg("Performing Additional Transfers...")
+                    setStage("decoupling")
+                    setMsg("Decoupling NFTs...")
                     console.log(res.data)
-                    await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-payment/dualTransfer`, {
-                        charityAmt: res.data.charityAmt,
-                        NFTPrice: res.data.NFTPrice,
-                        walletAddressArtist: res.data.walletAddressArtist,
-                        charityEmail: res.data.charityEmail,
-                        transactionId: res.data.transactionId,
-                    }).then(async (dualResp) => {
-                        console.log(dualResp)
-                        if (res.data.NFTPrice === 0) {
+                    await axios.post(`${process.env.REACT_APP_BACKEND_API}/transfer-externally/decoupleArtistNFT`, {
+                        transactionID: plainText,
+                        IPFShash: res.data.IPFShash,
+                        walletAddressExternal: res.data.walletAddressExternal,
+                        address: res.data.walletAddressArtist
+                    }).then(async (decoupleResp) => {
+                        if (decoupleResp.data.msg === "Success") {
+                            setTokenId(decoupleResp.data.tokenId)
                             setStage("completed")
                         } else {
-                            //Perform Blockchain Transfer
-                            setStage("storing")
-                            setMsg("Storing NFT to collection...")
-                            await axios.post(`${process.env.REACT_APP_BACKEND_API}/stripe-payment/tranferNFtOwnership`, {
-                                userWalletAddress: res.data.walletAddressUser,
-                                IPFShash: res.data.IPFShash,
-                                transactionId: plainText
-                            }).then((storeResp) => {
-                                setStage("completed")
-                            }).catch((err) => {
-                                console.log(err)
-                                setStage("failed")
-                            })
+                            setStage("failed")
                         }
-
                     }).catch((err) => {
                         console.log(err)
                         setStage("failed")
@@ -60,6 +47,7 @@ const Success = () => {
                 }
             }).catch((err) => {
                 console.log(err)
+                setStage("failed")
             })
         }
 
@@ -70,7 +58,12 @@ const Success = () => {
 
     const handleBackToStudio = (e) => {
         e.preventDefault()
-        window.location.href = "/client/profile"
+        window.location.href = "/artist"
+    }
+
+    const handleGoToOpensea = (e) => {
+        e.preventDefault()
+        window.location.href = `https://testnets.opensea.io/assets/mumbai/0x8ab29cbe00d147d50fe030d9e8fdac8ea7766eb3/${tokenId}`
     }
 
     const renderStageContent = () => {
@@ -79,7 +72,7 @@ const Success = () => {
                 <>
                     <p style={{ fontSize: "20px", color: "red" }} className="text-center"><strong>Sorry! There was some error!</strong></p>
                     <button onClick={handleBackToStudio} className="me-btn">
-                        Go To Profile
+                        Go To Studio
                     </button>
                 </>
                 break
@@ -87,8 +80,13 @@ const Success = () => {
             case "completed": {
                 return (
                     <>
-                        <p style={{ fontSize: "20px" }} className="text-center"><strong>Hurray! Donation Completed!</strong></p>
-                        <button style={{ width: "150px", marginTop: "50px" }} onClick={handleBackToStudio} className="me-btn">Back to Profile</button>
+                        <p style={{ fontSize: "20px" }} className="text-center"><strong>Hurray! NFT has successfully decoupled!</strong></p>
+                        <button onClick={handleBackToStudio} className="me-btn">
+                            Go To Studio
+                        </button>
+                        <button onClick={handleGoToOpensea} className="me-btn">
+                            View Your Decoupled NFT on OpenSea
+                        </button>
                     </>
                 )
             }
@@ -128,4 +126,4 @@ const Success = () => {
     );
 }
 
-export default Success;
+export default SuccessDecouple;

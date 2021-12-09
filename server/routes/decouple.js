@@ -1,12 +1,14 @@
 const express = require("express");
 const {
-    decouple
+    decouple,
+    decoupleArtistNFT
 } = require("../controllers/Stripe/decouple");
 
 const router = express.Router();
 
-//Registration on after verification
 router.post("/decoupleNFT", decouple);
+
+router.post("/decoupleArtistNFT", decoupleArtistNFT);
 
 
 module.exports = {

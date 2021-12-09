@@ -9,6 +9,7 @@ const MyTransactions = () => {
     const [donations, setDonations] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(8);
+    const [toggleState, setToggleState] = useState(1);
 
 
     useEffect(() => {

@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 	transactionId: String,
 	type: String,
 	charityEmail: String,
+	charityName: String,
 	IPFShash: String,
 	walletAddressUser: String,
 	walletAddressArtist: String,

@@ -18,7 +18,7 @@ const Profile = () => {
 
     return (
         <>
-            <div style={{ marginTop: "70px" }} className="me-my-account me-padder-top me-padder-bottom">
+            <div style={{ marginTop: "70px", marginBottom: "70px" }} className="me-my-account">
                 <div className="container">
                     <div className="row">
                         {
