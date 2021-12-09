@@ -2,13 +2,13 @@ const Web3 = require('web3')
 const GranteStudioContract = require('../contract_abis/contracts/GranteStudio.json')
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const privateKey = process.env.ACCESSDENIED_WALLET_PRIVATE_KEY
-const provider = new HDWalletProvider(
-    privateKey,
-    'https://speedy-nodes-nyc.moralis.io/ec672ce43aae9065e5b9cda3/polygon/mumbai'
-)
-const web3 = new Web3(provider)
 
 const getContract = async () => {
+    const provider = new HDWalletProvider(
+        privateKey,
+        'https://speedy-nodes-nyc.moralis.io/ec672ce43aae9065e5b9cda3/polygon/mumbai'
+    )
+    const web3 = new Web3(provider)
     const id = await web3.eth.net.getId()
     const deployedNetwork = GranteStudioContract.networks[id]
     return { contract: new web3.eth.Contract(GranteStudioContract.abi, deployedNetwork.address) }

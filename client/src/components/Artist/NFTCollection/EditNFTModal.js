@@ -5,21 +5,10 @@ import { Modal, Form } from "react-bootstrap";
 const EditNFTModal = (props) => {
 
     const [errors, setErrors] = useState({})
-    const [nftData, setNftData] = useState({
-        artName: "",
-        price: ""
-    })
+    const [nftPrice, setNftPrice] = useState("")
 
     // Handler to handle state change
-    let handlerObj;
     let errorHandlerObj;
-
-    const nftDataHandler = (selectedInput) => (e) => {
-        handlerObj = { ...nftData };
-        handlerObj[selectedInput] = e.target.value;
-        setNftData({ ...handlerObj });
-        console.log(nftData);
-    };
 
     const handleEditNFT = async (e) => {
         e.preventDefault()
@@ -28,30 +17,24 @@ const EditNFTModal = (props) => {
         const validAmount = /^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/
         errorHandlerObj = {
             amountError: "",
-            nameError: ""
         }
-        if (!validAmount.test(nftData.price)) {
+        if (!validAmount.test(nftPrice)) {
             errorHandlerObj['amountError'] = "Invalid Amount"
         } else {
-            if (parseFloat(nftData.price) <= 20.00) {
+            if (parseFloat(nftPrice) <= 20.00) {
                 errorHandlerObj['amountError'] = "Amount should be more than $20.00"
             }
-            else if (parseFloat(nftData.price) >= 400.00) {
+            else if (parseFloat(nftPrice) >= 400.00) {
                 errorHandlerObj['amountError'] = "Amount should be less than $400.00"
             }
         }
-        if (nftData.artName === "") {
-            errorHandlerObj['nameError'] = "This field should not be empty."
-        }
         if (
-            errorHandlerObj['nameError'] === "" &&
             errorHandlerObj['amountError'] === ""
         ) {
             await axios
                 .post(`${process.env.REACT_APP_BACKEND_API}/artist/editArtPrice`, {
                     IPFShash: props.selectedNft.IPFShash,
-                    price: nftData.price,
-                    artName: nftData.artName
+                    price: nftPrice,
                 })
                 .then((res) => {
                     console.log(res.data.msg);
@@ -62,7 +45,7 @@ const EditNFTModal = (props) => {
                 });
         } else {
             setErrors({ ...errorHandlerObj });
-            console.log("Minting Failed");
+            console.log("Edit Failed");
             console.log(errorHandlerObj);
         }
 
@@ -70,10 +53,7 @@ const EditNFTModal = (props) => {
 
     const handleCloseEditConfirmation = () => {
         setErrors({})
-        setNftData({
-            artName: "",
-            price: ""
-        })
+        setNftPrice("")
         props.handleCloseEditConfirmation()
     }
 
@@ -94,22 +74,11 @@ const EditNFTModal = (props) => {
                 <Modal.Body>
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicNumber">
-                            <Form.Label>Art Name:</Form.Label>
-                            <Form.Control
-                                value={nftData["artName"]}
-                                onChange={nftDataHandler("artName")}
-                                placeholder="Enter New Art Name"
-                            />
-                            {
-                                errors['nameError'] === "" ? <></> : <div style={{ color: "red" }}>{errors['nameError']}</div>
-                            }
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formBasicNumber">
                             <Form.Label>Product Price:</Form.Label>
                             <Form.Control
-                                value={nftData["price"]}
-                                onChange={nftDataHandler("price")}
-                                placeholder="Enter New Art Price"
+                                value={nftPrice}
+                                onChange={(e) => { setNftPrice(e.target.value) }}
+                                placeholder="Enter New Price"
                                 type="number"
                             />
                             {

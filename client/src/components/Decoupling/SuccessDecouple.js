@@ -63,7 +63,7 @@ const SuccessDecouple = () => {
 
     const handleGoToOpensea = (e) => {
         e.preventDefault()
-        window.location.href = `https://testnets.opensea.io/assets/mumbai/0x8ab29cbe00d147d50fe030d9e8fdac8ea7766eb3/${tokenId}`
+        window.location.open(`https://testnets.opensea.io/assets/mumbai/${process.env.REACT_APP_CONTRACT_ADDRESS}/${tokenId}`, '_blank')
     }
 
     const renderStageContent = () => {

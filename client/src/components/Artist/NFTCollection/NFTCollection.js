@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import noNFTCollection from "../../../assets/images/noNFTCollection.gif";
 import DecoupleModelConfirmation from "../../Decoupling/DecoupleModelConfirmation";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLink } from "@fortawesome/free-solid-svg-icons";
 import EditNFTModal from "./EditNFTModal";
 import { Card, Spinner } from "react-bootstrap"
 import axios from "axios";
@@ -28,6 +30,10 @@ const NFTCollection = () => {
 
 		getNFTs()
 	}, [nfts]);
+
+	const handleToOpenSea = (tokenId) => {
+		window.open(`https://testnets.opensea.io/assets/mumbai/${process.env.REACT_APP_CONTRACT_ADDRESS}/${tokenId}`, '_blank')
+	}
 
 	const handleNFTDecouple = (index) => {
 		setSelectedNft(nfts[index])
@@ -86,6 +92,13 @@ const NFTCollection = () => {
 												<div className="col-7">
 													<Card.Title style={{ float: "left" }}>
 														{nft.artName}
+														<span style={{ fontSize: "15px", marginLeft: "10px", color: "orange", cursor: "pointer" }}>
+															<FontAwesomeIcon
+																onClick={() => { handleToOpenSea(nft.tokenId) }}
+																className="redirect-to-opensea"
+																icon={faLink}
+															/>
+														</span>
 													</Card.Title>
 												</div>
 												<div className="col-5">

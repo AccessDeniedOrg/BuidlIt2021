@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DecoupleModelConfirmation from '../../Decoupling/DecoupleModelConfirmation';
 import noNFTCollection from "../../../assets/images/noNFTCollection.gif";
-import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowCircleLeft, faLink } from "@fortawesome/free-solid-svg-icons";
 import { Card, Spinner } from "react-bootstrap"
 import axios from "axios";
 
@@ -40,6 +40,10 @@ const NFTCollection = (props) => {
         setOpenDecoupleConfirmation(false)
     }
 
+    const handleToOpenSea = (tokenId) => {
+        window.open(`https://testnets.opensea.io/assets/mumbai/${process.env.REACT_APP_CONTRACT_ADDRESS}/${tokenId}`, '_blank')
+    }
+
     const displayUserNFTS = () => {
         if (isLoading) {
             return (
@@ -74,9 +78,16 @@ const NFTCollection = (props) => {
                                     key={index}
                                     style={{ marginBottom: "60px" }}
                                 >
-                                    <Card style={{ height: "410px", width: "25rem", cursor: "pointer", border: "solid 1px rgba(227, 226, 225, 0.4)" }} key={index}>
+                                    <Card style={{ height: "410px", width: "25rem", border: "solid 1px rgba(227, 226, 225, 0.4)" }} key={index}>
                                         <Card.Title className="text-center" style={{ fontSize: "20px", float: "left", marginTop: "20px" }}>
                                             {nft.artName}
+                                            <span style={{ fontSize: "13px", marginLeft: "5px", color: "orange", cursor: "pointer" }}>
+                                                <FontAwesomeIcon
+                                                    onClick={() => { handleToOpenSea(nft.tokenId) }}
+                                                    className="redirect-to-opensea"
+                                                    icon={faLink}
+                                                />
+                                            </span>
                                         </Card.Title>
                                         <Card.Img
                                             style={{ height: "200px", objectFit: "contain" }}
@@ -130,11 +141,11 @@ const NFTCollection = (props) => {
                                             <button
                                                 style={{ marginTop: "35px" }}
                                                 onClick={() => {
-                                                    window.location.href = `/client/donation`;
+                                                    window.location.href = `/client/donate`;
                                                 }}
                                                 className="me-btn"
                                             >
-                                                Mint Your First NFT
+                                                Donate Now
                                             </button>
                                             <br />
                                         </b>

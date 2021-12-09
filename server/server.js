@@ -11,6 +11,7 @@ const artistRouter = require("./routes/artist");
 const onboardingRouter = require("./routes/Stripe/onboarding");
 const paymentRouter = require("./routes/Stripe/payment");
 const decoupleNFTRouter = require("./routes/decouple");
+const getTransactionsRouter = require("./routes/transactions");
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use("/api/artist", artistRouter.route);
 app.use("/api/transfer-externally", decoupleNFTRouter.route);
 app.use("/api/stripe-onBoarding", onboardingRouter.route);
 app.use("/api/stripe-payment", paymentRouter.route);
+app.use("/api/transactions", getTransactionsRouter.route);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, function () {
