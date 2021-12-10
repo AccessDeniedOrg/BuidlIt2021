@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Spinner, ProgressBar, Container, Row, Col } from "react-bootstrap";
 import "../AddCharity/css/AddCharity.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import noPendingCharities from "../../../assets/images/noPendingCharities.gif";
 
 const EditCharity = (props) => {
@@ -147,9 +149,16 @@ const EditCharity = (props) => {
 												/>
 											</Col>
 											<Col sm={8} md={8} style={{ padding: "20px" }}>
-												<h4>
-													<b>Title:</b> {ele.title}
-												</h4>
+												<Row>
+													<Col sm={9} md={9}>
+														<h4>
+															<b>Title:</b> {ele.title}
+														</h4>
+													</Col>
+													<Col sm={3} md={3}>
+														<FontAwesomeIcon onClick={() => { handleDeleteCharity(index) }} style={{ color: "red", cursor: "pointer", fontSize: "22px", marginLeft: "100px" }} icon={faTrash} />
+													</Col>
+												</Row>
 												<p>
 													<b>Charity Name:</b> {ele.name}
 												</p>
@@ -190,13 +199,14 @@ const EditCharity = (props) => {
 												</Row>
 
 												<ProgressBar variant="success" now={percentCompleted} />
-												<Row style={{ marginTop: "30px" }}>
-													<Col sm={6} md={6}>
+												{/* <Row style={{ marginTop: "30px" }}>
+													<Col sm={12} md={12}>
 														<button
 															style={{
 																width: "170px",
 																backgroundColor: "red",
 																color: "white",
+																float: "right"
 															}}
 															className="me-btn"
 															onClick={() => {
@@ -206,24 +216,7 @@ const EditCharity = (props) => {
 															<strong>Delete Charity</strong>
 														</button>
 													</Col>
-													<Col sm={6} md={6}>
-														<div className="col-3">
-															<button
-																style={{
-																	width: "170px",
-																	backgroundColor: "orange",
-																	color: "white",
-																}}
-																className="me-btn"
-																onClick={() => {
-																	handleEditCharity(index);
-																}}
-															>
-																<strong>Edit Charity</strong>
-															</button>
-														</div>
-													</Col>
-												</Row>
+												</Row> */}
 											</Col>
 										</Row>
 									</Container>

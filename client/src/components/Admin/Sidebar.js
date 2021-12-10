@@ -43,7 +43,7 @@ const Sidebar = (props) => {
 							}}
 							className="menu-list-item-admin"
 						>
-							Edit Charity
+							Remove Charity
 						</li>
 						<li onClick={props.handleLogout} className="menu-list-item-admin">
 							Logout
