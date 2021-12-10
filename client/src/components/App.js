@@ -53,7 +53,10 @@ const App = () => {
 					<Router>
 						<Switch>
 							<Route path="/client">
-								<Client handleLogin={handleLogin} />
+								<Client
+									handleLoginModalOpen={handleLoginModalOpen}
+									handleLogin={handleLogin}
+								/>
 							</Route>
 							<Route path="/admin">
 								<Admin />

@@ -23,7 +23,9 @@ const Client = (props) => {
                 />
                 <Switch>
                     <Route exact path={path}>
-                        <Home />
+                        <Home
+                            handleLoginModalOpen={props.handleLoginModalOpen}
+                        />
                     </Route>
                     <Route path={`${path}/donate`} exact>
                         <Donation

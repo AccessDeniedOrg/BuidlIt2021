@@ -8,7 +8,7 @@ import banner from "../../../assets/images/banner.gif";
 import coins from "../../../assets/images/coins.png";
 import "./Home.css";
 
-const Home = () => {
+const Home = (props) => {
 	const [collected, setCollected] = useState(0);
 	const [charities, setCharities] = useState(0);
 	const [email, setEmail] = useState("");
@@ -86,7 +86,7 @@ const Home = () => {
 								}}
 							>
 								<Col xs={12} md={6} lg={6}>
-									<button className="banner-btn me-btn " type="submit">
+									<button className="banner-btn me-btn " type="submit" onClick={() => { props.handleLoginModalOpen() }}>
 										Donate Now
 									</button>
 								</Col>
