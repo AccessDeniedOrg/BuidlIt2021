@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Spinner } from 'react-bootstrap';
 
 const ConfirmationMinting = (props) => {
@@ -113,6 +115,10 @@ const ConfirmationMinting = (props) => {
                                 ? (
                                     <>
                                         <div style={{ color: "red" }}>
+                                            <FontAwesomeIcon
+                                                style={{ fontSize: "28px", marginTop: "10px", marginBottom: "10px" }}
+                                                icon={faTimesCircle}
+                                            />
                                             <p>{message}<br />{errorMessage}</p>
                                         </div>
                                         <button onClick={handleCloseMintingConfirmation} className="me-btn">
@@ -123,6 +129,10 @@ const ConfirmationMinting = (props) => {
                                 : (
                                     <>
                                         <div style={{ color: "green" }}>
+                                            <FontAwesomeIcon
+                                                style={{ fontSize: "28px", marginTop: "10px", marginBottom: "10px" }}
+                                                icon={faCheckCircle}
+                                            />
                                             <p>{message}</p>
                                             <br />
                                         </div>

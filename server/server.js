@@ -34,14 +34,14 @@ mongoose.connect(
 
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
-db.once("open", function () {});
+db.once("open", function () { });
 
 // Middlewares
 app.use(cors());
-app.use(express.json());
 app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '100mb' }));
+app.use(express.json());
 
 app.get("/", (req, res) => {
 	res.send("Working!");
