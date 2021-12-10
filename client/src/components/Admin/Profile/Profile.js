@@ -9,6 +9,7 @@ const Profile = () => {
 	const [collected, setCollected] = useState(0);
 	const [ongoing, setOngoing] = useState(0);
 	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState("");
 
 	useEffect(() => {
 		axios
@@ -19,12 +20,27 @@ const Profile = () => {
 					.get(`${process.env.REACT_APP_BACKEND_API}/donation/all-charities`)
 					.then((response) => {
 						const arr = response.data.data;
-						console.log(arr.length);
+						// console.log(arr.length);
 						setOngoing(arr.length);
 					});
 			});
 		setIsLoading(false);
 	}, [collected]);
+
+	// Handle Generate List
+	const handleGenerateList = async () => {
+		setError("");
+		axios
+			.get(`${process.env.REACT_APP_BACKEND_API}/listing/createListing`)
+			.then((res) => {
+				console.log(res.data.status);
+				if (res.data.status === "fail") {
+					setError(`The List cannot be generated. `);
+				} else {
+					window.location.href = "/viewList";
+				}
+			});
+	};
 
 	const renderProfile = () => {
 		if (isLoading) {
@@ -122,14 +138,19 @@ const Profile = () => {
 													style={{ marginRight: "0" }}
 													className="me-profile-data-right"
 												>
-													<p className="me-profile-data-right">{ongoing}</p>
+													<p
+														className="me-profile-data-right"
+														style={{ marginRight: "105px" }}
+													>
+														{ongoing}
+													</p>
 												</div>
 											</li>
 										</ul>
 									</div>
 								</div>
 								<div
-									style={{ height: "220px" }}
+									style={{ height: "270px" }}
 									className="me-my-wallet-profile"
 								>
 									<div className="me-my-wallet-head">
@@ -148,9 +169,26 @@ const Profile = () => {
 											charaties ele-gible for Reserve Funds
 										</p>
 										<div className="text-center">
-											<button className="me-btn inner-text" type="submit">
+											<button
+												className="me-btn inner-text"
+												type="submit"
+												onClick={() => {
+													handleGenerateList();
+												}}
+											>
 												Generate
 											</button>
+											{error === "" ? (
+												<></>
+											) : (
+												<div>
+													<br />
+													<p>
+														{error} Click <a href="/viewList">here</a> to view
+														the recently gener-ated list
+													</p>
+												</div>
+											)}
 										</div>
 									</div>
 								</div>

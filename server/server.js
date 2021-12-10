@@ -12,6 +12,7 @@ const onboardingRouter = require("./routes/Stripe/onboarding");
 const paymentRouter = require("./routes/Stripe/payment");
 const decoupleNFTRouter = require("./routes/decouple");
 const getTransactionsRouter = require("./routes/transactions");
+const listingRouter = require("./routes/listing");
 
 const app = express();
 
@@ -55,6 +56,7 @@ app.use("/api/transfer-externally", decoupleNFTRouter.route);
 app.use("/api/stripe-onBoarding", onboardingRouter.route);
 app.use("/api/stripe-payment", paymentRouter.route);
 app.use("/api/transactions", getTransactionsRouter.route);
+app.use("/api/listing", listingRouter.route);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, function () {
