@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import freeMinting from "../../../assets/images/freeMinting.png"
 import { Form, Container, Row, Col, Card } from "react-bootstrap";
 import CountUp from "react-countup";
 import * as FaIcons from "react-icons/fa";
@@ -200,7 +201,7 @@ const Home = (props) => {
 							>
 								<Card.Body>
 									<div className="text-center">
-										<FaIcons.FaSearchDollar className="icon" />
+										<img style={{ width: "12%" }} src={freeMinting} alt="freeminting" />
 									</div>
 									<br />
 									<Card.Title className="text-center ">
