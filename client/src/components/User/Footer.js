@@ -13,7 +13,7 @@ class Footer extends Component {
 							<div className="col-lg-3 col-md-6 col-sm-6">
 								<div className="me-footer-block">
 									<div className="me-logo">
-										<a href="/">
+										<a href="/client">
 											<img
 												src={brandLogo}
 												alt="logo"
@@ -40,7 +40,7 @@ class Footer extends Component {
 							<div className="col-lg-3 col-md-6 col-sm-6">
 								<div className="me-footer-block">
 									<h4>Reach Out To Us</h4>
-									<ul>
+									<ul style={{ marginTop: "-15px" }}>
 										<li>
 											<a
 												target="_blank"
@@ -65,12 +65,15 @@ class Footer extends Component {
 							<div className="col-lg-3 col-md-6 col-sm-6">
 								<div className="me-footer-block">
 									<h4>Join Us</h4>
-									<ul>
+									<ul style={{ marginTop: "-15px" }}>
 										<li>
 											<a href="/client/donate">Donate Today</a>
 										</li>
 										<li>
 											<a href="/auth-artist">Add Your Art</a>
+										</li>
+										<li>
+											<a href="/listing">List Your Campaign</a>
 										</li>
 									</ul>
 								</div>
@@ -78,7 +81,7 @@ class Footer extends Component {
 							<div className="col-lg-3 col-md-6 col-sm-6">
 								<div className="me-footer-block">
 									<h4>View Source Code</h4>
-									<ul className="me-footer-share">
+									<ul style={{ marginTop: "-15px" }} className="me-footer-share">
 										<li>
 											<a
 												target="_blank"
@@ -102,7 +105,7 @@ class Footer extends Component {
 								<div className="me-copyright-block">
 									<p>
 										&copy; 2021 copyright all right reserved by{" "}
-										<a href="/">GrantéStudio</a>
+										<a href="/client">GrantéStudio</a>
 									</p>
 								</div>
 							</div>

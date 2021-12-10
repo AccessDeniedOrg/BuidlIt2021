@@ -121,7 +121,7 @@ const Navigation = (props) => {
                                 Donate
                             </Nav.Link>
                             <Nav.Link href="/listing" className="nav-item-color">
-                                Listing
+                                List Campaign
                             </Nav.Link>
                             <Nav.Link href="/viewlist" className="nav-item-color">
                                 GrantéList
