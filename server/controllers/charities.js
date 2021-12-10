@@ -56,20 +56,20 @@ const pendingCharity = async (req, res) => {
 	});
 
 	const emailBody = `
-				<div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
+				<div >
 					<p style="font-weight: bold;" >Hello Admin,</p>
 					<p>You have a new charity request from ${name}</p>
-					<p>visit <a href="http://localhost:3000/admin/addCharity">http://localhost:3000/admin/addCharity</a> to accept or decline</p>
+					<p>visit <a href="${process.env.FRONTEND_API}/admin/addCharity">${process.env.FRONTEND_API}/admin/addCharity</a> to accept or decline</p>
 					
 				</div>
 				`;
 
-	// await sendMail(
-	// 	"accessdeniedbuidl@gmail.com",
-	// 	"GranteStudio",
-	// 	emailBody,
-	// 	"New Charity Request"
-	// );
+	await sendMail(
+		"accessdeniedbuidl@gmail.com",
+		"GrantéStudio",
+		emailBody,
+		"New Charity Request"
+	);
 	res.send({
 		status: "success",
 		msg: "Charity Added Successfully ",
@@ -115,16 +115,21 @@ const addPendingCharity = async (req, res) => {
 			});
 
 			const emailBody = `
-						<div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
-							<p style="font-weight: bold;" >Hello ${name},</p>
-							<p>Congratualtions! your charity had been verified by our team and you are eligible to be listed on GrantéStudio.<br/>
+						<div >
+							<p>Hello ${name},</p>
+							<p>Congratualtions✨ your charity had been verified by our team and you are eligible to be listed on GrantéStudio.<br/>
 							Please reply to this email with an affirmative, after which you will be sent an onboarding link that will expire in 2-3 mins. </p>		
 							<br/>
 							<p>Regards, <br/>GrantéStudio</p>		
 						</div>
 						`;
 
-			//await sendMail(email, "GranteStudio", emailBody, "New Charity Request");
+			await sendMail(
+				email,
+				"GrantéStudio",
+				emailBody,
+				"Charity Listing Request"
+			);
 			res.send({
 				status: "success",
 				msg: "Charity Added Successfully ",
@@ -143,15 +148,15 @@ const declinePendingCharity = async (req, res) => {
 		else console.log("successfully deleted");
 	});
 	const emailBody = `
-	<div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
-		<p style="font-weight: bold;" >Hello ${name},</p>
+	<div">
+		<p>Hello ${name},</p>
 		<p>We are sorry to inform you that your campaign is not eligible to be listed on GrantéStudio. For further details kindly check our Terms & Conditions for listing charities</p>
 		<br/>
 		<p>Regards, <br/>GrantéStudio</p>		
 	</div>
 	`;
 
-	//await sendMail(email, "GranteStudio", emailBody, "New Charity Request");
+	await sendMail(email, "GrantéStudio", emailBody, "Charity Listing Request");
 	res.send({
 		status: "success",
 		msg: "Charity Added Successfully ",

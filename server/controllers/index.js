@@ -195,8 +195,8 @@ const generateOPT = async (email, name, password, role) => {
 		.digest("hex");
 	const fullHash = `${hash}.${expires}`;
 	const emailBody = `
-				<div style="padding:10px;  color: black ;font-size:16px; line-height: normal;">
-					<p style="font-weight: bold;" >Hello ${name},</p>
+				<div>
+					<p>Hello ${name},</p>
 					<p>Your OTP to verify email is ${otp}</p>
 					<p>If you have not registered on the website, kindly ignore the email</p>
 					<br/>

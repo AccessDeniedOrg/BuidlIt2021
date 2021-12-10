@@ -1,6 +1,6 @@
 const UploadArt = require("../models/uploadArt");
 const UserNft = require("../models/userNft");
-const { mintNFT } = require('./polygon')
+const { mintNFT } = require("./polygon");
 
 // Get All Arts
 const getAllArt = async (req, res) => {
@@ -15,28 +15,28 @@ const getAllArt = async (req, res) => {
 
 // Add Art to db
 const addArt = async (req, res) => {
-
-	const { artName, artistName, price, IPFShash, email, artistWalletAddress } = req.body;
+	const { artName, artistName, price, IPFShash, email, artistWalletAddress } =
+		req.body;
 
 	UserNft.findOne({ IPFShash: IPFShash }, async function (err, data) {
 		if (data) {
-			res.send({ msg: "NFT for this file has already been minted" })
-		}
-		else {
-
+			res.send({ msg: "NFT for this file has already been minted" });
+		} else {
 			UploadArt.findOne({ IPFShash: IPFShash }, async function (err, data) {
 				if (!data) {
-
 					//Blockchain Minting
 					const metadata = JSON.stringify({
 						name: artName,
 						description: `NFT for ${artName}`,
-						image: `https://ipfs.io/ipfs/${IPFShash}`
-					})
+						image: `https://ipfs.io/ipfs/${IPFShash}`,
+					});
 
-					const { tokenIdBlockchain } = await mintNFT(metadata, artistWalletAddress)
+					const { tokenIdBlockchain } = await mintNFT(
+						metadata,
+						artistWalletAddress
+					);
 
-					console.log(`Token Id of minted NFT is ${tokenIdBlockchain}`)
+					console.log(`Token Id of minted NFT is ${tokenIdBlockchain}`);
 
 					let newNFT = new UploadArt({
 						email: email,
@@ -51,20 +51,16 @@ const addArt = async (req, res) => {
 						if (err) res.send(err);
 						else res.status(200).send({ msg: "success" });
 					});
+				} else {
+					res.send({ msg: "NFT for this file has already been minted" });
 				}
-				else {
-					res.send({ msg: "NFT for this file has already been minted" })
-				}
-			})
-
+			});
 		}
-	})
-
-
+	});
 };
 
 const getArtToEdit = async (req, res) => {
-	const { IPFShash } = req.body
+	const { IPFShash } = req.body;
 	UploadArt.findOne(
 		{
 			IPFShash: IPFShash,
@@ -84,9 +80,9 @@ const getArtToEdit = async (req, res) => {
 
 // Edit Art Info
 const editArtPrice = async (req, res) => {
-	const { IPFShash, price } = req.body
+	const { IPFShash, price } = req.body;
 	UploadArt.findOneAndUpdate(
-		{ IPFShash: IPFShash, },
+		{ IPFShash: IPFShash },
 		{
 			$set: {
 				price: price,
