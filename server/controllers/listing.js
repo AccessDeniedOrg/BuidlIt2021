@@ -76,7 +76,7 @@ const getTotalReserves = async (req, res) => {
 						Math.floor(item.totalAmt - item.NFTPrice - item.charityAmt);
 				}
 			});
-			res.send({ totalReserves });
+			res.send({ totalReserves: Math.floor(totalReserves * 0.95) });
 		}
 	});
 };
