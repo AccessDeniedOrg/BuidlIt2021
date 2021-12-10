@@ -172,7 +172,7 @@ const EditCharity = (props) => {
 												<Row>
 													<Col sm={6} lg={6}>
 														<p>
-															<b>End Date:</b> {days_left}
+															<b>Ends in:</b> {days_left < 0 ? <span style={{ color: "red" }}>Ended</span> : days_left}
 														</p>
 													</Col>
 													<Col sm={6} lg={6}>

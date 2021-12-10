@@ -165,7 +165,7 @@ const AddCharity = (props) => {
 													</Col>
 													<Col sm={6} lg={6}>
 														<p>
-															<b> End Date: </b>
+															<b> Ends in: </b>
 															{days_left}
 														</p>
 													</Col>

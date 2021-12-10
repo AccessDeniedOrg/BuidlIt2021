@@ -105,7 +105,7 @@ const SuccessDecouple = () => {
 							Go To Studio
 						</button>
 						<button
-							style={{ float: "right" }}
+							style={{ marginLeft: "20px" }}
 							onClick={handleGoToOpensea}
 							className="me-btn"
 						>

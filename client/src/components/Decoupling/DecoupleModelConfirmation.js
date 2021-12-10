@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheckCircle, faTimesCircle, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { Modal, Spinner, Form } from 'react-bootstrap';
 import { keccak256 } from 'js-sha3';
 
@@ -101,10 +103,10 @@ const DecoupleModelConfirmation = (props) => {
                             </Form.Group>
                         </Form>
                         <p>Please click on 'Proceed' to start decoupling your NFT from GrantéStudio.</p>
-                        <button onClick={handleGoToWarning} className="me-btn" style={{ float: 'left' }}>
+                        <button onClick={handleGoToWarning} className="me-btn" style={{ float: 'right' }}>
                             Proceed
                         </button>
-                        <button onClick={handleCloseDecoupleConfirmation} className="me-btn" style={{ float: 'right' }}>
+                        <button onClick={handleCloseDecoupleConfirmation} className="me-btn" style={{ float: 'left' }}>
                             Cancel
                         </button>
                     </div>
@@ -115,15 +117,19 @@ const DecoupleModelConfirmation = (props) => {
         else if (modalStage === "warning") {
             return (
                 <>
-                    <div className="container text-center">
+                    <div style={{ color: "#d19a04" }} className="container text-center">
+                        <FontAwesomeIcon
+                            style={{ fontSize: "28px", marginTop: "10px", marginBottom: "10px" }}
+                            icon={faExclamationCircle}
+                        />
                         <p>Warning!<br />Once you click "Go Ahead" your NFT will be deleted from GrantéStudio. This step cannot be reverted.</p>
-                        <button onClick={handleCloseDecoupleConfirmation} className="me-btn" style={{ float: 'right' }}>
-                            Cancel
-                        </button>
-                        <button onClick={executeDecoupling} className="me-btn" style={{ float: 'left' }}>
-                            Go Ahead
-                        </button>
                     </div>
+                    <button onClick={executeDecoupling} className="me-btn" style={{ float: 'right' }}>
+                        Go Ahead
+                    </button>
+                    <button onClick={handleCloseDecoupleConfirmation} className="me-btn" style={{ float: 'left' }}>
+                        Cancel
+                    </button>
                 </>
             )
         }
@@ -160,6 +166,10 @@ const DecoupleModelConfirmation = (props) => {
                                 ? (
                                     <>
                                         <div style={{ color: "red" }}>
+                                            <FontAwesomeIcon
+                                                style={{ fontSize: "28px", marginTop: "10px", marginBottom: "10px" }}
+                                                icon={faTimesCircle}
+                                            />
                                             <p>{message}</p>
                                         </div>
                                         <button onClick={handleCloseDecoupleConfirmation} className="me-btn">
@@ -170,6 +180,10 @@ const DecoupleModelConfirmation = (props) => {
                                 : (
                                     <>
                                         <div style={{ color: "green" }}>
+                                            <FontAwesomeIcon
+                                                style={{ fontSize: "28px", marginTop: "10px", marginBottom: "10px" }}
+                                                icon={faCheckCircle}
+                                            />
                                             <p>{message}</p>
                                             <br />
                                         </div>

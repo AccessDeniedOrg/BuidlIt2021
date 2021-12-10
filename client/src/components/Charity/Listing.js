@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft, faPen } from "@fortawesome/free-solid-svg-icons";
 import "react-datepicker/dist/react-datepicker.css";
@@ -20,7 +21,7 @@ const Listing = () => {
         proofLink: ""
     })
     const [uploaded, setUploaded] = useState(false)
-    const [logoError, setLogoError] = useState("")
+    const [sent, setSent] = useState(false)
     const [logoPreview, setLogoPreview] = useState("")
     const [endDate, setEndDate] = useState("")
     const [errors, setErrors] = useState({})
@@ -42,7 +43,7 @@ const Listing = () => {
         window.location.href = "/client";
     };
 
-    const handleApplyForListing = (e) => {
+    const handleApplyForListing = async (e) => {
         e.preventDefault()
         const validAmount = /^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$/
         const validEmail =
@@ -108,7 +109,26 @@ const Listing = () => {
             errorHandlerObj["logoError"] === "" &&
             errorHandlerObj["proofLinkError"] === ""
         ) {
-            console.log("Sending Request To Add Charity....")
+            await axios.post(`${process.env.REACT_APP_BACKEND_API}/donation/pendingCharity`, {
+                logo: charityData.logo,
+                description: charityData.description,
+                name: charityData.name,
+                email: charityData.email,
+                target: charityData.target,
+                title: charityData.title,
+                end_date: (endDate.getTime()) / 1000,
+                proofLink: charityData.proofLink,
+            }).then((res) => {
+                console.log(res.data.status)
+                if (res.data.status === "success") {
+                    setSent(true)
+                } else {
+                    console.log("Request Failed")
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+
         } else {
             setErrors({ ...errorHandlerObj })
             console.log(errorHandlerObj)
@@ -158,6 +178,143 @@ const Listing = () => {
         }
     }
 
+    const renderForm = () => {
+        if (sent) {
+            return (
+                <div style={{ marginTop: "200px" }} className="container text-center">
+                    <div className="row">
+                        <h4 style={{ fontWeight: "900" }}>Your campaign request has been sent successfully!</h4>
+                    </div>
+                </div>
+            )
+        } else {
+            return (
+                <Form>
+                    <div className="row">
+                        <div className="col-6">
+                            <div>
+                                {
+                                    uploaded === true
+                                        ? (
+                                            <label style={{ border: "none", color: "gray" }} className="custom-file-upload">
+                                                <input style={{ border: "none" }} onChange={handleLogoUpload} type="file" accept="image/x-png,image/gif,image/jpeg" />
+                                                <FontAwesomeIcon
+                                                    style={{ position: "relative", left: "30px", top: "-110px", cursor: "pointer" }}
+                                                    className="edit-logo-icon"
+                                                    icon={faPen}
+                                                />
+                                                <img src={logoPreview} width="90%" style={{ objectFit: "contain", marginLeft: "10px" }} alt="logoPreview" />
+                                            </label>
+
+                                        )
+                                        : (
+                                            <label style={{ border: "2px dashed", padding: "105px", marginTop: "30px" }} className="custom-file-upload">
+                                                <input style={{ border: "none" }} onChange={handleLogoUpload} type="file" accept="image/x-png,image/gif,image/jpeg" />
+                                                Upload Logo
+                                            </label>
+                                        )
+                                }
+
+                            </div>
+                        </div>
+                        <div className="col-6">
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Campaign Name:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={charityData["title"]}
+                                    onChange={handleCharityDataChange("title")}
+                                    placeholder='Campaign Name'
+                                />
+                                {errors['titleError'] === "" ? <></> : <div className="error-msg">{errors['titleError']}</div>}
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Charity Name:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={charityData["name"]}
+                                    onChange={handleCharityDataChange("name")}
+                                    placeholder='Charity Name'
+                                />
+                                {errors['nameError'] === "" ? <></> : <div className="error-msg">{errors['nameError']}</div>}
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Campaign Description:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={charityData["description"]}
+                                    onChange={handleCharityDataChange("description")}
+                                    placeholder='Short description of campaign'
+                                />
+                                {errors['descriptionError'] === "" ? <></> : <div className="error-msg">{errors['descriptionError']}</div>}
+                            </Form.Group>
+                        </div>
+
+                    </div>
+                    <div className="row">
+                        <div className="col-4">
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Email:</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    value={charityData["email"]}
+                                    onChange={handleCharityDataChange("email")}
+                                    placeholder='Email'
+                                />
+                                {errors['emailError'] === "" ? <></> : <div className="error-msg">{errors['emailError']}</div>}
+                            </Form.Group>
+                        </div>
+                        <div className="col-4">
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>End Date:</Form.Label>
+                                <DatePicker
+                                    value={endDate}
+                                    selected={endDate}
+                                    onChange={(date) => handleEndDateChange(date)}
+                                    placeholderText="DD/MM/YY"
+                                    dateFormat="dd/MM/yyyy"
+                                />
+                                {errors['endDateError'] === "" ? <></> : <div className="error-msg">{errors['endDateError']}</div>}
+                            </Form.Group>
+                        </div>
+                        <div className="col-4">
+                            <Form.Group className="mb-3" controlId="formBasicPassword">
+                                <Form.Label>Campaign Target:</Form.Label>
+                                <Form.Control
+                                    type="number"
+                                    value={charityData["target"]}
+                                    onChange={handleCharityDataChange("target")}
+                                    placeholder='Campaign Target'
+                                />
+                                {errors['targetError'] === "" ? <></> : <div className="error-msg">{errors['targetError']}</div>}
+                            </Form.Group>
+                        </div>
+                    </div>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label>Authenticity Proof (Secure link to certificate,documentation, etc.):</Form.Label>
+                        <Form.Control
+                            type="url"
+                            value={charityData["proofLink"]}
+                            onChange={handleCharityDataChange("proofLink")}
+                            placeholder='Link'
+                        />
+                        {errors['proofLinkError'] === "" ? <></> : <div className="error-msg">{errors['proofLinkError']}</div>}
+                    </Form.Group>
+                    <div className="text-center">
+                        <button
+                            className="me-btn inner-text"
+                            type="submit"
+                            onClick={handleApplyForListing}
+                        >
+                            Apply
+                        </button>
+                        {errors['logoError'] === "" ? <></> : <div className="error-msg">{errors['logoError']}</div>}
+                    </div>
+                </Form>
+            )
+        }
+    }
+
     return (
         <>
             <div style={{ marginBottom: "30px" }} className="container">
@@ -182,128 +339,7 @@ const Listing = () => {
                                     <strong>List your campaign with GrantéStudio</strong>
                                 </h3>
                             </div>
-                            <Form>
-                                <div className="row">
-                                    <div className="col-6">
-                                        <div>
-                                            {
-                                                uploaded === true
-                                                    ? (
-                                                        <label style={{ border: "none", color: "gray" }} className="custom-file-upload">
-                                                            <input style={{ border: "none" }} onChange={handleLogoUpload} type="file" accept="image/x-png,image/gif,image/jpeg" />
-                                                            <FontAwesomeIcon
-                                                                style={{ position: "relative", left: "30px", top: "-110px", cursor: "pointer" }}
-                                                                className="edit-logo-icon"
-                                                                icon={faPen}
-                                                            />
-                                                            <img src={logoPreview} width="90%" style={{ objectFit: "contain", marginLeft: "10px" }} alt="logoPreview" />
-                                                        </label>
-
-                                                    )
-                                                    : (
-                                                        <label style={{ border: "2px dashed", padding: "105px", marginTop: "30px" }} className="custom-file-upload">
-                                                            <input style={{ border: "none" }} onChange={handleLogoUpload} type="file" accept="image/x-png,image/gif,image/jpeg" />
-                                                            Upload Logo
-                                                        </label>
-                                                    )
-                                            }
-
-                                        </div>
-                                    </div>
-                                    <div className="col-6">
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Campaign Name:</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                value={charityData["title"]}
-                                                onChange={handleCharityDataChange("title")}
-                                                placeholder='Campaign Name'
-                                            />
-                                            {errors['titleError'] === "" ? <></> : <div className="error-msg">{errors['titleError']}</div>}
-                                        </Form.Group>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Charity Name:</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                value={charityData["name"]}
-                                                onChange={handleCharityDataChange("name")}
-                                                placeholder='Charity Name'
-                                            />
-                                            {errors['nameError'] === "" ? <></> : <div className="error-msg">{errors['nameError']}</div>}
-                                        </Form.Group>
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Campaign Description:</Form.Label>
-                                            <Form.Control
-                                                type="text"
-                                                value={charityData["description"]}
-                                                onChange={handleCharityDataChange("description")}
-                                                placeholder='Short description of campaign'
-                                            />
-                                            {errors['descriptionError'] === "" ? <></> : <div className="error-msg">{errors['descriptionError']}</div>}
-                                        </Form.Group>
-                                    </div>
-
-                                </div>
-                                <div className="row">
-                                    <div className="col-4">
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Email:</Form.Label>
-                                            <Form.Control
-                                                type="email"
-                                                value={charityData["email"]}
-                                                onChange={handleCharityDataChange("email")}
-                                                placeholder='Email'
-                                            />
-                                            {errors['emailError'] === "" ? <></> : <div className="error-msg">{errors['emailError']}</div>}
-                                        </Form.Group>
-                                    </div>
-                                    <div className="col-4">
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>End Date:</Form.Label>
-                                            <DatePicker
-                                                value={endDate}
-                                                selected={endDate}
-                                                onChange={(date) => handleEndDateChange(date)}
-                                                placeholderText="DD/MM/YY"
-                                                dateFormat="dd/MM/yyyy"
-                                            />
-                                            {errors['endDateError'] === "" ? <></> : <div className="error-msg">{errors['endDateError']}</div>}
-                                        </Form.Group>
-                                    </div>
-                                    <div className="col-4">
-                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                            <Form.Label>Campaign Target:</Form.Label>
-                                            <Form.Control
-                                                type="number"
-                                                value={charityData["target"]}
-                                                onChange={handleCharityDataChange("target")}
-                                                placeholder='Campaign Target'
-                                            />
-                                            {errors['targetError'] === "" ? <></> : <div className="error-msg">{errors['targetError']}</div>}
-                                        </Form.Group>
-                                    </div>
-                                </div>
-                                <Form.Group className="mb-3" controlId="formBasicPassword">
-                                    <Form.Label>Authenticity Proof (Secure link to certificate,documentation, etc.):</Form.Label>
-                                    <Form.Control
-                                        type="url"
-                                        value={charityData["proofLink"]}
-                                        onChange={handleCharityDataChange("proofLink")}
-                                        placeholder='Link'
-                                    />
-                                    {errors['proofLinkError'] === "" ? <></> : <div className="error-msg">{errors['proofLinkError']}</div>}
-                                </Form.Group>
-                                <div className="text-center">
-                                    <button
-                                        className="me-btn inner-text"
-                                        type="submit"
-                                        onClick={handleApplyForListing}
-                                    >
-                                        Apply
-                                    </button>
-                                    {errors['logoError'] === "" ? <></> : <div className="error-msg">{errors['logoError']}</div>}
-                                </div>
-                            </Form>
+                            {renderForm()}
                         </div>
                     </div>
                     <div className="col-lg-6 col-sm-12">
