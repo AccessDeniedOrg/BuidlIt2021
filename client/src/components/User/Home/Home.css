@@ -1,6 +1,6 @@
 /* Section */
 .banner {
-	padding: 100px 10% 50px 10%;
+	padding: 90px 10% 50px 10%;
 	background-color: #fff6f2;
 	width: 100%;
 }
@@ -12,8 +12,15 @@
 }
 
 .banner-btn {
+	background-color: #ffc3ab;
 	margin: 10px;
 	font-weight: 600;
+	width: 170px;
+	height: 50px;
+}
+
+.banner-btn:hover {
+	background-color: #ec9573;
 }
 
 /* Section 2 */
@@ -26,6 +33,11 @@
 .card {
 	border: solid #fff6f2;
 	box-shadow: black;
+}
+
+.card-content {
+	padding: 20px;
+	font-size: 16px;
 }
 
 .card-title {

@@ -10,6 +10,7 @@ import "./Home.css";
 
 const Home = () => {
 	const [collected, setCollected] = useState(0);
+	const [charities, setCharities] = useState(0);
 	const [email, setEmail] = useState("");
 	const [query, setQuery] = useState("");
 	const [error, setError] = useState("");
@@ -17,7 +18,15 @@ const Home = () => {
 	useEffect(() => {
 		axios
 			.get(`${process.env.REACT_APP_BACKEND_API}/donation/getTotalFundRaised`)
-			.then((res) => setCollected(res.data.total));
+			.then(async (res) => {
+				setCollected(res.data.total);
+				await axios
+					.get(`${process.env.REACT_APP_BACKEND_API}/donation/all-charities`)
+					.then((res) => {
+						const charity_list = res.data.data;
+						setCharities(charity_list.length);
+					});
+			});
 	}, [collected]);
 
 	const handleEmail = (e) => {
@@ -41,6 +50,8 @@ const Home = () => {
 				.then((res) => {
 					setError("Your Email has been sent!");
 					console.log(res.data);
+					setQuery("");
+					setEmail("");
 				});
 		}
 	};
@@ -53,37 +64,50 @@ const Home = () => {
 					<Row>
 						<Col xs={12} md={6} lg={6} className="banner-text">
 							<h1>
-								<strong>GrantéStudios</strong>
+								<strong>
+									Be kind, <br /> its Christmas!
+								</strong>
 							</h1>
 							<br />
-							<p>
-								It is a long established fact that a reader will be distracted
-								by the readable content of a h5age when looking at its layout.
-								The point of using Lorem Ipsum is that it has a more-or-less
-								normal distribution of letters
+							<p style={{ fontSize: "22px", lineHeight: "32px" }}>
+								Indulge in the Art of Giving, <br />
+								be it through your paint brush or your pocket
 							</p>
 							<br />
-							<br />
-							<p className="text-center">Sign in for upliftment!</p>
-							<Row className="text-center">
+							<h4 style={{ fontSize: "22px" }}>
+								<b>Join Us Today!</b>
+							</h4>
+
+							<Row
+								style={{
+									float: "left",
+									marginLeft: "-20px",
+									marginTop: "10px",
+								}}
+							>
 								<Col xs={12} md={6} lg={6}>
 									<button className="banner-btn me-btn " type="submit">
-										Charity-doer
+										Donate Now
 									</button>
 								</Col>
 								<Col xs={12} md={6} lg={6}>
-									<button className="banner-btn me-btn " type="submit">
-										Artist
+									<button
+										className="banner-btn me-btn "
+										type="submit"
+										onClick={() => {
+											window.location.href = "/auth-artist";
+										}}
+									>
+										Add your Art
 									</button>
 								</Col>
 							</Row>
 						</Col>
 						<Col xs={12} md={6} lg={6}>
-
 							<img
 								src={banner}
 								alt="banner"
-								style={{ height: "auto", width: "100%", paddingTop: "5%" }}
+								style={{ height: "auto", width: "110%" }}
 							/>
 						</Col>
 					</Row>
@@ -103,16 +127,18 @@ const Home = () => {
 							>
 								<Card.Body>
 									<div className="text-center">
-										<FaIcons.FaSearchDollar className="icon" />
+										<FaIcons.FaHandHoldingHeart className="icon" />
 									</div>
 									<br />
 									<Card.Title className="text-center ">
-										Instant Refund
+										Incentivized Donations
 									</Card.Title>
 									<br />
-									<Card.Text className="text-center">
-										Tired of calling customer care? No delivery? Heartbreak? We
-										comfort you with instant refunds, no questions asked.
+									<Card.Text className="text-center card-content">
+										Tired of counting your good deeds through the same old
+										boring certificates? At GrantéStudio, we fill your good will
+										ledger with aesthetically pleasing NFT art works created by
+										artists from all over the world.
 									</Card.Text>
 								</Card.Body>
 							</Card>
@@ -131,10 +157,10 @@ const Home = () => {
 										Trace Transactions
 									</Card.Title>
 									<br />
-									<Card.Text className="text-center">
+									<Card.Text className="text-center card-content">
 										Want to know where your money goes? We've got you covered.
-										Transactions made on the CryptoKart are available to the
-										user anytime, anywhere.
+										Transactions made on GrantéStudio are available to the user
+										anytime, anywhere.
 									</Card.Text>
 								</Card.Body>
 							</Card>
@@ -153,11 +179,84 @@ const Home = () => {
 										Abstraction
 									</Card.Title>
 									<br />
-									<Card.Text className="text-center">
+									<Card.Text className="text-center card-content">
 										Want to jump on the Blockchain bandwagon, but finding it
-										difficult? The feel of our unique web-wallet architecture
-										makes shopping with crypto as easy as swiping your credit
-										card.
+										difficult? The feel of our unique user-friendly donation
+										system and inbuilt web-wallets make recieving NFTs for each
+										donation as easy as swiping your credit card.
+									</Card.Text>
+								</Card.Body>
+							</Card>
+						</Col>
+					</Row>
+
+					<br />
+					<br />
+					<br />
+					<Row>
+						<Col xs={12} md={4} lg={4}>
+							<Card
+								style={{ width: "100%", height: "400px", paddingTop: "40px" }}
+							>
+								<Card.Body>
+									<div className="text-center">
+										<FaIcons.FaSearchDollar className="icon" />
+									</div>
+									<br />
+									<Card.Title className="text-center ">
+										Free NFT Minting for Artists
+									</Card.Title>
+									<br />
+									<Card.Text className="text-center card-content">
+										High Transaction fees burning a hole in your wallet? The
+										Polygon Blockchain serves as the backbone for all your NFT
+										minting needs as an artist at GrantéStudio. At such
+										affordable rates we are happy to cover your cost of minting!
+									</Card.Text>
+								</Card.Body>
+							</Card>
+						</Col>
+						<Col xs={12} md={4} lg={4}>
+							<Card
+								style={{ width: "100%", height: "400px", paddingTop: "40px" }}
+								className="card"
+							>
+								<Card.Body>
+									<div className="text-center">
+										<FaIcons.FaPuzzlePiece className="icon" />
+									</div>
+									<br />
+									<Card.Title className="text-center card-title">
+										Decouple NFTs
+									</Card.Title>
+									<br />
+									<Card.Text className="text-center card-content">
+										Feeling restricted on GrantéStudio? We give you the freedom
+										to go back into the metaverse with full control on your
+										assets through our NFT Decoupling feature.
+									</Card.Text>
+								</Card.Body>
+							</Card>
+						</Col>
+						<Col xs={12} md={4} lg={4}>
+							<Card
+								style={{ width: "100%", height: "400px", paddingTop: "40px" }}
+								className="card"
+							>
+								<Card.Body>
+									<div className="text-center">
+										<FaIcons.FaRegListAlt className="icon" />
+									</div>
+									<br />
+									<Card.Title className="text-center card-title">
+										Granté List
+									</Card.Title>
+									<br />
+									<Card.Text className="text-center card-content">
+										Is your campaign struggling to meet the target? Our Monthly
+										Granté List will come to your rescue. We will assist you
+										with our reserves if your campaign is eligible for the
+										month.
 									</Card.Text>
 								</Card.Body>
 							</Card>
@@ -170,7 +269,7 @@ const Home = () => {
 			<div className="fund-raised">
 				<Container>
 					<Row>
-						<Col className="text-center" xs={12} md={7} lg={7}>
+						<Col className="text-center" xs={12} md={4} lg={4}>
 							<div style={{ paddingTop: "15%" }}>
 								<h2>
 									<strong>• Funds Raised •</strong>
@@ -180,14 +279,33 @@ const Home = () => {
 								<CountUp
 									start={0}
 									end={collected}
-									prefix="₹"
+									prefix="$"
 									duration={5}
 									className="count-up"
 								/>
 							</div>
 						</Col>
-						<Col xs={12} md={5} lg={5}>
-							<img src={coins} style={{ height: "auto", width: "80%" }} alt="coins" />
+						<Col xs={12} md={4} lg={4}>
+							<img
+								src={coins}
+								style={{ height: "auto", width: "80%", float: "right" }}
+								alt="coins"
+							/>
+						</Col>
+						<Col className="text-center" xs={12} md={4} lg={4}>
+							<div style={{ paddingTop: "15%" }}>
+								<h2>
+									<strong>• Charities Funded •</strong>
+								</h2>
+								<br />
+								<br />
+								<CountUp
+									start={0}
+									end={charities}
+									duration={1}
+									className="count-up"
+								/>
+							</div>
 						</Col>
 					</Row>
 				</Container>
@@ -219,9 +337,14 @@ const Home = () => {
 							/>
 						</Form.Group>
 						<div className="text-center">
-							{error.length > 0 ? <p>{error}</p> : <p></p>}
+							{error.length > 0 ? (
+								<p style={{ color: "#f07849" }}>{error}</p>
+							) : (
+								<p></p>
+							)}
 							<button
 								className="me-btn inner-text"
+								style={{ backgroundColor: "#ffc3ab" }}
 								type="submit"
 								onClick={handleEmail}
 							>
