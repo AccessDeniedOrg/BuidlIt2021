@@ -35,6 +35,7 @@ const ConfirmationMinting = (props) => {
                 artistName: window.localStorage.getItem("username"),
                 artistWalletAddress: window.localStorage.getItem("walletaddress")
             }).then((res) => {
+                console.log(res.data.msg)
                 if (res.data.msg === "success") {
                     setModalStage("mintingSuccess")
                 } else {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Spinner, Container, Row, Col, Table } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
+import { faArrowCircleLeft, faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import SimpleDateTime from "react-simple-timestamp-to-date";
 import axios from "axios";
 
@@ -9,25 +9,111 @@ const GranteList = () => {
 	const [granteList, setGranteList] = useState([]);
 	const [generatedDate, setGeneratedDate] = useState("");
 	const [reserves, setReserves] = useState(0);
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
 		axios
 			.get(`${process.env.REACT_APP_BACKEND_API}/listing/getLatestList`)
 			.then((res) => {
-				//console.log(res.data.date);
+				console.log(res.data.date)
 				setGeneratedDate(res.data.date);
 				setGranteList(res.data.listing);
 				axios
 					.get(`${process.env.REACT_APP_BACKEND_API}/listing/getTotalReserves`)
 					.then((resp) => {
 						setReserves(resp.data.totalReserves);
-					});
+						setIsLoading(false)
+					}).catch((err) => {
+						console.log(err)
+					})
 			});
 	}, []);
 
 	const handleBackToClient = () => {
 		window.location.href = "/client";
 	};
+
+	const renderGranteList = () => {
+		if (isLoading) {
+			return (
+				<div className="container text-center">
+					<Spinner
+						style={{
+							marginTop: "340px",
+							marginBottom: "10px",
+							color: "#ffded1",
+						}}
+						animation="border"
+					/>
+					<div style={{ marginBottom: "700px" }}>
+						<p>Loading charities...</p>
+					</div>
+				</div>
+			)
+		} else {
+			if (!granteList) {
+				return (
+					<div className="text-center">
+						<FontAwesomeIcon
+							style={{ fontSize: "35px", marginTop: "10px", marginBottom: "10px" }}
+							icon={faExclamationCircle}
+						/>
+						<h5 style={{ fontWeight: "900" }}>Granté List is empty.</h5><br />
+						This can be due to 2 reasons:
+						<ul>
+							<li>
+								• The Admin has not generated the list for the month yet.
+							</li>
+							<li>
+								• All Charities for the month have completed their targets.
+							</li>
+						</ul>
+					</div>
+				)
+			} else {
+				return (
+					<>
+						<Table
+							bordered
+							style={{
+								boxShadow: "10px 10px 10px rgba(180, 180, 178, 0.1)",
+							}}
+						>
+							<thead style={{ backgroundColor: "rgba(255, 222, 209, 0.5)" }}>
+								<tr style={{ fontSize: "22px" }} className="text-center">
+									<th>Logo</th>
+									<th>Charity Name</th>
+									<th>Campaign</th>
+								</tr>
+							</thead>
+							<tbody style={{ fontSize: "16px" }}>
+								{granteList.map((item) => {
+									return (
+										<tr key={item._id}>
+											<td className="text-center">
+												<img
+													src={item.logo}
+													alt="logo"
+													style={{
+														width: "120px",
+														height: "120px",
+														objectFit: "contain",
+														padding: "10px",
+													}}
+												/>
+											</td>
+											<td>{item.name}</td>
+											<td>{item.title}</td>
+										</tr>
+									);
+								})}
+							</tbody>
+						</Table>
+					</>
+				)
+			}
+		}
+	}
 
 	return (
 		<>
@@ -50,7 +136,7 @@ const GranteList = () => {
 						</span>
 					</div>
 					<p style={{ display: "inline", marginLeft: "-140px" }}>
-						• <u>Monthly Grante List</u> •
+						• <u>Monthly Granté List</u> •
 					</p>
 				</div>
 
@@ -58,7 +144,6 @@ const GranteList = () => {
 				<br />
 				<br />
 				<br />
-
 				<Row style={{ fontSize: "25px" }}>
 					<Col sm={6} lg={6}>
 						<p>
@@ -68,50 +153,20 @@ const GranteList = () => {
 					<Col sm={6} lg={6}>
 						<p style={{ float: "right" }}>
 							<b>Generated On: </b>
-							<SimpleDateTime dateSeparator="/" timeSeparator=":" format="DMY">
-								{generatedDate}
-							</SimpleDateTime>
+							{
+								generatedDate
+									? (
+										<SimpleDateTime dateSeparator="/" timeSeparator=":" format="DMY">
+											{generatedDate}
+										</SimpleDateTime>
+									)
+									: "---"
+							}
 						</p>
 					</Col>
 				</Row>
-
 				<br />
-				<Table
-					bordered
-					style={{
-						boxShadow: "10px 10px 10px rgba(180, 180, 178, 0.1)",
-					}}
-				>
-					<thead style={{ backgroundColor: "rgba(255, 222, 209, 0.5)" }}>
-						<tr style={{ fontSize: "22px" }} className="text-center">
-							<th>Logo</th>
-							<th>Charity Name</th>
-							<th>Campaign</th>
-						</tr>
-					</thead>
-					<tbody style={{ fontSize: "16px" }}>
-						{granteList.map((item) => {
-							return (
-								<tr key={item._id}>
-									<td className="text-center">
-										<img
-											src={item.logo}
-											alt="logo"
-											style={{
-												width: "120px",
-												height: "120px",
-												objectFit: "contain",
-												padding: "10px",
-											}}
-										/>
-									</td>
-									<td>{item.name}</td>
-									<td>{item.title}</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</Table>
+				{renderGranteList()}
 			</Container>
 		</>
 	);

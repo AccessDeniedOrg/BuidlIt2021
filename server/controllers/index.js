@@ -3,7 +3,7 @@ const Artist = require("../models/artist");
 const crypto = require("crypto");
 const sha3_256 = require("js-sha3").sha3_256;
 const { sendMail } = require("./sendEmail");
-const { accountCreation } = require("../controllers/Stripe/onBoarding");
+const { accountCreation } = require("./Stripe/onboarding");
 
 // Register User
 const sendOtp = async (req, res) => {
