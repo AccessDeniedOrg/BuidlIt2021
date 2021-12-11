@@ -51,7 +51,7 @@ const GranteList = () => {
 				</div>
 			)
 		} else {
-			if (!granteList) {
+			if (!granteList || granteList.length === 0) {
 				return (
 					<div className="text-center">
 						<FontAwesomeIcon
@@ -154,7 +154,7 @@ const GranteList = () => {
 						<p style={{ float: "right" }}>
 							<b>Generated On: </b>
 							{
-								generatedDate
+								generatedDate && granteList.length !== 0
 									? (
 										<SimpleDateTime dateSeparator="/" timeSeparator=":" format="DMY">
 											{generatedDate}

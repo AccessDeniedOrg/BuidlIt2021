@@ -28,20 +28,6 @@ const EditCharity = (props) => {
 		getInfo();
 	}, []);
 
-	const handleEditCharity = async (index) => {
-		setIsLoading(true);
-		console.log(charities[index]);
-		await axios
-			.post(
-				`${process.env.REACT_APP_BACKEND_API}/donation/addPendingCharity`,
-				charities[index]
-			)
-			.then((res) => {
-				setIsLoading(false);
-				console.log(res.data);
-				window.location.href = `/admin/addCharity`;
-			});
-	};
 
 	const handleDeleteCharity = async (index) => {
 		console.log(charities[index]);

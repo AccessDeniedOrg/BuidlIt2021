@@ -3,24 +3,26 @@ const Charities = require("../models/charities");
 const Transactions = require("../models/transactions");
 
 const createListing = async (req, res) => {
-	Charities.find((err, data) => {
+	Charities.find((err, charitiesData) => {
 		if (err) {
 			res.send({ msg: "fail" });
 		} else {
-			if (!data) {
+			if (!charitiesData) {
 				res.send({ msg: "fail" });
 			} else {
 				// Check last date
+				console.log("In 1");
 				Listing.find(async (err, data) => {
 					if (err) {
 						res.send({ msg: "fail" });
 					} else {
-						const latestList = data[data.length - 1];
+						console.log(data.length);
 						let date = Math.floor(Date.now() / 1000);
-						if (Math.floor(latestList.date - date) > 30) {
+						if (data.length === 0) {
+							console.log("In 3");
 							let list = [];
 
-							data.forEach(function (item) {
+							charitiesData.forEach(function (item) {
 								let difference = item.target - item.target_collected;
 
 								if (
@@ -38,10 +40,39 @@ const createListing = async (req, res) => {
 
 							newList.save(function (err, NFT) {
 								if (err) res.send(err);
-								else res.status(200).send({ msg: "success" });
+								else res.send({ msg: "success" });
 							});
 						} else {
-							res.send({ status: "fail" });
+							console.log("In 4");
+							const latestList = data[data.length - 1];
+							console.log(latestList);
+							if (Math.floor(latestList.date - date) > 30) {
+								let list = [];
+
+								charitiesData.forEach(function (item) {
+									let difference = item.target - item.target_collected;
+
+									if (
+										date > item.end_date &&
+										Math.floor(date - item.end_date) < 2592000 &&
+										difference > 0
+									) {
+										list.push(item);
+									}
+								});
+								let newList = new Listing({
+									date: Math.floor(Date.now() / 1000),
+									listing: list,
+								});
+
+								newList.save(function (err, NFT) {
+									if (err) res.send(err);
+									else res.send({ msg: "success" });
+								});
+							} else {
+								console.log("In 5");
+								res.send({ msg: "fail" });
+							}
 						}
 					}
 				});

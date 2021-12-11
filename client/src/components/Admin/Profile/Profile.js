@@ -34,7 +34,7 @@ const Profile = () => {
 			.get(`${process.env.REACT_APP_BACKEND_API}/listing/createListing`)
 			.then((res) => {
 				console.log(res.data.status);
-				if (res.data.status === "fail") {
+				if (res.data.msg === "fail") {
 					setError(`The List cannot be generated. `);
 				} else {
 					window.location.href = "/viewList";
