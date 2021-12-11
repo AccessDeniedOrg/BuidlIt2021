@@ -78,43 +78,40 @@ const pendingCharity = async (req, res) => {
 
 // Add charity to db
 const addPendingCharity = async (req, res) => {
-	const { logo, description, name, email, target, title, end_date } = req.body;
-	console.log(req.body);
+	const { logo, description, name, email, target, title, end_date, _id } = req.body;
 
-	Charities.findOne({ email: email }, async (err, data) => {
-		if (!data) {
-			var newCharity = new Charities({
-				logo: logo,
-				description: description,
-				name: name,
-				email: email,
-				target: target,
-				title: title,
-				target_collected: 0,
-				num_of_donors: 0,
-				end_date: end_date,
+	var newCharity = new Charities({
+		logo: logo,
+		description: description,
+		name: name,
+		email: email,
+		target: target,
+		title: title,
+		target_collected: 0,
+		num_of_donors: 0,
+		end_date: end_date,
+	});
+
+	newCharity.save(function (err, Charity) {
+		if (err) {
+			res.send({
+				status: "error",
+				msg: "There was an error in adding the Charity",
 			});
-
-			newCharity.save(function (err, Charity) {
-				if (err) {
-					res.send({
-						status: "error",
-						msg: "There was an error in adding the Charity",
-					});
-				} else {
-					console.log({
-						status: "success",
-						msg: "Charity Added Successfully ",
-					});
-				}
+		} else {
+			console.log({
+				status: "success",
+				msg: "Charity Added Successfully ",
 			});
+		}
+	});
 
-			PendingCharities.deleteOne({ email: email }, async function (err, data) {
-				if (err) res.send("Could not be deleted");
-				else console.log("successfully deleted");
-			});
+	PendingCharities.deleteOne({ _id: _id }, async function (err, data) {
+		if (err) res.send("Could not be deleted");
+		else console.log("successfully deleted");
+	});
 
-			const emailBody = `
+	const emailBody = `
 						<div >
 							<p>Hello ${name},</p>
 							<p>Congratualtions✨ your charity had been verified by our team and you are eligible to be listed on GrantéStudio.<br/>
@@ -124,26 +121,22 @@ const addPendingCharity = async (req, res) => {
 						</div>
 						`;
 
-			await sendMail(
-				email,
-				"GrantéStudio",
-				emailBody,
-				"Charity Listing Request"
-			);
-			res.send({
-				status: "success",
-				msg: "Charity Added Successfully ",
-			});
-		} else {
-			res.send({ msg: "Charity already exists" });
-		}
+	await sendMail(
+		email,
+		"GrantéStudio",
+		emailBody,
+		"Charity Listing Request"
+	);
+	res.send({
+		status: "success",
+		msg: "Charity Added Successfully ",
 	});
 };
 
 // declinePendingCharity
 const declinePendingCharity = async (req, res) => {
-	const { email, name } = req.body;
-	PendingCharities.deleteOne({ email: email }, async function (err, data) {
+	const { email, name, _id } = req.body;
+	PendingCharities.deleteOne({ _id: _id }, async function (err, data) {
 		if (err) res.send("Could not be deleted");
 		else console.log("successfully deleted");
 	});
@@ -197,10 +190,16 @@ const updateCharity = async (req, res) => {
 
 // Delete charity from database
 const deleteCharity = async (req, res) => {
-	const { email } = req.body;
-	Charities.deleteOne(
+	const { _id } = req.body;
+
+	Charities.findOneAndUpdate(
 		{
-			email: email,
+			_id: _id,
+		},
+		{
+			$set: {
+				end_date: 0,
+			},
 		},
 		(err, docs) => {
 			if (err === null) {
