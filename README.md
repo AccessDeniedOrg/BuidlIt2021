@@ -85,7 +85,7 @@ eligible for the month.
 - [`Nodejs `](#)
 - [`Mongodb`](#)
 - [`Solidity`](#)
-- [`MongoDB`](#)
+- [`Stripe Connect`](#)
 - [`IPFS`](#)
 - [`Pinata`](#)
 - [`OpenSea`](#)
