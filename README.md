@@ -23,6 +23,11 @@
 ## Tagline: _Indulge in the Art of Giving, and let the jingle of your coins reach the right doors 🎅_ 
 <br />
 
+## Video
+[![Watch the video](https://i.postimg.cc/52pMvxvG/youtube-thumbnail.jpg)](https://www.youtube.com/watch?v=JWeEnOMhVdw)
+
+<br/>
+
 ## About the Project
 _GrantéStudio_ is centered around using blockchain to create inclusive spaces for under-served populations and industries.We like to think that _GrantéStudio_ is about art,
 artists and an equal world. We have structured our product to reward everyone involved with _GrantéStudio_ .
@@ -93,11 +98,6 @@ eligible for the month.
 - [`Ganache`](#)
 
 <br />
-
-## Video
-- [Youtube link: Demonstration](https://www.youtube.com/watch?v=JWeEnOMhVdw)
-
-<br/>
 
                                                  
 ## Clone this Repository
